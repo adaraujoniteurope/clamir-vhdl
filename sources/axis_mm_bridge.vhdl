@@ -68,10 +68,10 @@ entity axis_mm_bridge is
                     end if;
 
                 when AXIS_MM_BRIDGE_STATE_ACTIVE =>
-                    
-                    port_a_addr <= axis_in_tdata(ADDR_WIDTH+DATA_WIDTH-1 downto DATA_WIDTH);
-                    port_a_data <= axis_in_tdata(DATA_WIDTH-1 downto 0);
-                    port_a_wren <= axis_in_tvalid;
+
+                port_a_addr <= axis_in_tdata(ADDR_WIDTH+DATA_WIDTH-1 downto DATA_WIDTH);
+                port_a_data <= axis_in_tdata(DATA_WIDTH-1 downto 0);
+                port_a_wren <= axis_in_tvalid;
 
             end case;
 

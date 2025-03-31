@@ -56,6 +56,8 @@ entity axis_linear_correction is
     data_in <= axis_in_tdata(DATA_WIDTH - 1 downto 0);
 
     mult <= scale_data * axis_in_tdata(DATA_WIDTH - 1 downto 0);
+
+    addr_out <= addr_in;
     data_out <= mult(14+DATA_WIDTH-1 downto 14) + offset_data(DATA_WIDTH-1 downto 0);
 
     axis_process: process(aclk, arstn) begin

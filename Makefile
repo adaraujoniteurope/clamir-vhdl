@@ -1,8 +1,8 @@
 # vhdl files
-FILES = sources/*
+FILES = sources/*.vhdl
 
 # testbench
-TESTBENCH = axis_linear_correction
+TESTBENCH = mm_linear_correction
 TESTBENCHPATH = testbenches/${TESTBENCHFILE}*
 TESTBENCHFILE = ${TESTBENCH}_tb
 WORKDIR = work

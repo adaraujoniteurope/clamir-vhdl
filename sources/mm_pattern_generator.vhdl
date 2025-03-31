@@ -1,9 +1,13 @@
 library ieee;
+library work;
 
 use ieee.std_logic_1164.all;
 -- use ieee.std_logic_arith.all;
 use ieee.std_logic_unsigned.all;
 use ieee.numeric_std.all;
+use work.io.all;
+
+use std.textio.all;
 
 ENTITY mm_pattern_generator IS
     generic (
@@ -27,29 +31,12 @@ end mm_pattern_generator;
 
 architecture rtl of mm_pattern_generator is
 
-    type memory_type is array(integer range<>) of std_logic_vector(DATA_WIDTH-1 downto 0);
-
-    signal memory : memory_type(0 to MEMORY_LENGTH-1) := (
-        x"00003246",
-        x"000034b9",
-        x"000025ec",
-        x"0000295c",
-        x"00003e4a",
-        x"00001d94",
-        x"00003b2a",
-        x"0000014d",
-        x"00001ba1",
-        x"00002d82",
-        x"00000487",
-        x"00001983",
-        x"000031f2",
-        x"0000094b",
-        x"00000e1e",
-        x"00003994"
-    );
+    signal memory : memory_32b_type(0 to MEMORY_LENGTH-1) := init_ram_from_file("coefficients/pattern.txt", MEMORY_LENGTH);
 
     signal addr : std_logic_vector(ADDR_WIDTH - 1 downto 0) := (others => '0');
     signal data : std_logic_vector(DATA_WIDTH - 1 downto 0) := (others => '0');
+
+    signal counter : std_logic_vector(DATA_WIDTH - 1 downto 0) := (others => '0');
 
 begin
 

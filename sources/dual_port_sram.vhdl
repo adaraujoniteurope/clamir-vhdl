@@ -1,9 +1,12 @@
 library ieee;
+library work;
 
 use ieee.std_logic_1164.all;
 -- use ieee.std_logic_arith.all;
 -- use ieee.std_logic_unsigned.all;
+
 use ieee.numeric_std.all;
+use work.memory_types.all;
 
 entity dual_port_sram is
     generic
@@ -33,8 +36,6 @@ entity dual_port_sram is
   end dual_port_sram;
   
   architecture rtl of dual_port_sram is
-
-    type memory_32b_type is array(integer range<>) of std_logic_vector(31 downto 0);
     
     signal memory : memory_32b_type(memory_length - 1 downto 0) := (others => std_logic_vector(to_unsigned(default_value, data_width)));
 

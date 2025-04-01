@@ -1,4 +1,5 @@
 # vhdl files
+PACKAGES = packages/*.vhdl
 FILES = sources/*.vhdl
 
 # testbench
@@ -30,6 +31,7 @@ ifeq ($(strip $(TESTBENCH)),)
 endif
 
 	@mkdir -p $(WORKDIR)
+	@$(GHDL_CMD) -a $(GHDL_FLAGS) $(PACKAGES)
 	@$(GHDL_CMD) -a $(GHDL_FLAGS) $(FILES)
 	@$(GHDL_CMD) -a $(GHDL_FLAGS) $(TESTBENCHPATH)
 	@$(GHDL_CMD) -e $(GHDL_FLAGS) $(TESTBENCHFILE)

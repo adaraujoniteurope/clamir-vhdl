@@ -1,15 +1,17 @@
-library IEEE;
+library ieee;
+library work;
 
-use IEEE.std_logic_1164.all;
-use IEEE.std_logic_arith.all;
-use IEEE.std_logic_unsigned.all;
-use IEEE.numeric_std.all;
+use ieee.std_logic_1164.all;
+use ieee.std_logic_arith.all;
+use ieee.std_logic_unsigned.all;
+use ieee.numeric_std.all;
+use work.memory_types.all;
 
 entity mm_linear_correction is
     generic
     (
-        ADDR_WIDTH : integer := 32;
-        DATA_WIDTH : integer := 32
+        addr_width : integer := 32;
+        data_width : integer := 32
     );
 
     port (
@@ -17,33 +19,33 @@ entity mm_linear_correction is
         aclk  : in std_logic := '0';
         arstn : in std_logic := '0';
 
-        scale_addr : inout std_logic_vector(ADDR_WIDTH-1 downto 0) := (others => '0');
-        scale_data : in std_logic_vector(DATA_WIDTH-1 downto 0) := (others => '0');
+        scale_addr : inout std_logic_vector(addr_width-1 downto 0) := (others => '0');
+        scale_data : in std_logic_vector(data_width-1 downto 0) := (others => '0');
 
-        offset_addr : inout std_logic_vector(ADDR_WIDTH-1 downto 0) := (others => '0');
-        offset_data : in std_logic_vector(DATA_WIDTH-1 downto 0) := (others => '0');
+        offset_addr : inout std_logic_vector(addr_width-1 downto 0) := (others => '0');
+        offset_data : in std_logic_vector(data_width-1 downto 0) := (others => '0');
 
-        in_addr   : in  std_logic_vector(ADDR_WIDTH - 1 downto 0) := (others => '0' );
+        in_addr   : in  std_logic_vector(addr_width - 1 downto 0) := (others => '0' );
         in_wren   : in  std_logic := '0';
-        in_data   : in  std_logic_vector(DATA_WIDTH - 1 downto 0) := (others => '0' );
+        in_data   : in  std_logic_vector(data_width - 1 downto 0) := (others => '0' );
 
-        out_addr   : out  std_logic_vector(ADDR_WIDTH - 1 downto 0) := (others => '0' );
+        out_addr   : out  std_logic_vector(addr_width - 1 downto 0) := (others => '0' );
         out_wren   : out  std_logic := '0';
-        out_data   : out  std_logic_vector(DATA_WIDTH - 1 downto 0) := (others => '0' )
+        out_data   : out  std_logic_vector(data_width - 1 downto 0) := (others => '0' )
     );
   end mm_linear_correction;
   
-  architecture rtl of mm_linear_correction IS
+  architecture rtl of mm_linear_correction is
 
-    type std_logic_vector_32b_array is array(integer range<>) of std_logic_vector(31 downto 0);
+    signal addr_pipeline   : memory_32b_type(0 to 3) := ( others => ( others => '0') );
+    signal data_pipeline   : memory_32b_type(0 to 3) := ( others => ( others => '0') );
+    signal scale_pipeline  : memory_32b_type(0 to 3) := ( others => ( others => '0') );
+    signal offset_pipeline : memory_32b_type(0 to 3) := ( others => ( others => '0') );
 
-    signal addr_pipeline   : std_logic_vector_32b_array(0 to 3) := ( others => ( others => '0') );
-    signal data_pipeline   : std_logic_vector_32b_array(0 to 3) := ( others => ( others => '0') );
-    signal scale_pipeline  : std_logic_vector_32b_array(0 to 3) := ( others => ( others => '0') );
-    signal offset_pipeline : std_logic_vector_32b_array(0 to 3) := ( others => ( others => '0') );
+    signal mult_pipeline   : memory_64b_type(0 to 3) := ( others => ( others => '0') );
+    signal result_pipeline : memory_32b_type(0 to 3) := ( others => ( others => '0') );
 
-    signal mult_pipeline   : std_logic_vector_32b_array(0 to 3) := ( others => ( others => '0') );
-    signal result_pipeline : std_logic_vector_32b_array(0 to 3) := ( others => ( others => '0') );
+    -- signal mult : std_logic_vector(DATA_WIDTH*2-1 downto 0) := ( others => '0' );
 
   begin
 
@@ -141,7 +143,7 @@ entity mm_linear_correction is
         if (arstn = '0') then
         else
             if (rising_edge(aclk)) then
-                result_pipeline(0) <= mult_pipeline(0)(14+DATA_WIDTH-1 downto 14) + offset_data(DATA_WIDTH-1 downto 0);
+                result_pipeline(0) <= mult_pipeline(0)(14+data_width-1 downto 14) + offset_data(data_width-1 downto 0);
                 result_pipeline(1) <= result_pipeline(0);
                 result_pipeline(2) <= result_pipeline(1);
                 result_pipeline(3) <= result_pipeline(2);

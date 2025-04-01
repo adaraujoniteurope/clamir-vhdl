@@ -11,8 +11,8 @@ entity mm_linear_correction_tb is
     ADDR_WIDTH : integer := 32;
     DATA_WIDTH : integer := 32;
 
-    IMAGE_WIDTH  : integer := 64;
-    IMAGE_HEIGHT : integer := 64
+    IMAGE_WIDTH  : integer := 2;
+    IMAGE_HEIGHT : integer := 2
   );
 end entity;
 
@@ -30,9 +30,9 @@ architecture testbench of mm_linear_correction_tb is
         aclk : in std_logic := '0';
         arstn : in std_logic := '0';
 
-        port_b_addr : inout std_logic_vector(ADDR_WIDTH - 1 downto 0) := (others => '0');
-        port_b_wren : inout std_logic := '0';
-        port_b_data : inout std_logic_vector(DATA_WIDTH - 1 downto 0) := (others => '0')
+        out_addr : inout std_logic_vector(ADDR_WIDTH - 1 downto 0) := (others => '0');
+        out_wren : inout std_logic := '0';
+        out_data : inout std_logic_vector(DATA_WIDTH - 1 downto 0) := (others => '0')
     );
   end component;
 
@@ -129,9 +129,9 @@ end component;
   signal image_sram_port_b_data_in : std_logic_vector(DATA_WIDTH-1 downto 0) := ( others => '0' );
   signal image_sram_port_b_data_out : std_logic_vector(DATA_WIDTH-1 downto 0) := ( others => '0' );
 
-  signal pattern_generator_port_b_addr : std_logic_vector(ADDR_WIDTH-1 downto 0) := ( others => '0' );
-  signal pattern_generator_port_b_wren : std_logic := '0';
-  signal pattern_generator_port_b_data : std_logic_vector(DATA_WIDTH-1 downto 0) := ( others => '0' );
+  signal pattern_generator_out_addr : std_logic_vector(ADDR_WIDTH-1 downto 0) := ( others => '0' );
+  signal pattern_generator_out_wren : std_logic := '0';
+  signal pattern_generator_out_data : std_logic_vector(DATA_WIDTH-1 downto 0) := ( others => '0' );
 
   signal dut_mm_in_addr : std_logic_vector (ADDR_WIDTH - 1 downto 0) := (others => '0');
   signal dut_mm_in_wren : std_logic := '0';
@@ -142,6 +142,10 @@ end component;
   signal dut_mm_out_data : std_logic_vector (DATA_WIDTH - 1 downto 0) := (others => '0');
 
 begin
+
+  dut_mm_in_addr <= pattern_generator_out_addr;
+  dut_mm_in_wren <= pattern_generator_out_wren;
+  dut_mm_in_data <= pattern_generator_out_data;
 
   pattern_generator : mm_pattern_generator
   generic map(
@@ -154,9 +158,9 @@ begin
     aclk => aclk,
     arstn => arstn,
 
-    port_b_addr => pattern_generator_port_b_addr,
-    port_b_wren => pattern_generator_port_b_wren,
-    port_b_data => pattern_generator_port_b_data
+    out_addr => pattern_generator_out_addr,
+    out_wren => pattern_generator_out_wren,
+    out_data => pattern_generator_out_data
   );
 
   scale_sram : dual_port_sram

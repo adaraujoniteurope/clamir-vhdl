@@ -5,9 +5,9 @@ use ieee.std_logic_1164.all;
 -- use ieee.std_logic_arith.all;
 use ieee.std_logic_unsigned.all;
 use ieee.numeric_std.all;
-use work.io.all;
 
 use std.textio.all;
+use work.memory_types.all;
 
 ENTITY mm_pattern_generator IS
     generic (
@@ -22,9 +22,9 @@ ENTITY mm_pattern_generator IS
         aclk : in std_logic := '0';
         arstn : in std_logic := '0';
 
-        port_b_addr : inout std_logic_vector(ADDR_WIDTH - 1 downto 0) := (others => '0');
-        port_b_wren : inout std_logic := '0';
-        port_b_data : inout std_logic_vector(DATA_WIDTH - 1 downto 0) := (others => '0')
+        out_addr : inout std_logic_vector(ADDR_WIDTH - 1 downto 0) := (others => '0');
+        out_wren : inout std_logic := '0';
+        out_data : inout std_logic_vector(DATA_WIDTH - 1 downto 0) := (others => '0')
 
     );
 end mm_pattern_generator;
@@ -43,21 +43,21 @@ begin
     process(aclk, arstn) begin
         
         if (arstn = '0') then
-            port_b_wren <= '0';
-            port_b_data <= (others => '0');
+            out_wren <= '0';
+            out_data <= (others => '0');
         else
             if (rising_edge(aclk)) then
 
                 if (addr < MEMORY_LENGTH) then
                     addr <= addr + 1;
-                    port_b_addr <= addr;
-                    port_b_data <= memory(to_integer(unsigned(addr)));
-                    port_b_wren <= '1';
+                    out_addr <= addr;
+                    out_data <= memory(to_integer(unsigned(addr)));
+                    out_wren <= '1';
                 else
                     addr <= (others => '0');
-                    port_b_addr <= (others => '0');
-                    port_b_data <= (others => '0');
-                    port_b_wren <= '0';
+                    out_addr <= (others => '0');
+                    out_data <= (others => '0');
+                    out_wren <= '0';
                 end if;
 
             end if;

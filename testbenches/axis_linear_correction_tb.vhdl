@@ -210,9 +210,9 @@ begin
     aclk => aclk,
     arstn => arstn,
 
-    port_b_addr => pattern_generator_port_b_addr,
-    port_b_wren => pattern_generator_port_b_wren,
-    port_b_data => pattern_generator_port_b_data
+    out_addr => pattern_generator_out_addr,
+    out_wren => pattern_generator_out_wren,
+    out_data => pattern_generator_out_data
   );
 
   mm_axis_bridge_0 : mm_axis_bridge

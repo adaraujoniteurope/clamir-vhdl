@@ -22,6 +22,4 @@
 ## Author:  <arthur@arthur-notebook-victus>
 ## Created: 2025-03-31
 
-function retval = generate_pattern(file, width = 64, height = 64)
-
-endfunction
+printf("Hello World")

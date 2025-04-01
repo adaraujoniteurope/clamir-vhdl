@@ -20,30 +20,57 @@ entity mm_linear_correction is
         arstn : in std_logic := '0';
 
         scale_bram_clk : out std_logic := '0';
+        scale_bram_rst : out std_logic := '0';
         scale_bram_ena : out std_logic := '1';
         scale_bram_wea : out std_logic := '0';
         scale_bram_addr : out std_logic_vector(addr_width - 1 downto 0) := (others => '0');
-        scale_bram_data_in : in std_logic_vector(data_width - 1 downto 0) := (others => '0');
-        scale_bram_data_out : out std_logic_vector(data_width - 1 downto 0) := (others => '0');
+        scale_bram_din : in std_logic_vector(data_width - 1 downto 0) := (others => '0');
+        scale_bram_dout : out std_logic_vector(data_width - 1 downto 0) := (others => '0');
 
         offset_bram_clk : out std_logic := '0';
+        offset_bram_rst : out std_logic := '0';
         offset_bram_ena : out std_logic := '1';
         offset_bram_wea : out std_logic := '0';
         offset_bram_addr : out std_logic_vector(addr_width - 1 downto 0) := (others => '0');
-        offset_bram_data_in : in std_logic_vector(data_width - 1 downto 0) := (others => '0');
-        offset_bram_data_out : out std_logic_vector(data_width - 1 downto 0) := (others => '0');
+        offset_bram_din : in std_logic_vector(data_width - 1 downto 0) := (others => '0');
+        offset_bram_dout : out std_logic_vector(data_width - 1 downto 0) := (others => '0');
 
-        in_addr   : in  std_logic_vector(addr_width - 1 downto 0) := (others => '0' );
-        in_wren   : in  std_logic := '0';
-        in_data   : in  std_logic_vector(data_width - 1 downto 0) := (others => '0' );
+        in_mm_addr   : in  std_logic_vector(addr_width - 1 downto 0) := (others => '0' );
+        in_mm_wren   : in  std_logic := '0';
+        in_mm_data   : in  std_logic_vector(data_width - 1 downto 0) := (others => '0' );
 
-        out_addr   : out  std_logic_vector(addr_width - 1 downto 0) := (others => '0' );
-        out_wren   : out  std_logic := '0';
-        out_data   : out  std_logic_vector(data_width - 1 downto 0) := (others => '0' )
+        out_mm_addr   : out  std_logic_vector(addr_width - 1 downto 0) := (others => '0' );
+        out_mm_wren   : out  std_logic := '0';
+        out_mm_data   : out  std_logic_vector(data_width - 1 downto 0) := (others => '0' )
     );
+
+    ATTRIBUTE X_INTERFACE_INFO : STRING;
+
+    ATTRIBUTE X_INTERFACE_INFO of scale_bram_clk: SIGNAL is "xilinx.com:interface:bram:1.0 scale_bram CLK";
+    ATTRIBUTE X_INTERFACE_INFO of scale_bram_addr: SIGNAL is "xilinx.com:interface:bram:1.0 scale_bram ADDR";
+    ATTRIBUTE X_INTERFACE_INFO of scale_bram_rst: SIGNAL is "xilinx.com:interface:bram:1.0 scale_bram RST";
+    ATTRIBUTE X_INTERFACE_INFO of scale_bram_wea: SIGNAL is "xilinx.com:interface:bram:1.0 scale_bram WE";
+    ATTRIBUTE X_INTERFACE_INFO of scale_bram_ena: SIGNAL is "xilinx.com:interface:bram:1.0 scale_bram EN";
+    ATTRIBUTE X_INTERFACE_INFO of scale_bram_din: SIGNAL is "xilinx.com:interface:bram:1.0 scale_bram DIN";
+    ATTRIBUTE X_INTERFACE_INFO of scale_bram_dout: SIGNAL is "xilinx.com:interface:bram:1.0 scale_bram DOUT";
+  
+    ATTRIBUTE X_INTERFACE_INFO of offset_bram_clk: SIGNAL is "xilinx.com:interface:bram:1.0 offset_bram CLK";
+    ATTRIBUTE X_INTERFACE_INFO of offset_bram_addr: SIGNAL is "xilinx.com:interface:bram:1.0 offset_bram ADDR";
+    ATTRIBUTE X_INTERFACE_INFO of offset_bram_rst: SIGNAL is "xilinx.com:interface:bram:1.0 offset_bram RST";
+    ATTRIBUTE X_INTERFACE_INFO of offset_bram_wea: SIGNAL is "xilinx.com:interface:bram:1.0 offset_bram WE";
+    ATTRIBUTE X_INTERFACE_INFO of offset_bram_ena: SIGNAL is "xilinx.com:interface:bram:1.0 offset_bram EN";
+    ATTRIBUTE X_INTERFACE_INFO of offset_bram_din: SIGNAL is "xilinx.com:interface:bram:1.0 offset_bram DIN";
+    ATTRIBUTE X_INTERFACE_INFO of offset_bram_dout: SIGNAL is "xilinx.com:interface:bram:1.0 offset_bram DOUT";
+
   end mm_linear_correction;
   
   architecture rtl of mm_linear_correction is
+
+  
+  -- ATTRIBUTE X_INTERFACE_INFO of aclk: SIGNAL is "xilinx.com:signal:clock:1.0 aclk clk";
+  -- ATTRIBUTE X_INTERFACE_INFO of arstn: SIGNAL is "xilinx.com:signal:reset:1.0 arstn rst";
+
+  
 
     signal addr_pipeline   : memory_32b_type(0 to 3) := ( others => ( others => '0') );
     signal data_pipeline   : memory_32b_type(0 to 3) := ( others => ( others => '0') );
@@ -53,25 +80,25 @@ entity mm_linear_correction is
     signal mult_pipeline   : memory_64b_type(0 to 3) := ( others => ( others => '0') );
     signal result_pipeline : memory_32b_type(0 to 3) := ( others => ( others => '0') );
 
-    signal out_wren_pipeline : std_logic_vector(0 to 3) := ( others => '0');
+    signal out_mm_wren_pipeline : std_logic_vector(0 to 3) := ( others => '0');
 
   begin
 
     scale_bram_clk <= aclk;
     offset_bram_clk <= aclk;
 
-    out_addr <= addr_pipeline(2) when arstn = '1' else (others => '0');
-    out_wren <= out_wren_pipeline(2) when arstn = '1' else '0';
-    out_data <= result_pipeline(0) when arstn = '1' else (others => '0');
+    out_mm_addr <= addr_pipeline(2) when arstn = '1' else (others => '0');
+    out_mm_wren <= out_mm_wren_pipeline(2) when arstn = '1' else '0';
+    out_mm_data <= result_pipeline(0) when arstn = '1' else (others => '0');
 
-    out_wren_pipeline_process: process(aclk, arstn) begin
+    out_mm_wren_pipeline_process: process(aclk, arstn) begin
         if (arstn = '0') then
         else
             if (rising_edge(aclk)) then
-                out_wren_pipeline(0) <= in_wren;
-                out_wren_pipeline(1) <= out_wren_pipeline(0);
-                out_wren_pipeline(2) <= out_wren_pipeline(1);
-                out_wren_pipeline(3) <= out_wren_pipeline(2);
+                out_mm_wren_pipeline(0) <= in_mm_wren;
+                out_mm_wren_pipeline(1) <= out_mm_wren_pipeline(0);
+                out_mm_wren_pipeline(2) <= out_mm_wren_pipeline(1);
+                out_mm_wren_pipeline(3) <= out_mm_wren_pipeline(2);
             end if;
         end if;
     end process;
@@ -85,7 +112,7 @@ entity mm_linear_correction is
             addr_pipeline(3) <= (others => '0');
         else
             if (rising_edge(aclk)) then
-                addr_pipeline(0) <= in_addr;
+                addr_pipeline(0) <= in_mm_addr;
                 addr_pipeline(1) <= addr_pipeline(0);
                 addr_pipeline(2) <= addr_pipeline(1);
                 addr_pipeline(3) <= addr_pipeline(2);
@@ -103,7 +130,7 @@ entity mm_linear_correction is
             data_pipeline(3) <= (others => '0');
         else
             if (rising_edge(aclk)) then
-                data_pipeline(0) <= in_data;
+                data_pipeline(0) <= in_mm_data;
                 data_pipeline(1) <= data_pipeline(0);
                 data_pipeline(2) <= data_pipeline(1);
                 data_pipeline(3) <= data_pipeline(2);
@@ -118,10 +145,11 @@ entity mm_linear_correction is
         if (arstn = '0') then
         else
             if (rising_edge(aclk)) then
-                scale_bram_addr <= in_addr;
+                -- BRAM is 1 byte addressed
+                scale_bram_addr <= in_mm_addr((ADDR_WIDTH-1) - 2 downto 0) & "00";
             end if;
             if (falling_edge(aclk)) then
-                scale_pipeline(0) <= scale_bram_data_in;
+                scale_pipeline(0) <= scale_bram_din;
                 scale_pipeline(1) <= scale_pipeline(0);
                 scale_pipeline(2) <= scale_pipeline(1);
                 scale_pipeline(3) <= scale_pipeline(2);
@@ -135,10 +163,11 @@ entity mm_linear_correction is
         if (arstn = '0') then
         else
             if (rising_edge(aclk)) then
-                offset_bram_addr <= in_addr;
+                -- BRAM is 1 byte addressed
+                offset_bram_addr <= in_mm_addr((ADDR_WIDTH-1) - 2 downto 0) & "00";
             end if;
             if (falling_edge(aclk)) then    
-                offset_pipeline(0) <= offset_bram_data_in;
+                offset_pipeline(0) <= offset_bram_din;
                 offset_pipeline(1) <= offset_pipeline(0);
                 offset_pipeline(2) <= offset_pipeline(1);
                 offset_pipeline(3) <= offset_pipeline(2);
@@ -181,3 +210,4 @@ entity mm_linear_correction is
     end process;
 
   end rtl;
+  

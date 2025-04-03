@@ -49,7 +49,7 @@ architecture testbench of mm_linear_correction_tb is
       port_a_clk : in std_logic;
       port_a_rst : in std_logic;
       port_a_ena : in std_logic;
-      port_a_wea : in std_logic;
+      port_a_wea : in std_logic_vector(data_width/8-1 downto 0) := (others => '0');
       port_a_addr : in std_logic_vector(addr_width - 1 downto 0);
       port_a_din : in std_logic_vector(data_width - 1 downto 0);
       port_a_dout : out std_logic_vector(data_width - 1 downto 0);
@@ -57,7 +57,7 @@ architecture testbench of mm_linear_correction_tb is
       port_b_clk : in std_logic := '0';
       port_b_rst : in std_logic := '0';
       port_b_ena : in std_logic := '0';
-      port_b_wea : in std_logic := '0';
+      port_b_wea : in std_logic_vector(data_width/8-1 downto 0) := (others => '0');
       port_b_addr : in std_logic_vector(addr_width - 1 downto 0);
       port_b_din : in std_logic_vector(data_width - 1 downto 0);
       port_b_dout : out std_logic_vector(data_width - 1 downto 0)
@@ -73,32 +73,32 @@ architecture testbench of mm_linear_correction_tb is
 
     port (
 
-      aclk : in std_logic := '0';
-      arstn : in std_logic := '0';
+    aclk  : in std_logic := '0';
+    arstn : in std_logic := '0';
 
-      scale_bram_clk : out std_logic := '0';
-      scale_bram_rst : out std_logic := '0';
-      scale_bram_ena : out std_logic := '1';
-      scale_bram_wea : out std_logic := '0';
-      scale_bram_addr : out std_logic_vector(addr_width - 1 downto 0) := (others => '0');
-      scale_bram_din : in std_logic_vector(data_width - 1 downto 0) := (others => '0');
-      scale_bram_dout : out std_logic_vector(data_width - 1 downto 0) := (others => '0');
+    scale_bram_clk : out std_logic := '0';
+    scale_bram_rst : out std_logic := '0';
+    scale_bram_ena : out std_logic := '1';
+    scale_bram_wea : out std_logic_vector(data_width/8-1 downto 0) := (others => '0');
+    scale_bram_addr : out std_logic_vector(addr_width - 1 downto 0) := (others => '0');
+    scale_bram_din : in std_logic_vector(data_width - 1 downto 0) := (others => '0');
+    scale_bram_dout : out std_logic_vector(data_width - 1 downto 0) := (others => '0');
 
-      offset_bram_clk : out std_logic := '0';
-      offset_bram_rst : out std_logic := '0';
-      offset_bram_ena : out std_logic := '1';
-      offset_bram_wea : out std_logic := '0';
-      offset_bram_addr : out std_logic_vector(addr_width - 1 downto 0) := (others => '0');
-      offset_bram_din : in std_logic_vector(data_width - 1 downto 0) := (others => '0');
-      offset_bram_dout : out std_logic_vector(data_width - 1 downto 0) := (others => '0');
+    offset_bram_clk : out std_logic := '0';
+    offset_bram_rst : out std_logic := '0';
+    offset_bram_ena : out std_logic := '1';
+    offset_bram_wea : out std_logic_vector(data_width/8-1 downto 0) := (others => '0');
+    offset_bram_addr : out std_logic_vector(addr_width - 1 downto 0) := (others => '0');
+    offset_bram_din : in std_logic_vector(data_width - 1 downto 0) := (others => '0');
+    offset_bram_dout : out std_logic_vector(data_width - 1 downto 0) := (others => '0');
 
-      in_mm_addr : in std_logic_vector(addr_width - 1 downto 0) := (others => '0');
-      in_mm_wren : in std_logic := '0';
-      in_mm_data : in std_logic_vector(data_width - 1 downto 0) := (others => '0');
+    in_mm_addr   : in  std_logic_vector(addr_width - 1 downto 0) := (others => '0' );
+    in_mm_wren   : in  std_logic := '0';
+    in_mm_data   : in  std_logic_vector(data_width - 1 downto 0) := (others => '0' );
 
-      out_mm_addr : out std_logic_vector(addr_width - 1 downto 0) := (others => '0');
-      out_mm_wren : out std_logic := '0';
-      out_mm_data : out std_logic_vector(data_width - 1 downto 0) := (others => '0')
+    out_mm_addr   : out  std_logic_vector(addr_width - 1 downto 0) := (others => '0' );
+    out_mm_wren   : out  std_logic := '0';
+    out_mm_data   : out  std_logic_vector(data_width - 1 downto 0) := (others => '0' )
 
     );
 
@@ -110,7 +110,7 @@ architecture testbench of mm_linear_correction_tb is
   signal scale_sram_port_a_clk : std_logic := '0';
   signal scale_sram_port_a_rst : std_logic := '0';
   signal scale_sram_port_a_ena : std_logic := '0';
-  signal scale_sram_port_a_wea : std_logic := '0';
+  signal scale_sram_port_a_wea : std_logic_vector(data_width/8-1 downto 0) := (others => '0');
   signal scale_sram_port_a_addr : std_logic_vector(addr_width - 1 downto 0) := (others => '0');
   signal scale_sram_port_a_din : std_logic_vector(data_width - 1 downto 0) := (others => '0');
   signal scale_sram_port_a_dout : std_logic_vector(data_width - 1 downto 0) := (others => '0');
@@ -118,7 +118,7 @@ architecture testbench of mm_linear_correction_tb is
   signal scale_sram_port_b_clk : std_logic := '0';
   signal scale_sram_port_b_rst : std_logic := '0';
   signal scale_sram_port_b_ena : std_logic := '0';
-  signal scale_sram_port_b_wea : std_logic := '0';
+  signal scale_sram_port_b_wea : std_logic_vector(data_width/8-1 downto 0) := (others => '0');
   signal scale_sram_port_b_addr : std_logic_vector(addr_width - 1 downto 0) := (others => '0');
   signal scale_sram_port_b_din : std_logic_vector(data_width - 1 downto 0) := (others => '0');
   signal scale_sram_port_b_dout : std_logic_vector(data_width - 1 downto 0) := (others => '0');
@@ -126,7 +126,7 @@ architecture testbench of mm_linear_correction_tb is
   signal offset_sram_port_a_clk : std_logic := '0';
   signal offset_sram_port_a_rst : std_logic := '0';
   signal offset_sram_port_a_ena : std_logic := '0';
-  signal offset_sram_port_a_wea : std_logic := '0';
+  signal offset_sram_port_a_wea : std_logic_vector(data_width/8-1 downto 0) := (others => '0');
   signal offset_sram_port_a_addr : std_logic_vector(addr_width - 1 downto 0) := (others => '0');
   signal offset_sram_port_a_din : std_logic_vector(data_width - 1 downto 0) := (others => '0');
   signal offset_sram_port_a_dout : std_logic_vector(data_width - 1 downto 0) := (others => '0');
@@ -134,7 +134,7 @@ architecture testbench of mm_linear_correction_tb is
   signal offset_sram_port_b_clk : std_logic := '0';
   signal offset_sram_port_b_rst : std_logic := '0';
   signal offset_sram_port_b_ena : std_logic := '0';
-  signal offset_sram_port_b_wea : std_logic := '0';
+  signal offset_sram_port_b_wea : std_logic_vector(data_width/8-1 downto 0) := (others => '0');
   signal offset_sram_port_b_addr : std_logic_vector(addr_width - 1 downto 0) := (others => '0');
   signal offset_sram_port_b_din : std_logic_vector(data_width - 1 downto 0) := (others => '0');
   signal offset_sram_port_b_dout : std_logic_vector(data_width - 1 downto 0) := (others => '0');
@@ -142,7 +142,7 @@ architecture testbench of mm_linear_correction_tb is
   signal image_sram_port_a_clk : std_logic := '0';
   signal image_sram_port_a_rst : std_logic := '0';
   signal image_sram_port_a_ena : std_logic := '0';
-  signal image_sram_port_a_wea : std_logic := '0';
+  signal image_sram_port_a_wea : std_logic_vector(data_width/8-1 downto 0) := (others => '0');
   signal image_sram_port_a_addr : std_logic_vector(addr_width - 1 downto 0) := (others => '0');
   signal image_sram_port_a_din : std_logic_vector(data_width - 1 downto 0) := (others => '0');
   signal image_sram_port_a_dout : std_logic_vector(data_width - 1 downto 0) := (others => '0');
@@ -150,7 +150,7 @@ architecture testbench of mm_linear_correction_tb is
   signal image_sram_port_b_clk : std_logic := '0';
   signal image_sram_port_b_rst : std_logic := '0';
   signal image_sram_port_b_ena : std_logic := '0';
-  signal image_sram_port_b_wea : std_logic := '0';
+  signal image_sram_port_b_wea : std_logic_vector(data_width/8-1 downto 0) := (others => '0');
   signal image_sram_port_b_addr : std_logic_vector(addr_width - 1 downto 0) := (others => '0');
   signal image_sram_port_b_din : std_logic_vector(data_width - 1 downto 0) := (others => '0');
   signal image_sram_port_b_dout : std_logic_vector(data_width - 1 downto 0) := (others => '0');
@@ -162,7 +162,7 @@ architecture testbench of mm_linear_correction_tb is
   signal dut_mm_scale_bram_clk : std_logic := '0';
   signal dut_mm_scale_bram_rst : std_logic := '0';
   signal dut_mm_scale_bram_ena : std_logic := '0';
-  signal dut_mm_scale_bram_wea : std_logic := '0';
+  signal dut_mm_scale_bram_wea : std_logic_vector(data_width/8-1 downto 0) := (others => '0');
   signal dut_mm_scale_bram_addr : std_logic_vector(addr_width - 1 downto 0) := (others => '0');
   signal dut_mm_scale_bram_din : std_logic_vector(data_width - 1 downto 0) := (others => '0');
   signal dut_mm_scale_bram_dout : std_logic_vector(data_width - 1 downto 0) := (others => '0');
@@ -170,7 +170,7 @@ architecture testbench of mm_linear_correction_tb is
   signal dut_mm_offset_bram_clk : std_logic := '0';
   signal dut_mm_offset_bram_rst : std_logic := '0';
   signal dut_mm_offset_bram_ena : std_logic := '0';
-  signal dut_mm_offset_bram_wea : std_logic := '0';
+  signal dut_mm_offset_bram_wea : std_logic_vector(data_width/8-1 downto 0) := (others => '0');
   signal dut_mm_offset_bram_addr : std_logic_vector(addr_width - 1 downto 0) := (others => '0');
   signal dut_mm_offset_bram_din : std_logic_vector(data_width - 1 downto 0) := (others => '0');
   signal dut_mm_offset_bram_dout : std_logic_vector(data_width - 1 downto 0) := (others => '0');
@@ -205,7 +205,7 @@ begin
 
   generic map
   (
-    memory_length => image_width * image_height,
+    memory_length => image_width * image_height * 4,
     memory_initialization_file => "coefficients/scale.txt"
   )
 
@@ -232,7 +232,7 @@ begin
   offset_sram : xilinx_block_ram
   generic map
   (
-    memory_length => image_width * image_height,
+    memory_length => image_width * image_height * 4,
     memory_initialization_file => "coefficients/offset.txt"
   )
   port map

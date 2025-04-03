@@ -31,7 +31,7 @@ end mm_pattern_generator;
 
 architecture rtl of mm_pattern_generator is
 
-    signal memory : memory_32b_type(0 to MEMORY_LENGTH-1) := init_ram_from_file("coefficients/pattern.txt", MEMORY_LENGTH);
+    signal memory : memory_32b_type(0 to MEMORY_LENGTH-1) := init_ram_from_file_32b("coefficients/pattern.txt", MEMORY_LENGTH);
 
     signal addr : std_logic_vector(ADDR_WIDTH - 1 downto 0) := (others => '0');
     signal data : std_logic_vector(DATA_WIDTH - 1 downto 0) := (others => '0');

@@ -12,7 +12,8 @@ entity mm_linear_correction_tb is
     data_width : integer := 32;
 
     image_width : integer := 2;
-    image_height : integer := 2
+    image_height : integer := 2;
+    metadata_length : integer := 8
   );
 end entity;
 
@@ -67,6 +68,7 @@ architecture testbench of mm_linear_correction_tb is
 
   component mm_linear_correction
     generic (
+      frame_length : integer;
       addr_width : integer := addr_width;
       data_width : integer := data_width
     );
@@ -92,17 +94,19 @@ architecture testbench of mm_linear_correction_tb is
     offset_bram_din : in std_logic_vector(data_width - 1 downto 0) := (others => '0');
     offset_bram_dout : out std_logic_vector(data_width - 1 downto 0) := (others => '0');
 
-    in_mm_addr   : in  std_logic_vector(addr_width - 1 downto 0) := (others => '0' );
-    in_mm_wren   : in  std_logic := '0';
-    in_mm_data   : in  std_logic_vector(data_width - 1 downto 0) := (others => '0' );
+    a_mm_addr   : in  std_logic_vector(addr_width - 1 downto 0) := (others => '0' );
+    a_mm_wren   : in  std_logic := '0';
+    a_mm_data   : in  std_logic_vector(data_width - 1 downto 0) := (others => '0' );
 
-    out_mm_addr   : out  std_logic_vector(addr_width - 1 downto 0) := (others => '0' );
-    out_mm_wren   : out  std_logic := '0';
-    out_mm_data   : out  std_logic_vector(data_width - 1 downto 0) := (others => '0' )
+    y_mm_addr   : out  std_logic_vector(addr_width - 1 downto 0) := (others => '0' );
+    y_mm_wren   : out  std_logic := '0';
+    y_mm_data   : out  std_logic_vector(data_width - 1 downto 0) := (others => '0' )
 
     );
 
   end component;
+
+  shared variable frame_length : integer := image_width * image_height;
 
   signal aclk : std_logic := '0';
   signal arstn : std_logic := '0';
@@ -187,7 +191,7 @@ begin
 
   pattern_generator : mm_pattern_generator
   generic map(
-    memory_length => image_width * image_height,
+    memory_length => image_width * image_height + metadata_length,
     addr_width => addr_width,
     data_width => data_width,
     default_value => 0
@@ -276,6 +280,7 @@ begin
   dut : mm_linear_correction
   generic map
   (
+    frame_length => frame_length,
     addr_width => addr_width,
     data_width => data_width
   )
@@ -300,13 +305,13 @@ begin
     offset_bram_din => dut_mm_offset_bram_din,
     offset_bram_dout => dut_mm_offset_bram_dout,
 
-    in_mm_addr => dut_mm_in_addr,
-    in_mm_wren => dut_mm_in_wren,
-    in_mm_data => dut_mm_in_data,
+    a_mm_addr => dut_mm_in_addr,
+    a_mm_wren => dut_mm_in_wren,
+    a_mm_data => dut_mm_in_data,
 
-    out_mm_addr => dut_mm_out_addr,
-    out_mm_wren => dut_mm_out_wren,
-    out_mm_data => dut_mm_out_data
+    y_mm_addr => dut_mm_out_addr,
+    y_mm_wren => dut_mm_out_wren,
+    y_mm_data => dut_mm_out_data
 
   );
 

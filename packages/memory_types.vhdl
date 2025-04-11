@@ -32,7 +32,7 @@ package body memory_types is
     for i in init_ram'range loop
       readline(read_file, read_line);
       read(read_line, value);
-      init_ram(i) := std_logic_vector(to_unsigned(value, init_ram(i)'length));
+      init_ram(i) := std_logic_vector(to_signed(value, init_ram(i)'length));
     end loop;
 
     return init_ram;
@@ -48,7 +48,7 @@ package body memory_types is
     for i in init_ram'range loop
       readline(read_file, read_line);
       read(read_line, value);
-      init_ram(i) := std_logic_vector(to_unsigned(value, init_ram(i)'length));
+      init_ram(i) := std_logic_vector(to_signed(value, init_ram(i)'length));
     end loop;
 
     return init_ram;

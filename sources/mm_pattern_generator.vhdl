@@ -9,7 +9,7 @@ use ieee.numeric_std.all;
 use std.textio.all;
 use work.memory_types.all;
 
-ENTITY mm_pattern_generator IS
+entity mm_pattern_generator is
     generic (
         MEMORY_LENGTH : integer := 16;
         ADDR_WIDTH : integer := 32;

@@ -5,29 +5,29 @@ library unisim;
 
 entity iobuf is
   port (
-    O                                     : out std_logic;                                -- Output (from buffer)
-    IO                                    : inout std_logic;                              -- Port pin
-    I                                     : in  std_logic;                                -- Inuput (to buffer)
-    T                                     : in  std_logic);                               -- Tristate control
+    o                                     : out std_logic;                                -- output (from buffer)
+    io                                    : inout std_logic;                              -- port pin
+    i                                     : in  std_logic;                                -- inuput (to buffer)
+    t                                     : in  std_logic);                               -- tristate control
 end iobuf;
 
 architecture rtl of iobuf is
 
 begin
 
-  --IO <= I when T = '0' else 'Z';
-  --O <= IO;
-OBUFT_inst : OBUFT
+  --io <= i when t = '0' else 'z';
+  --o <= io;
+obuft_inst : obuft
 
     port map (
-                O => IO, -- Buffer output (connect directly to top-level port)
-                I => I, -- Buffer input
-                T => T -- 3-state enable input
+                o => io, -- buffer output (connect directly to top-level port)
+                i => i, -- buffer input
+                t => t -- 3-state enable input
             );
-IBUF_inst : IBUF
+ibuf_inst : ibuf
     port map (
-                O => O, -- Buffer output
-                I => IO -- Buffer input (connect directly to top-level port)
+                o => o, -- buffer output
+                i => io -- buffer input (connect directly to top-level port)
             );
 
 

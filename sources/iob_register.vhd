@@ -1,57 +1,57 @@
 ----------------------------------------------------------------------------------
--- Company: 
--- Engineer: 
+-- company: 
+-- engineer: 
 -- 
--- Create Date: 01.03.2017 17:26:41
--- Design Name: 
--- Module Name: procc_offset - Behavioral
--- Project Name: 
--- Target Devices: 
--- Tool Versions: 
--- Description: 
+-- create date: 01.03.2017 17:26:41
+-- design name: 
+-- module name: procc_offset - behavioral
+-- project name: 
+-- target devices: 
+-- tool versions: 
+-- description: 
 -- 
--- Dependencies: 
+-- dependencies: 
 -- 
--- Revision:
--- Revision 0.01 - File Created
--- Additional Comments:
+-- revision:
+-- revision 0.01 - file created
+-- additional comments:
 -- 
 ----------------------------------------------------------------------------------
 
 
 
 library ieee;
-use IEEE.std_logic_1164.all;
-use IEEE.std_logic_arith.all;
-use IEEE.std_logic_unsigned.all;
+use ieee.std_logic_1164.all;
+use ieee.std_logic_arith.all;
+use ieee.std_logic_unsigned.all;
 
--- Uncomment the following library declaration if using
--- arithmetic functions with Signed or Unsigned values
---use IEEE.NUMERIC_STD.ALL;
+-- uncomment the following library declaration if using
+-- arithmetic functions with signed or unsigned values
+--use ieee.numeric_std.all;
 
--- Uncomment the following library declaration if instantiating
--- any Xilinx leaf cells in this code.
---library UNISIM;
---use UNISIM.VComponents.all;
+-- uncomment the following library declaration if instantiating
+-- any xilinx leaf cells in this code.
+--library unisim;
+--use unisim.vcomponents.all;
 
 entity iob_register is
     
-  Port ( 
+  port ( 
   
-      CLK  : in std_logic;
+      clk  : in std_logic;
       in_external: in std_logic_vector (13 downto 0);
       out_internal: out std_logic_vector (13 downto 0));
 end iob_register;
 
-architecture Behavioral of iob_register is
+architecture behavioral of iob_register is
 
 begin
 
-process (CLK)
+process (clk)
 begin
 
 
-IF (CLK'EVENT AND CLK = '1') THEN
+if (clk'event and clk = '1') then
     
     out_internal <= in_external;
     
@@ -60,7 +60,7 @@ IF (CLK'EVENT AND CLK = '1') THEN
     end process;
     
     
-    end Behavioral;
+    end behavioral;
     
     
     

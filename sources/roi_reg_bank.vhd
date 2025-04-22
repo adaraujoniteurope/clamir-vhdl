@@ -1,8 +1,8 @@
 -------------------------------------------------------------------------------
--- Company     : AIMEN
--- Project     : CLAMIR
--- Module      : roi_reg_bank
--- Description : Image Region-Of-Interest AXI4-Lite configuration registers
+-- company     : aimen
+-- project     : clamir
+-- module      : roi_reg_bank
+-- description : image region-of-interest axi4-lite configuration registers
 -------------------------------------------------------------------------------
 
 library ieee;
@@ -16,12 +16,12 @@ entity roi_reg_bank is
   );
   port (
     ---------------------------------------------------------------------------
-    -- General purpose ports
+    -- general purpose ports
     ---------------------------------------------------------------------------
     s_axi_aclk    : in  std_logic;
     s_axi_aresetn : in  std_logic;
     ---------------------------------------------------------------------------
-    -- Register bank access
+    -- register bank access
     ---------------------------------------------------------------------------
     slv_rden      : in  std_logic;
     slv_wren      : in  std_logic;
@@ -31,7 +31,7 @@ entity roi_reg_bank is
     slv_wr_done   : out std_logic;
     slv_rdata     : out std_logic_vector(31 downto 0);
     ---------------------------------------------------------------------------
-    -- Register bank members DUT direct access
+    -- register bank members dut direct access
     ---------------------------------------------------------------------------
     x1_out        : out std_logic_vector((C_S_BRAM_ADDR_WIDTH/2)-1 downto 0);
     y1_out        : out std_logic_vector((C_S_BRAM_ADDR_WIDTH/2)-1 downto 0);
@@ -54,7 +54,7 @@ architecture behavioral of roi_reg_bank is
 begin
 
   -----------------------------------------------------------------------------
-  -- Write logic
+  -- write logic
   -----------------------------------------------------------------------------
   p_write : process(s_axi_aclk)
   begin
@@ -68,17 +68,17 @@ begin
       else
         if (slv_wren = '1') then
           case (to_integer(unsigned(axi_addr))) is
-            when 0 => -- X1 ROI Coordinate (low-left corner)
+            when 0 => -- x1 roi coordinate (low-left corner)
               x1_reg <= slv_wdata((C_S_BRAM_ADDR_WIDTH/2)-1 downto 0);
-            when 1 => -- Y1 ROI Coordinate (low-left corner)
+            when 1 => -- y1 roi coordinate (low-left corner)
               y1_reg <= slv_wdata((C_S_BRAM_ADDR_WIDTH/2)-1 downto 0);
-            when 2 => -- X2 ROI Coordinate (up-right corner)
+            when 2 => -- x2 roi coordinate (up-right corner)
               x2_reg <= slv_wdata((C_S_BRAM_ADDR_WIDTH/2)-1 downto 0);
-            when 3 => -- Y2 ROI Coordinate (up-right corner)
+            when 3 => -- y2 roi coordinate (up-right corner)
               y2_reg <= slv_wdata((C_S_BRAM_ADDR_WIDTH/2)-1 downto 0);
             when 4 => -- rounding
               round_reg <= slv_wdata(1 downto 0);  
-            when others => NULL;
+            when others => null;
           end case;
         end if;
       end if;
@@ -86,7 +86,7 @@ begin
   end process;
 
   -----------------------------------------------------------------------------
-  -- Read logic
+  -- read logic
   -----------------------------------------------------------------------------
   slv_rdata <= std_logic_vector(resize(unsigned(x1_reg), 32)) when (to_integer(unsigned(axi_addr)) = 0) else
                std_logic_vector(resize(unsigned(y1_reg), 32)) when (to_integer(unsigned(axi_addr)) = 1) else
@@ -96,13 +96,13 @@ begin
                (others => '0');
 
   -----------------------------------------------------------------------------
-  -- Read/Write done flags
+  -- read/write done flags
   -----------------------------------------------------------------------------
   slv_rd_done <= slv_rden;
   slv_wr_done <= slv_wren;
   
   -----------------------------------------------------------------------------
-  -- Assign output values
+  -- assign output values
   -----------------------------------------------------------------------------
   x1_out <= x1_reg;
   y1_out <= y1_reg;

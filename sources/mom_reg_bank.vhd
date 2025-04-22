@@ -1,8 +1,8 @@
 -------------------------------------------------------------------------------
--- Company     : AIMEN
--- Project     : CLAMIR
--- Module      : mom_reg_bank
--- Description : Image moments calculation AXI4-Lite configuration registers
+-- company     : aimen
+-- project     : clamir
+-- module      : mom_reg_bank
+-- description : image moments calculation axi4-lite configuration registers
 -------------------------------------------------------------------------------
 
 library ieee;
@@ -16,12 +16,12 @@ entity mom_reg_bank is
   );
   port (
     ---------------------------------------------------------------------------
-    -- General purpose ports
+    -- general purpose ports
     ---------------------------------------------------------------------------
     s_axi_aclk           : in  std_logic;
     s_axi_aresetn        : in  std_logic;
     ---------------------------------------------------------------------------
-    -- Register bank access
+    -- register bank access
     ---------------------------------------------------------------------------
     slv_rden             : in  std_logic;
     slv_wren             : in  std_logic;
@@ -31,7 +31,7 @@ entity mom_reg_bank is
     slv_wr_done          : out std_logic;
     slv_rdata            : out std_logic_vector(31 downto 0);
     ---------------------------------------------------------------------------
-    -- Inputs from DUT
+    -- inputs from dut
     ---------------------------------------------------------------------------
     moment_00            : in  std_logic_vector(31 downto 0);
     moment_01            : in  std_logic_vector(31 downto 0);
@@ -42,7 +42,7 @@ entity mom_reg_bank is
     track_num            : in  std_logic_vector(31 downto 0);
     frame_max            : in  std_logic_vector(31 downto 0);
     ---------------------------------------------------------------------------
-    -- Register bank members DUT direct access
+    -- register bank members dut direct access
     ---------------------------------------------------------------------------
     bin_threshold_out    : out std_logic_vector(C_S_SENSOR_IMG_RES-1 downto 0);
     intensity_min_out    : out std_logic_vector(31 downto 0);
@@ -73,7 +73,7 @@ architecture behavioral of mom_reg_bank is
 begin
 
   -----------------------------------------------------------------------------
-  -- Write logic
+  -- write logic
   -----------------------------------------------------------------------------
   p_write : process(s_axi_aclk)
   begin
@@ -91,25 +91,25 @@ begin
       else
         if (slv_wren = '1') then
           case (to_integer(unsigned(axi_addr))) is
-            when  0 => -- Binarization threshold
+            when  0 => -- binarization threshold
               bin_threshold_reg  <= unsigned(slv_wdata(C_S_SENSOR_IMG_RES-1 downto 0));
-            when  1 => -- Intensity min value
+            when  1 => -- intensity min value
               intensity_min_reg  <= unsigned(slv_wdata);
-            when  2 => -- Intensity max value
+            when  2 => -- intensity max value
               intensity_max_reg  <= unsigned(slv_wdata);
-            when  9 => -- Tracks threshold
+            when  9 => -- tracks threshold
               trk_threshold_reg  <= unsigned(slv_wdata);
-            when 11 => -- Track operational mode
+            when 11 => -- track operational mode
               trk_mode_reg       <= unsigned(slv_wdata(1 downto 0));
-            when 12 => -- Track mode time counter (low)
+            when 12 => -- track mode time counter (low)
               trk_time_cnt_l_reg <= unsigned(slv_wdata);
-            when 13 => -- Track mode time counter (high)
+            when 13 => -- track mode time counter (high)
               trk_time_cnt_h_reg <= unsigned(slv_wdata(15 downto 0));
-            when 15 => -- Reference track from where control is to be started
+            when 15 => -- reference track from where control is to be started
               trk_start_reg      <= unsigned(slv_wdata);
-            when 16 => -- Minimum moment 00 value to consider laser active
+            when 16 => -- minimum moment 00 value to consider laser active
               trk_min_mom00_reg  <= unsigned(slv_wdata(C_S_SENSOR_IMG_RES-1 downto 0));
-            when others => NULL;
+            when others => null;
           end case;
         end if;
       end if;
@@ -117,7 +117,7 @@ begin
   end process;
 
   -----------------------------------------------------------------------------
-  -- Read logic
+  -- read logic
   -----------------------------------------------------------------------------
   slv_rdata <= std_logic_vector(resize(bin_threshold_reg, 32))  when (to_integer(unsigned(axi_addr)) =  0) else
                std_logic_vector(resize(intensity_min_reg, 32))  when (to_integer(unsigned(axi_addr)) =  1) else
@@ -139,13 +139,13 @@ begin
                (others => '0');
 
   -----------------------------------------------------------------------------
-  -- Read/Write done flags
+  -- read/write done flags
   -----------------------------------------------------------------------------
   slv_rd_done <= slv_rden;
   slv_wr_done <= slv_wren;
   
   -----------------------------------------------------------------------------
-  -- Assign output values
+  -- assign output values
   -----------------------------------------------------------------------------
   bin_threshold_out  <= std_logic_vector(bin_threshold_reg);
   intensity_min_out  <= std_logic_vector(intensity_min_reg);

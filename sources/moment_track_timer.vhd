@@ -1,8 +1,8 @@
 -------------------------------------------------------------------------------
--- Company     : AIMEN
--- Project     : CLAMIR
--- Module      : moment_track_timer
--- Description : Clock cycles counter
+-- company     : aimen
+-- project     : clamir
+-- module      : moment_track_timer
+-- description : clock cycles counter
 -------------------------------------------------------------------------------
 
 library ieee;
@@ -35,9 +35,9 @@ begin
         enable_d <= '0';
         running  <= '0';
       else
-        -- Enable flag rising edge detection
+        -- enable flag rising edge detection
         enable_d <= enable;
-        -- Track counter running using timer
+        -- track counter running using timer
         if ((enable = '1') and (enable_d = '0')) then
           running <= '1';
         elsif ((enable = '0') and (enable_d = '1')) then

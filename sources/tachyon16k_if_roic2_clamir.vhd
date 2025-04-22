@@ -33,7 +33,7 @@ entity Tachyon16k_IF_v2clamir_VU is
 
 
 GENERIC(
-      sys_clk         : INTEGER := 100000000; --system clock frequency in Hz
+      SYS_CLK         : INTEGER := 100000000; --system clock frequency in Hz
       CNT_WITH : INTEGER := 20);
 port ( 
   

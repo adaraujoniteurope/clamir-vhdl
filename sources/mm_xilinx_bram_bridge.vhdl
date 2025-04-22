@@ -18,16 +18,16 @@ entity mm_xilinx_bram_bridge is
         aclk  : in std_logic := '0';
         arstn : in std_logic := '0';
 
-        in_mm_addr : in std_logic_vector(addr_width-1 downto 0) := ( others => '0' );
+        in_mm_addr : in std_logic_vector(ADDR_WIDTH-1 downto 0) := ( others => '0' );
         in_mm_wren : in std_logic := '0';
-        in_mm_data : in std_logic_vector(data_width-1 downto 0) := ( others => '0' );
+        in_mm_data : in std_logic_vector(DATA_WIDTH-1 downto 0) := ( others => '0' );
 
         out_bram_clk : out std_logic := '0';
         out_bram_ena : out std_logic := '0';
         out_bram_wea : out std_logic := '0';
-        out_bram_addr : out std_logic_vector(addr_width - 1 downto 0) := (others => '0');
-        out_bram_data_in : in std_logic_vector(data_width - 1 downto 0) := (others => '0');
-        out_bram_data_out : out std_logic_vector(data_width - 1 downto 0) := (others => '0')
+        out_bram_addr : out std_logic_vector(ADDR_WIDTH - 1 downto 0) := (others => '0');
+        out_bram_data_in : in std_logic_vector(DATA_WIDTH - 1 downto 0) := (others => '0');
+        out_bram_data_out : out std_logic_vector(DATA_WIDTH - 1 downto 0) := (others => '0')
 
     );
 

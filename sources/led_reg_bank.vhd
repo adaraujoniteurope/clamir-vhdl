@@ -1,8 +1,8 @@
 ----------------------------------------------------------------------------------
--- Company     : AIMEN
--- Project     : CLAMIR
--- Module      : led_reg_bank
--- Description : NIT Processing IP general AXI4-Lite configuration registers
+-- company     : aimen
+-- project     : clamir
+-- module      : led_reg_bank
+-- description : nit processing ip general axi4-lite configuration registers
 ----------------------------------------------------------------------------------
 
 library ieee;
@@ -15,12 +15,12 @@ entity led_reg_bank is
   );
   port (
     ---------------------------------------------------------------------------
-    -- General purpose ports
+    -- general purpose ports
     ---------------------------------------------------------------------------
     s_axi_aclk     : in  std_logic;
     s_axi_aresetn  : in  std_logic;
     ---------------------------------------------------------------------------
-    -- Register bank access
+    -- register bank access
     ---------------------------------------------------------------------------
     slv_rden       : in  std_logic;
     slv_wren       : in  std_logic;
@@ -30,7 +30,7 @@ entity led_reg_bank is
     slv_wr_done    : out std_logic;
     slv_rdata      : out std_logic_vector(31 downto 0);
     ---------------------------------------------------------------------------
-    -- Register bank members DUT direct access
+    -- register bank members dut direct access
     ---------------------------------------------------------------------------
     led_r_out      : out std_logic_vector(0 downto 0);
     led_g_out      : out std_logic_vector(0 downto 0);
@@ -49,7 +49,7 @@ architecture behavioral of led_reg_bank is
 begin
 
   -----------------------------------------------------------------------------
-  -- Write logic
+  -- write logic
   -----------------------------------------------------------------------------
   p_write : process(s_axi_aclk)
   begin
@@ -67,7 +67,7 @@ begin
               led_g_reg(0) <= slv_wdata(0);
             when 2 =>
               led_b_reg(0) <= slv_wdata(0);
-            when others => NULL;
+            when others => null;
           end case;
         end if;
       end if;
@@ -75,7 +75,7 @@ begin
   end process;
 
   -----------------------------------------------------------------------------
-  -- Read logic
+  -- read logic
   -----------------------------------------------------------------------------
   slv_rdata <= std_logic_vector(resize(led_r_reg, 32)) when (to_integer(unsigned(axi_addr)) = 0) else
                std_logic_vector(resize(led_g_reg, 32)) when (to_integer(unsigned(axi_addr)) = 1) else
@@ -83,13 +83,13 @@ begin
                (others => '0');
 
   -----------------------------------------------------------------------------
-  -- Read/Write done flags
+  -- read/write done flags
   -----------------------------------------------------------------------------
   slv_rd_done <= slv_rden;
   slv_wr_done <= slv_wren;
   
   -----------------------------------------------------------------------------
-  -- Assign output values
+  -- assign output values
   -----------------------------------------------------------------------------
   led_r_out <= std_logic_vector(led_r_reg);
   led_g_out <= std_logic_vector(led_g_reg);

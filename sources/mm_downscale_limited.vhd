@@ -1,92 +1,89 @@
 ----------------------------------------------------------------------------------
--- Company: 
--- Engineer: 
+-- company: 
+-- engineer: 
 -- 
--- Create Date: 04/03/2025 10:22:35 AM
--- Design Name: 
--- Module Name: mm_mux - impl
--- Project Name: 
--- Target Devices: 
--- Tool Versions: 
--- Description: 
+-- create date: 04/03/2025 10:22:35 am
+-- design name: 
+-- module name: mm_mux - impl
+-- project name: 
+-- target devices: 
+-- tool versions: 
+-- description: 
 -- 
--- Dependencies: 
+-- dependencies: 
 -- 
--- Revision:
--- Revision 0.01 - File Created
--- Additional Comments:
+-- revision:
+-- revision 0.01 - file created
+-- additional comments:
 -- 
 ----------------------------------------------------------------------------------
+LIBRARY ieee;
+USE ieee.std_logic_1164.ALL;
+USE ieee.std_logic_misc.ALL;
+USE ieee.std_logic_signed.ALL;
+USE ieee.numeric_std.ALL;
 
+-- uncomment the following library declaration if using
+-- arithmetic functions with signed or unsigned values
+--use ieee.numeric_std.all;
 
-library IEEE;
-use IEEE.STD_LOGIC_1164.ALL;
-use IEEE.STD_LOGIC_MISC.ALL;
-use IEEE.STD_LOGIC_SIGNED.ALL;
-use IEEE.NUMERIC_STD.ALL;
+-- uncomment the following library declaration if instantiating
+-- any xilinx leaf cells in this code.
+--library unisim;
+--use unisim.vcomponents.all;
 
--- Uncomment the following library declaration if using
--- arithmetic functions with Signed or Unsigned values
---use IEEE.NUMERIC_STD.ALL;
-
--- Uncomment the following library declaration if instantiating
--- any Xilinx leaf cells in this code.
---library UNISIM;
---use UNISIM.VComponents.all;
-
-entity mm_downscale_limited is
-Generic
-(
+ENTITY mm_downscale_limited IS
+    GENERIC (
         FRAME_LENGTH : INTEGER := 4096;
-    addr_width : integer := 32;
-    data_in_width : integer := 32;
-    data_out_width : integer := 16
-);
-Port (
-    aclk : std_logic := '0';
-    arstn : std_logic := '0';
-    
-    a_mm_addr : in std_logic_vector(addr_width - 1 downto 0) := ( others => '0');
-    a_mm_wren : in std_logic := '0';
-    a_mm_data : in std_logic_vector(data_in_width - 1 downto 0) := ( others => '0');
-    
-    y_mm_addr : out std_logic_vector(addr_width - 1 downto 0) := ( others => '0');
-    y_mm_wren : out std_logic := '0';
-    y_mm_data : out std_logic_vector(data_out_width - 1 downto 0) := ( others => '0')
-);
-end mm_downscale_limited;
+        ADDR_WIDTH : INTEGER := 32;
+        DATA_IN_WIDTH : INTEGER := 32;
+        DATA_OUT_WIDTH : INTEGER := 16
+    );
+    PORT (
+        aclk : STD_LOGIC := '0';
+        arstn : STD_LOGIC := '0';
 
-architecture impl of mm_downscale_limited is
+        a_mm_addr : IN STD_LOGIC_VECTOR(ADDR_WIDTH - 1 DOWNTO 0) := (OTHERS => '0');
+        a_mm_wren : IN STD_LOGIC := '0';
+        a_mm_data : IN STD_LOGIC_VECTOR(DATA_IN_WIDTH - 1 DOWNTO 0) := (OTHERS => '0');
 
-constant y_mm_data_max : integer := 2**(y_mm_data'length-1)-1;
-constant y_mm_data_min : integer := -1*2**(y_mm_data'length - 1);
+        y_mm_addr : OUT STD_LOGIC_VECTOR(ADDR_WIDTH - 1 DOWNTO 0) := (OTHERS => '0');
+        y_mm_wren : OUT STD_LOGIC := '0';
+        y_mm_data : OUT STD_LOGIC_VECTOR(DATA_OUT_WIDTH - 1 DOWNTO 0) := (OTHERS => '0')
+    );
+END mm_downscale_limited;
 
-begin
+ARCHITECTURE impl OF mm_downscale_limited IS
 
-sel_process: process(aclk) begin
+    CONSTANT y_mm_data_max : INTEGER := 2 ** (y_mm_data'length - 1) - 1;
+    CONSTANT y_mm_data_min : INTEGER := - 1 * 2 ** (y_mm_data'length - 1);
 
-    if (rising_edge(aclk)) then
-        if (arstn = '0') then
-            y_mm_addr <= (others => '0');
-            y_mm_wren <= '0';
-            y_mm_data <= (others => '0');
-        else
-            y_mm_addr <= a_mm_addr;
-            y_mm_wren <= a_mm_wren;
-            
-            if (a_mm_addr < FRAME_LENGTH) then
-                if (to_integer(signed(a_mm_data)) > y_mm_data_max) then
-                    y_mm_data <= std_logic_vector(to_signed(y_mm_data_max, y_mm_data'length));
-                elsif (to_integer(signed(a_mm_data)) < y_mm_data_min) then
-                    y_mm_data <= std_logic_vector(to_signed(y_mm_data_min, y_mm_data'length));
-                else
-                    y_mm_data <= std_logic_vector(resize(signed(a_mm_data), y_mm_data'length));
-                end if;
-            else
-                y_mm_data <= std_logic_vector(resize(unsigned(a_mm_data), y_mm_data'length));
-            end if;
-        end if;
-    end if;
-end process;
+BEGIN
 
-end impl;
+    sel_process : PROCESS (aclk) BEGIN
+
+        IF (rising_edge(aclk)) THEN
+            IF (arstn = '0') THEN
+                y_mm_addr <= (OTHERS => '0');
+                y_mm_wren <= '0';
+                y_mm_data <= (OTHERS => '0');
+            ELSE
+                y_mm_addr <= a_mm_addr;
+                y_mm_wren <= a_mm_wren;
+
+                IF (a_mm_addr < FRAME_LENGTH) THEN
+                    IF (to_integer(signed(a_mm_data)) > y_mm_data_max) THEN
+                        y_mm_data <= STD_LOGIC_VECTOR(to_signed(y_mm_data_max, y_mm_data'length));
+                    ELSIF (to_integer(signed(a_mm_data)) < y_mm_data_min) THEN
+                        y_mm_data <= STD_LOGIC_VECTOR(to_signed(y_mm_data_min, y_mm_data'length));
+                    ELSE
+                        y_mm_data <= STD_LOGIC_VECTOR(resize(signed(a_mm_data), y_mm_data'length));
+                    END IF;
+                ELSE
+                    y_mm_data <= STD_LOGIC_VECTOR(resize(unsigned(a_mm_data), y_mm_data'length));
+                END IF;
+            END IF;
+        END IF;
+    END PROCESS;
+
+END impl;

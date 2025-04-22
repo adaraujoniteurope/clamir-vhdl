@@ -1,41 +1,41 @@
 ----------------------------------------------------------------------------------
--- Company: 
--- Engineer: 
+-- company: 
+-- engineer: 
 -- 
--- Create Date: 20.02.2017 18:37:46
--- Design Name: 
--- Module Name: ADC_temp_VU - Behavioral
--- Project Name: 
--- Target Devices: 
--- Tool Versions: 
--- Description: 
+-- create date: 20.02.2017 18:37:46
+-- design name: 
+-- module name: adc_temp_vu - behavioral
+-- project name: 
+-- target devices: 
+-- tool versions: 
+-- description: 
 -- 
--- Dependencies: 
+-- dependencies: 
 -- 
--- Revision:
--- Revision 0.01 - File Created
--- Additional Comments:
+-- revision:
+-- revision 0.01 - file created
+-- additional comments:
 -- 
 ----------------------------------------------------------------------------------
 
 
-library IEEE;
-use IEEE.STD_LOGIC_1164.ALL;
-use IEEE.std_logic_arith.all;
-use IEEE.std_logic_unsigned.all;
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.std_logic_arith.all;
+use ieee.std_logic_unsigned.all;
 
--- Uncomment the following library declaration if using
--- arithmetic functions with Signed or Unsigned values
---use IEEE.NUMERIC_STD.ALL;
+-- uncomment the following library declaration if using
+-- arithmetic functions with signed or unsigned values
+--use ieee.numeric_std.all;
 
--- Uncomment the following library declaration if instantiating
--- any Xilinx leaf cells in this code.
---library UNISIM;
---use UNISIM.VComponents.all;
+-- uncomment the following library declaration if instantiating
+-- any xilinx leaf cells in this code.
+--library unisim;
+--use unisim.vcomponents.all;
 
 entity mm_bram_bridge is
 
-Port (
+port (
   --sys
       clk : in std_logic;
       rst : in std_logic;
@@ -54,7 +54,7 @@ Port (
      );
 end mm_bram_bridge;
 
-architecture Behavioral of mm_bram_bridge is
+architecture behavioral of mm_bram_bridge is
 
 begin
 
@@ -63,7 +63,7 @@ bram_out_rst <= rst;
 
 process (clk)
 begin
-IF (clk'EVENT AND clk = '1') THEN
+if (clk'event and clk = '1') then
         if(rst ='1') then
         bram_out_en <= '0';
         bram_out_we <="0000";            
@@ -76,4 +76,4 @@ end if;
 
 end process;
 
-end Behavioral;
+end behavioral;

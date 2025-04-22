@@ -1,8 +1,8 @@
 -------------------------------------------------------------------------------
--- Company     : AIMEN
--- Project     : CLAMIR
--- Module      : pwm_reg_bank
--- Description : PWM generator AXI4-Lite configuration registers
+-- company     : aimen
+-- project     : clamir
+-- module      : pwm_reg_bank
+-- description : pwm generator axi4-lite configuration registers
 -------------------------------------------------------------------------------
 
 library ieee;
@@ -15,12 +15,12 @@ entity pwm_reg_bank is
   );
   port (
     ---------------------------------------------------------------------------
-    -- General purpose ports
+    -- general purpose ports
     ---------------------------------------------------------------------------
     s_axi_aclk    : in  std_logic;
     s_axi_aresetn : in  std_logic;
     ---------------------------------------------------------------------------
-    -- Register bank access
+    -- register bank access
     ---------------------------------------------------------------------------
     slv_rden      : in  std_logic;
     slv_wren      : in  std_logic;
@@ -30,7 +30,7 @@ entity pwm_reg_bank is
     slv_wr_done   : out std_logic;
     slv_rdata     : out std_logic_vector(31 downto 0);
     ---------------------------------------------------------------------------
-    -- Register bank members DUT direct access
+    -- register bank members dut direct access
     ---------------------------------------------------------------------------
     pwm_max_limit_out : out std_logic_vector(31 downto 0);
     pwm_min_limit_out : out std_logic_vector(31 downto 0);
@@ -51,7 +51,7 @@ architecture behavioral of pwm_reg_bank is
 begin
 
   -----------------------------------------------------------------------------
-  -- Write logic
+  -- write logic
   -----------------------------------------------------------------------------
   p_write : process(s_axi_aclk)
   begin
@@ -65,15 +65,15 @@ begin
       else
         if (slv_wren = '1') then
           case (to_integer(unsigned(axi_addr))) is
-            when 0 => -- PWM maximum consign value
+            when 0 => -- pwm maximum consign value
               pwm_max_limit_reg <= slv_wdata;
-            when 1 => -- PWM duty cycle
+            when 1 => -- pwm duty cycle
               pwm_duty_reg  <= slv_wdata;
-            when 2 => -- PWM power
+            when 2 => -- pwm power
               pwm_power_reg <= slv_wdata;
-            when 3 => -- PWM maximum consign value
+            when 3 => -- pwm maximum consign value
               pwm_min_limit_reg <= slv_wdata;
-            when others => NULL;
+            when others => null;
           end case;
         end if;
       end if;
@@ -81,7 +81,7 @@ begin
   end process;
 
   -----------------------------------------------------------------------------
-  -- Read logic
+  -- read logic
   -----------------------------------------------------------------------------
   slv_rdata <= pwm_max_limit_reg when (to_integer(unsigned(axi_addr)) = 0) else
                pwm_duty_reg  when (to_integer(unsigned(axi_addr)) = 1) else
@@ -90,13 +90,13 @@ begin
                (others => '0');
 
   -----------------------------------------------------------------------------
-  -- Read/Write done flags
+  -- read/write done flags
   -----------------------------------------------------------------------------
   slv_rd_done <= slv_rden;
   slv_wr_done <= slv_wren;
 
   -----------------------------------------------------------------------------
-  -- Assign output values
+  -- assign output values
   -----------------------------------------------------------------------------
   pwm_max_limit_out <= pwm_max_limit_reg;
   pwm_min_limit_out <= pwm_min_limit_reg;

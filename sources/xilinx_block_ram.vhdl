@@ -10,10 +10,10 @@ use work.memory_types.all;
 
 entity xilinx_block_ram is
     generic (
-        MEMORY_LENGTH : integer := 4096;
-        ADDR_WIDTH : integer := 32;
-        DATA_WIDTH : integer := 32;
-        MEMORY_INITIALIZATION_FILE : string
+        memory_length : integer := 4096;
+        addr_width : integer := 32;
+        data_width : integer := 32;
+        memory_initialization_file : string
     );
 
     port (
@@ -22,52 +22,52 @@ entity xilinx_block_ram is
         port_a_rst : in std_logic := '0';
         port_a_ena : in std_logic := '0';
         port_a_wea : in std_logic_vector(data_width/8-1 downto 0) := ( others => '0');
-        port_a_addr : in std_logic_vector(ADDR_WIDTH - 1 downto 0) := (others => '0');
-        port_a_din : in std_logic_vector(DATA_WIDTH - 1 downto 0) := (others => '0');
-        port_a_dout : out std_logic_vector(DATA_WIDTH - 1 downto 0) := (others => '0');
+        port_a_addr : in std_logic_vector(addr_width - 1 downto 0) := (others => '0');
+        port_a_din : in std_logic_vector(data_width - 1 downto 0) := (others => '0');
+        port_a_dout : out std_logic_vector(data_width - 1 downto 0) := (others => '0');
 
         port_b_clk : in std_logic := '0';
         port_b_rst : in std_logic := '0';
         port_b_ena : in std_logic := '0';
         port_b_wea : in std_logic_vector(data_width/8-1 downto 0) := ( others => '0');
-        port_b_addr : in std_logic_vector(ADDR_WIDTH - 1 downto 0) := (others => '0');
-        port_b_din : in std_logic_vector(DATA_WIDTH - 1 downto 0) := (others => '0');
-        port_b_dout : out std_logic_vector(DATA_WIDTH - 1 downto 0) := (others => '0')
+        port_b_addr : in std_logic_vector(addr_width - 1 downto 0) := (others => '0');
+        port_b_din : in std_logic_vector(data_width - 1 downto 0) := (others => '0');
+        port_b_dout : out std_logic_vector(data_width - 1 downto 0) := (others => '0')
 
     );
 
-    ATTRIBUTE X_INTERFACE_INFO : STRING;
+    attribute x_interface_info : string;
 
-    ATTRIBUTE X_INTERFACE_INFO of port_a_clk: SIGNAL is "xilinx.com:interface:bram:1.0 port_a CLK";
-    ATTRIBUTE X_INTERFACE_INFO of port_a_addr: SIGNAL is "xilinx.com:interface:bram:1.0 port_a ADDR";
-    ATTRIBUTE X_INTERFACE_INFO of port_a_rst: SIGNAL is "xilinx.com:interface:bram:1.0 port_a RST";
-    ATTRIBUTE X_INTERFACE_INFO of port_a_wea: SIGNAL is "xilinx.com:interface:bram:1.0 port_a WE";
-    ATTRIBUTE X_INTERFACE_INFO of port_a_ena: SIGNAL is "xilinx.com:interface:bram:1.0 port_a EN";
-    ATTRIBUTE X_INTERFACE_INFO of port_a_din: SIGNAL is "xilinx.com:interface:bram:1.0 port_a DIN";
-    ATTRIBUTE X_INTERFACE_INFO of port_a_dout: SIGNAL is "xilinx.com:interface:bram:1.0 port_a DOUT";
+    attribute x_interface_info of port_a_clk: signal is "xilinx.com:interface:bram:1.0 port_a clk";
+    attribute x_interface_info of port_a_addr: signal is "xilinx.com:interface:bram:1.0 port_a addr";
+    attribute x_interface_info of port_a_rst: signal is "xilinx.com:interface:bram:1.0 port_a rst";
+    attribute x_interface_info of port_a_wea: signal is "xilinx.com:interface:bram:1.0 port_a we";
+    attribute x_interface_info of port_a_ena: signal is "xilinx.com:interface:bram:1.0 port_a en";
+    attribute x_interface_info of port_a_din: signal is "xilinx.com:interface:bram:1.0 port_a din";
+    attribute x_interface_info of port_a_dout: signal is "xilinx.com:interface:bram:1.0 port_a dout";
 
-    ATTRIBUTE X_INTERFACE_INFO of port_b_clk: SIGNAL is "xilinx.com:interface:bram:1.0 port_b CLK";
-    ATTRIBUTE X_INTERFACE_INFO of port_b_addr: SIGNAL is "xilinx.com:interface:bram:1.0 port_b ADDR";
-    ATTRIBUTE X_INTERFACE_INFO of port_b_rst: SIGNAL is "xilinx.com:interface:bram:1.0 port_b RST";
-    ATTRIBUTE X_INTERFACE_INFO of port_b_wea: SIGNAL is "xilinx.com:interface:bram:1.0 port_b WE";
-    ATTRIBUTE X_INTERFACE_INFO of port_b_ena: SIGNAL is "xilinx.com:interface:bram:1.0 port_b EN";
-    ATTRIBUTE X_INTERFACE_INFO of port_b_din: SIGNAL is "xilinx.com:interface:bram:1.0 port_b DIN";
-    ATTRIBUTE X_INTERFACE_INFO of port_b_dout: SIGNAL is "xilinx.com:interface:bram:1.0 port_b DOUT";
+    attribute x_interface_info of port_b_clk: signal is "xilinx.com:interface:bram:1.0 port_b clk";
+    attribute x_interface_info of port_b_addr: signal is "xilinx.com:interface:bram:1.0 port_b addr";
+    attribute x_interface_info of port_b_rst: signal is "xilinx.com:interface:bram:1.0 port_b rst";
+    attribute x_interface_info of port_b_wea: signal is "xilinx.com:interface:bram:1.0 port_b we";
+    attribute x_interface_info of port_b_ena: signal is "xilinx.com:interface:bram:1.0 port_b en";
+    attribute x_interface_info of port_b_din: signal is "xilinx.com:interface:bram:1.0 port_b din";
+    attribute x_interface_info of port_b_dout: signal is "xilinx.com:interface:bram:1.0 port_b dout";
 
 end xilinx_block_ram;
 
 architecture rtl of xilinx_block_ram is
 
-    signal memory : memory_8b_type(0 to MEMORY_LENGTH - 1) := init_ram_from_file(MEMORY_INITIALIZATION_FILE, MEMORY_LENGTH);
+    signal memory : memory_8b_type(0 to memory_length - 1) := init_ram_from_file(memory_initialization_file, memory_length);
 
-    signal port_a_addr_limited : std_logic_vector(ADDR_WIDTH - 1 downto 0) := (others => '0');
-    signal port_b_addr_limited : std_logic_vector(ADDR_WIDTH - 1 downto 0) := (others => '0');
+    signal port_a_addr_limited : std_logic_vector(addr_width - 1 downto 0) := (others => '0');
+    signal port_b_addr_limited : std_logic_vector(addr_width - 1 downto 0) := (others => '0');
 
 begin
 
-    port_a_addr_limited <= port_a_addr when unsigned(port_a_addr) < MEMORY_LENGTH else
+    port_a_addr_limited <= port_a_addr when unsigned(port_a_addr) < memory_length else
         port_a_addr_limited;
-    port_b_addr_limited <= port_b_addr when unsigned(port_b_addr) < MEMORY_LENGTH else
+    port_b_addr_limited <= port_b_addr when unsigned(port_b_addr) < memory_length else
         port_b_addr_limited;
 
     port_a_process : process (port_a_clk) begin

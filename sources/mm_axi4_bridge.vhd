@@ -83,7 +83,7 @@ entity mm_axi4_bridge is
     -- in a write burst.
 		s_axi_wlast	: in std_logic;
 		-- optional user-defined signal in the write data channel.
-		s_axi_wuser	: in std_logic_vector(c_s_axi_wuser_width-1 downto 0);
+		s_axi_wuser	: in std_logic_vector(C_S_AXI_WUSER_WIDTH-1 downto 0);
 		-- write valid. this signal indicates that valid write
     -- data and strobes are available.
 		s_axi_wvalid	: in std_logic;
@@ -136,7 +136,7 @@ entity mm_axi4_bridge is
 		-- optional user-defined signal in the read address channel.
 		s_axi_aruser	: in std_logic_vector(C_S_AXI_ARUSER_WIDTH-1 downto 0);
 		-- write address valid. this signal indicates that
-    -- the channel is signaling valid read address ANd
+    -- the channel is signaling valid read address and
     -- control information.
 		s_axi_arvalid	: in std_logic;
 		-- read address ready. this signal indicates that

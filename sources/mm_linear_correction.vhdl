@@ -1,74 +1,74 @@
-LIBRARY ieee;
-LIBRARY work;
+library ieee;
+library work;
 
-USE ieee.std_logic_1164.ALL;
+use ieee.std_logic_1164.all;
 -- use ieee.std_logic_arith.all;
-USE ieee.std_logic_misc.ALL;
-USE ieee.std_logic_signed.ALL;
-USE ieee.std_logic_unsigned.ALL;
-USE ieee.numeric_std.ALL;
-USE work.memory_types.ALL;
+use ieee.std_logic_misc.all;
+use ieee.std_logic_signed.all;
+use ieee.std_logic_unsigned.all;
+use ieee.numeric_std.all;
+use work.memory_types.all;
 
-ENTITY mm_linear_correction IS
-    GENERIC (
-        FRAME_LENGTH : INTEGER := 4096;
-        addr_width : INTEGER := 32;
-        data_width : INTEGER := 32
+entity mm_linear_correction is
+    generic (
+        FRAME_LENGTH : integer := 4096;
+        ADDR_WIDTH : integer := 32;
+        DATA_WIDTH : integer := 32
     );
 
-    PORT (
+    port (
 
-        aclk : IN STD_LOGIC := '0';
-        arstn : IN STD_LOGIC := '0';
+        aclk : in std_logic := '0';
+        arstn : in std_logic := '0';
 
-        scale_bram_clk : OUT STD_LOGIC := '0';
-        scale_bram_rst : OUT STD_LOGIC := '0';
-        scale_bram_ena : OUT STD_LOGIC := '1';
-        scale_bram_wea : OUT STD_LOGIC_VECTOR(data_width/8 - 1 DOWNTO 0) := (OTHERS => '0');
-        scale_bram_addr : OUT STD_LOGIC_VECTOR(addr_width - 1 DOWNTO 0) := (OTHERS => '0');
-        scale_bram_din : OUT STD_LOGIC_VECTOR(data_width - 1 DOWNTO 0) := (OTHERS => '0');
-        scale_bram_dout : IN STD_LOGIC_VECTOR(data_width - 1 DOWNTO 0) := (OTHERS => '0');
+        scale_bram_clk : out std_logic := '0';
+        scale_bram_rst : out std_logic := '0';
+        scale_bram_ena : out std_logic := '1';
+        scale_bram_wea : out std_logic_vector(DATA_WIDTH/8 - 1 downto 0) := (others => '0');
+        scale_bram_addr : out std_logic_vector(ADDR_WIDTH - 1 downto 0) := (others => '0');
+        scale_bram_din : out std_logic_vector(DATA_WIDTH - 1 downto 0) := (others => '0');
+        scale_bram_dout : in std_logic_vector(DATA_WIDTH - 1 downto 0) := (others => '0');
 
-        offset_bram_clk : OUT STD_LOGIC := '0';
-        offset_bram_rst : OUT STD_LOGIC := '0';
-        offset_bram_ena : OUT STD_LOGIC := '1';
-        offset_bram_wea : OUT STD_LOGIC_VECTOR(data_width/8 - 1 DOWNTO 0) := (OTHERS => '0');
-        offset_bram_addr : OUT STD_LOGIC_VECTOR(addr_width - 1 DOWNTO 0) := (OTHERS => '0');
-        offset_bram_din : OUT STD_LOGIC_VECTOR(data_width - 1 DOWNTO 0) := (OTHERS => '0');
-        offset_bram_dout : IN STD_LOGIC_VECTOR(data_width - 1 DOWNTO 0) := (OTHERS => '0');
+        offset_bram_clk : out std_logic := '0';
+        offset_bram_rst : out std_logic := '0';
+        offset_bram_ena : out std_logic := '1';
+        offset_bram_wea : out std_logic_vector(DATA_WIDTH/8 - 1 downto 0) := (others => '0');
+        offset_bram_addr : out std_logic_vector(ADDR_WIDTH - 1 downto 0) := (others => '0');
+        offset_bram_din : out std_logic_vector(DATA_WIDTH - 1 downto 0) := (others => '0');
+        offset_bram_dout : in std_logic_vector(DATA_WIDTH - 1 downto 0) := (others => '0');
 
-        a_mm_addr : IN STD_LOGIC_VECTOR(addr_width - 1 DOWNTO 0) := (OTHERS => '0');
-        a_mm_wren : IN STD_LOGIC := '0';
-        a_mm_data : IN STD_LOGIC_VECTOR(data_width - 1 DOWNTO 0) := (OTHERS => '0');
+        a_mm_addr : in std_logic_vector(ADDR_WIDTH - 1 downto 0) := (others => '0');
+        a_mm_wren : in std_logic := '0';
+        a_mm_data : in std_logic_vector(DATA_WIDTH - 1 downto 0) := (others => '0');
 
-        y_mm_addr : OUT STD_LOGIC_VECTOR(addr_width - 1 DOWNTO 0) := (OTHERS => '0');
-        y_mm_wren : OUT STD_LOGIC := '0';
-        y_mm_data : OUT STD_LOGIC_VECTOR((2*data_width)-1 DOWNTO 0) := (OTHERS => '0')
+        y_mm_addr : out std_logic_vector(ADDR_WIDTH - 1 downto 0) := (others => '0');
+        y_mm_wren : out std_logic := '0';
+        y_mm_data : out std_logic_vector((2*DATA_WIDTH)-1 downto 0) := (others => '0')
     );
 
-END mm_linear_correction;
+end mm_linear_correction;
 
-ARCHITECTURE rtl OF mm_linear_correction IS
-    -- ATTRIBUTE X_INTERFACE_INFO of aclk: SIGNAL is "xilinx.com:signal:clock:1.0 aclk clk";
-    -- ATTRIBUTE X_INTERFACE_INFO of arstn: SIGNAL is "xilinx.com:signal:reset:1.0 arstn rst";
+architecture rtl of mm_linear_correction is
+    -- attribute x_interface_info of aclk: signal is "xilinx.com:signal:clock:1.0 aclk clk";
+    -- attribute x_interface_info of arstn: signal is "xilinx.com:signal:reset:1.0 arstn rst";
 
-    ATTRIBUTE X_INTERFACE_INFO : STRING;
+    attribute x_interface_info : string;
 
-    ATTRIBUTE X_INTERFACE_INFO OF scale_bram_clk : SIGNAL IS "xilinx.com:interface:bram:1.0 scale_bram CLK";
-    ATTRIBUTE X_INTERFACE_INFO OF scale_bram_addr : SIGNAL IS "xilinx.com:interface:bram:1.0 scale_bram ADDR";
-    ATTRIBUTE X_INTERFACE_INFO OF scale_bram_rst : SIGNAL IS "xilinx.com:interface:bram:1.0 scale_bram RST";
-    ATTRIBUTE X_INTERFACE_INFO OF scale_bram_wea : SIGNAL IS "xilinx.com:interface:bram:1.0 scale_bram WE";
-    ATTRIBUTE X_INTERFACE_INFO OF scale_bram_ena : SIGNAL IS "xilinx.com:interface:bram:1.0 scale_bram EN";
-    ATTRIBUTE X_INTERFACE_INFO OF scale_bram_din : SIGNAL IS "xilinx.com:interface:bram:1.0 scale_bram DIN";
-    ATTRIBUTE X_INTERFACE_INFO OF scale_bram_dout : SIGNAL IS "xilinx.com:interface:bram:1.0 scale_bram DOUT";
+    attribute x_interface_info of scale_bram_clk : signal is "xilinx.com:interface:bram:1.0 scale_bram clk";
+    attribute x_interface_info of scale_bram_addr : signal is "xilinx.com:interface:bram:1.0 scale_bram addr";
+    attribute x_interface_info of scale_bram_rst : signal is "xilinx.com:interface:bram:1.0 scale_bram rst";
+    attribute x_interface_info of scale_bram_wea : signal is "xilinx.com:interface:bram:1.0 scale_bram we";
+    attribute x_interface_info of scale_bram_ena : signal is "xilinx.com:interface:bram:1.0 scale_bram en";
+    attribute x_interface_info of scale_bram_din : signal is "xilinx.com:interface:bram:1.0 scale_bram din";
+    attribute x_interface_info of scale_bram_dout : signal is "xilinx.com:interface:bram:1.0 scale_bram dout";
 
-    ATTRIBUTE X_INTERFACE_INFO OF offset_bram_clk : SIGNAL IS "xilinx.com:interface:bram:1.0 offset_bram CLK";
-    ATTRIBUTE X_INTERFACE_INFO OF offset_bram_addr : SIGNAL IS "xilinx.com:interface:bram:1.0 offset_bram ADDR";
-    ATTRIBUTE X_INTERFACE_INFO OF offset_bram_rst : SIGNAL IS "xilinx.com:interface:bram:1.0 offset_bram RST";
-    ATTRIBUTE X_INTERFACE_INFO OF offset_bram_wea : SIGNAL IS "xilinx.com:interface:bram:1.0 offset_bram WE";
-    ATTRIBUTE X_INTERFACE_INFO OF offset_bram_ena : SIGNAL IS "xilinx.com:interface:bram:1.0 offset_bram EN";
-    ATTRIBUTE X_INTERFACE_INFO OF offset_bram_din : SIGNAL IS "xilinx.com:interface:bram:1.0 offset_bram DIN";
-    ATTRIBUTE X_INTERFACE_INFO OF offset_bram_dout : SIGNAL IS "xilinx.com:interface:bram:1.0 offset_bram DOUT";
+    attribute x_interface_info of offset_bram_clk : signal is "xilinx.com:interface:bram:1.0 offset_bram clk";
+    attribute x_interface_info of offset_bram_addr : signal is "xilinx.com:interface:bram:1.0 offset_bram addr";
+    attribute x_interface_info of offset_bram_rst : signal is "xilinx.com:interface:bram:1.0 offset_bram rst";
+    attribute x_interface_info of offset_bram_wea : signal is "xilinx.com:interface:bram:1.0 offset_bram we";
+    attribute x_interface_info of offset_bram_ena : signal is "xilinx.com:interface:bram:1.0 offset_bram en";
+    attribute x_interface_info of offset_bram_din : signal is "xilinx.com:interface:bram:1.0 offset_bram din";
+    attribute x_interface_info of offset_bram_dout : signal is "xilinx.com:interface:bram:1.0 offset_bram dout";
 
     signal result : signed(2*a_mm_data'length-1 downto 0) := ( others => '0' );
     
@@ -92,7 +92,7 @@ ARCHITECTURE rtl OF mm_linear_correction IS
     
     signal y_mm_data_pre0 : std_logic_vector(y_mm_data'length-1 downto 0) := ( others => '0' );
 
-BEGIN
+begin
 
     scale_bram_clk <= aclk;
     scale_bram_rst <= '0';
@@ -164,4 +164,4 @@ BEGIN
     end if;
     end process;
 
-END rtl;
+end rtl;

@@ -1,45 +1,45 @@
 ----------------------------------------------------------------------------------
--- Company: 
--- Engineer: 
+-- company: 
+-- engineer: 
 -- 
--- Create Date: 04/16/2025 12:21:10 PM
--- Design Name: 
--- Module Name: mm_memory_writer - impl
--- Project Name: 
--- Target Devices: 
--- Tool Versions: 
--- Description: 
+-- create date: 04/16/2025 12:21:10 pm
+-- design name: 
+-- module name: mm_memory_writer - impl
+-- project name: 
+-- target devices: 
+-- tool versions: 
+-- description: 
 -- 
--- Dependencies: 
+-- dependencies: 
 -- 
--- Revision:
--- Revision 0.01 - File Created
--- Additional Comments:
+-- revision:
+-- revision 0.01 - file created
+-- additional comments:
 -- 
 ----------------------------------------------------------------------------------
 
 
-library IEEE;
-use IEEE.STD_LOGIC_1164.ALL;
-use IEEE.STD_LOGIC_UNSIGNED.ALL;
-use IEEE.STD_LOGIC_MISC.ALL;
-use IEEE.NUMERIC_STD.ALL;
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.std_logic_unsigned.all;
+use ieee.std_logic_misc.all;
+use ieee.numeric_std.all;
 
--- Uncomment the following library declaration if using
--- arithmetic functions with Signed or Unsigned values
---use IEEE.NUMERIC_STD.ALL;
+-- uncomment the following library declaration if using
+-- arithmetic functions with signed or unsigned values
+--use ieee.numeric_std.all;
 
--- Uncomment the following library declaration if instantiating
--- any Xilinx leaf cells in this code.
---library UNISIM;
---use UNISIM.VComponents.all;
+-- uncomment the following library declaration if instantiating
+-- any xilinx leaf cells in this code.
+--library unisim;
+--use unisim.vcomponents.all;
 
 entity mm_memory_writer is
-Generic (
+generic (
     ADDR_WIDTH : integer := 32;
     DATA_WIDTH : integer := 16
 );
-Port (
+port (
     aclk    : std_logic := '0';
     arstn   : std_logic := '0';
     
@@ -49,27 +49,27 @@ Port (
     
     intr : out std_logic := '0';
     
-    bram_clk : OUT STD_LOGIC := '0';
-    bram_rst : OUT STD_LOGIC := '0';
-    bram_ena : OUT STD_LOGIC := '1';
-    bram_wea : OUT STD_LOGIC_VECTOR((2*DATA_WIDTH)/8 - 1 DOWNTO 0) := (OTHERS => '0');
-    bram_addr : OUT STD_LOGIC_VECTOR(ADDR_WIDTH - 1 DOWNTO 0) := (OTHERS => '0');
-    bram_din : OUT STD_LOGIC_VECTOR(2*DATA_WIDTH - 1 DOWNTO 0) := (OTHERS => '0');
-    bram_dout : IN STD_LOGIC_VECTOR(2*DATA_WIDTH - 1 DOWNTO 0) := (OTHERS => '0')
+    bram_clk : out std_logic := '0';
+    bram_rst : out std_logic := '0';
+    bram_ena : out std_logic := '1';
+    bram_wea : out std_logic_vector((2*DATA_WIDTH)/8 - 1 downto 0) := (others => '0');
+    bram_addr : out std_logic_vector(ADDR_WIDTH - 1 downto 0) := (others => '0');
+    bram_din : out std_logic_vector(2*DATA_WIDTH - 1 downto 0) := (others => '0');
+    bram_dout : in std_logic_vector(2*DATA_WIDTH - 1 downto 0) := (others => '0')
     
 );
 end mm_memory_writer;
 
 architecture impl of mm_memory_writer is
-    ATTRIBUTE X_INTERFACE_INFO : STRING;
+    attribute x_interface_info : string;
 
-    ATTRIBUTE X_INTERFACE_INFO OF bram_clk : SIGNAL IS "xilinx.com:interface:bram:1.0 bram CLK";
-    ATTRIBUTE X_INTERFACE_INFO OF bram_addr : SIGNAL IS "xilinx.com:interface:bram:1.0 bram ADDR";
-    ATTRIBUTE X_INTERFACE_INFO OF bram_rst : SIGNAL IS "xilinx.com:interface:bram:1.0 bram RST";
-    ATTRIBUTE X_INTERFACE_INFO OF bram_wea : SIGNAL IS "xilinx.com:interface:bram:1.0 bram WE";
-    ATTRIBUTE X_INTERFACE_INFO OF bram_ena : SIGNAL IS "xilinx.com:interface:bram:1.0 bram EN";
-    ATTRIBUTE X_INTERFACE_INFO OF bram_din : SIGNAL IS "xilinx.com:interface:bram:1.0 bram DIN";
-    ATTRIBUTE X_INTERFACE_INFO OF bram_dout : SIGNAL IS "xilinx.com:interface:bram:1.0 bram DOUT";
+    attribute x_interface_info of bram_clk : signal is "xilinx.com:interface:bram:1.0 bram clk";
+    attribute x_interface_info of bram_addr : signal is "xilinx.com:interface:bram:1.0 bram addr";
+    attribute x_interface_info of bram_rst : signal is "xilinx.com:interface:bram:1.0 bram rst";
+    attribute x_interface_info of bram_wea : signal is "xilinx.com:interface:bram:1.0 bram we";
+    attribute x_interface_info of bram_ena : signal is "xilinx.com:interface:bram:1.0 bram en";
+    attribute x_interface_info of bram_din : signal is "xilinx.com:interface:bram:1.0 bram din";
+    attribute x_interface_info of bram_dout : signal is "xilinx.com:interface:bram:1.0 bram dout";
     
     signal a_mm_data_d0 : std_logic_vector(a_mm_data'length - 1 downto 0) := ( others => '0');
     signal bram_write_enable : std_logic := '0';

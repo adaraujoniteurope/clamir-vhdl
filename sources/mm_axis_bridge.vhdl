@@ -1,9 +1,9 @@
-library IEEE;
+library ieee;
 
-use IEEE.std_logic_1164.all;
-use IEEE.std_logic_arith.all;
-use IEEE.std_logic_unsigned.all;
-use IEEE.numeric_std.all;
+use ieee.std_logic_1164.all;
+use ieee.std_logic_arith.all;
+use ieee.std_logic_unsigned.all;
+use ieee.numeric_std.all;
 
 -- description
 -- this implementations
@@ -37,15 +37,15 @@ entity mm_axis_bridge is
   end mm_axis_bridge;
   
   architecture impl of mm_axis_bridge is
-    constant AXIS_TDATA_WIDTH : integer := ADDR_WIDTH+DATA_WIDTH;
+    constant axis_tDATA_WIDTH : integer := ADDR_WIDTH+DATA_WIDTH;
 
     type mm_axis_bridge_state_type is (
-        MM_AXIS_BRIDGE_STATE_IDLE,
-        MM_AXIS_BRIDGE_STATE_ACTIVE,
-        MM_AXIS_BRIDGE_STATE_USER
+        mm_axis_bridge_state_idle,
+        mm_axis_bridge_state_active,
+        mm_axis_bridge_state_user
     );
 
-    signal mm_axis_bridge_state : mm_axis_bridge_state_type := MM_AXIS_BRIDGE_STATE_IDLE;
+    signal mm_axis_bridge_state : mm_axis_bridge_state_type := mm_axis_bridge_state_idle;
 
     type memory_type is array(integer range<>) of std_logic_vector(DATA_WIDTH-1 downto 0);
 
@@ -72,16 +72,16 @@ entity mm_axis_bridge is
 
             case(mm_axis_bridge_state) is
 
-                when MM_AXIS_BRIDGE_STATE_IDLE =>
+                when mm_axis_bridge_state_idle =>
                     if (axis_out_tready = '1' and port_a_wren_posedge = '1') then
                         axis_out_tvalid <= '1';
-                        mm_axis_bridge_state <= MM_AXIS_BRIDGE_STATE_ACTIVE;
+                        mm_axis_bridge_state <= mm_axis_bridge_state_active;
                         axis_out_tdata <= port_a_addr & port_a_data;
                     else
                         axis_out_tvalid <= '0';
                     end if;
 
-                when MM_AXIS_BRIDGE_STATE_ACTIVE =>
+                when mm_axis_bridge_state_active =>
                     axis_out_tdata <= port_a_addr & port_a_data;
                     
                     if (port_a_addr < DATA_FRAME_LENGTH) then
@@ -93,11 +93,11 @@ entity mm_axis_bridge is
                     if (axis_out_tready = '0' or port_a_wren = '0') then
                         axis_out_tuser <= '0';
                         axis_out_tvalid <= '0';
-                        mm_axis_bridge_state <= MM_AXIS_BRIDGE_STATE_IDLE;
+                        mm_axis_bridge_state <= mm_axis_bridge_state_idle;
                     end if;
 
                 when others =>
-                    mm_axis_bridge_state <= MM_AXIS_BRIDGE_STATE_IDLE;    
+                    mm_axis_bridge_state <= mm_axis_bridge_state_idle;    
             end case;
         end if;
         end if;

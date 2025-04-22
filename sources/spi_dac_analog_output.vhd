@@ -35,7 +35,7 @@ use IEEE.std_logic_unsigned.all;
 
 entity SPI_DAC_analog_output is
 GENERIC(
-      clk_prescaler  : INTEGER := 8); 
+      CLK_PRESCALER  : INTEGER := 8); 
 
 Port (
   --sys
@@ -156,7 +156,7 @@ IF (CLK'EVENT AND CLK = '1') THEN
             
             clk_counter <= clk_counter + 1 ;
                             
-            if (clk_counter =  conv_std_logic_vector(clk_prescaler-1,8)) then
+            if (clk_counter =  conv_std_logic_vector(CLK_PRESCALER-1,8)) then
                 clk_counter <=(others => '0');
                 SCLK <= '0';
                 bits_counter <= bits_counter +1 ;
@@ -172,10 +172,10 @@ IF (CLK'EVENT AND CLK = '1') THEN
                     
                 end if;  
             
-             elsif(clk_counter = conv_std_logic_vector(clk_prescaler/2,8)) then
+             elsif(clk_counter = conv_std_logic_vector(CLK_PRESCALER/2,8)) then
                  SCLK <= '0';
                  
-             elsif(clk_counter > conv_std_logic_vector(clk_prescaler/2,8)) then
+             elsif(clk_counter > conv_std_logic_vector(CLK_PRESCALER/2,8)) then
                  SCLK <= '0';
              else
                  SCLK <= '1';

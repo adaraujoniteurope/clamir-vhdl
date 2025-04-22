@@ -1,7 +1,7 @@
 -------------------------------------------------------------------------------
 -- Company     : AIMEN
 -- Project     : CLAMIR
--- Module      : tb_img_mom
+-- Module      : img_mom_tb
 -- Description : Test image moments calculation
 -------------------------------------------------------------------------------
 
@@ -12,10 +12,10 @@ use ieee.numeric_std.all;
 library work;
 use work.clamir_pkg.all;
 
-entity tb_img_mom is
-end tb_img_mom;
+entity img_mom_tb is
+end img_mom_tb;
 
-architecture behavioral of tb_img_mom is
+architecture behavioral of img_mom_tb is
 
   constant X1_REG        : std_logic_vector((C_S_BRAM_ADDR_WIDTH/2)-1 downto 0) := std_logic_vector(to_unsigned( 7, (C_S_BRAM_ADDR_WIDTH/2)));
   constant X2_REG        : std_logic_vector((C_S_BRAM_ADDR_WIDTH/2)-1 downto 0) := std_logic_vector(to_unsigned(56, (C_S_BRAM_ADDR_WIDTH/2)));

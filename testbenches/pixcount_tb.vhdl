@@ -1,7 +1,7 @@
 -------------------------------------------------------------------------------
 -- Company     : AIMEN
 -- Project     : CLAMIR
--- Module      : tb_pixcount
+-- Module      : pixcount_tb
 -- Description : Test pixel counter from AXI4-Stream data input
 -------------------------------------------------------------------------------
 
@@ -12,10 +12,10 @@ use ieee.numeric_std.all;
 library work;
 use work.clamir_pkg.all;
 
-entity tb_pixcount is
-end tb_pixcount;
+entity pixcount_tb is
+end pixcount_tb;
 
-architecture behavioral of tb_pixcount is
+architecture behavioral of pixcount_tb is
 
   signal clk  : std_logic := '0';
   signal rstn : std_logic := '0';

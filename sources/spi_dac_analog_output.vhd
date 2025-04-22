@@ -33,7 +33,7 @@ use IEEE.std_logic_unsigned.all;
 --library UNISIM;
 --use UNISIM.VComponents.all;
 
-entity SPI_DAC_analog_output is
+entity spi_dac_analog_output is
 GENERIC(
       CLK_PRESCALER  : INTEGER := 8); 
 
@@ -58,11 +58,11 @@ Port (
      );
        attribute DONT_TOUCH : string; 
      
-end SPI_DAC_analog_output;
+end spi_dac_analog_output;
 
 
   
-architecture Behavioral of SPI_DAC_analog_output is
+architecture Behavioral of spi_dac_analog_output is
 
 type TIPO_SPI_state is (SPI_IDLE, DAC_TX);
   signal SPI_state: TIPO_SPI_state;

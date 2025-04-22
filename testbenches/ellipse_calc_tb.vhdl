@@ -1,7 +1,7 @@
 -------------------------------------------------------------------------------
 -- Company     : AIMEN
 -- Project     : CLAMIR
--- Module      : tb_ellipse_calc
+-- Module      : ellipse_calc
 -- Description : Ellipse calculation testbench
 -------------------------------------------------------------------------------
 
@@ -16,10 +16,10 @@ use ieee_proposed.fixed_pkg.all;
 library work;
 use work.clamir_pkg.all;
 
-entity tb_ellipse_calc is
-end tb_ellipse_calc;
+entity ellipse_calc is
+end ellipse_calc;
 
-architecture behavioral of tb_ellipse_calc is
+architecture behavioral of ellipse_calc is
 
 
   signal clk  : std_logic := '0';

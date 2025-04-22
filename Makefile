@@ -1,9 +1,13 @@
 # vhdl files
 PACKAGES = packages/*.vhdl
-FILES = sources/*.vhdl
+TESTBENCHES = testbenches/*_tb.vhdl
+SOURCES = sources/*.vhdl
+OBJECTS = $(patsubst %.vhdl,%.o,$(SOURCES))
+PACKAGE_OBJECTS = $(patsubst %.vhdl,%.o,$(PACKAGES))
+TARGETS = $(patsubst %_tb.vhdl,%_tb,$(TESTBENCHES))
 
 # testbench
-TESTBENCH = mm_linear_correction
+TESTBENCH = dac_analog_output
 TESTBENCHPATH = testbenches/${TESTBENCHFILE}*
 TESTBENCHFILE = ${TESTBENCH}_tb
 WORKDIR = work
@@ -22,14 +26,15 @@ WAVEFORM_VIEWER = gtkwave
 
 .PHONY: clean
 
-all: clean make run
+# all: $(TARGETS)
 
 # %.o: %.vhdl
 # 	@$(GHDL_CMD) -a $(GHDL_FLAGS) $<
 
-# %_tb.o: %_tb.vhdl
-# 	@$(GHDL_CMD) -a $(GHDL_FLAGS) $@
-# 	@$(GHDL_CMD) -e $(GHDL_FLAGS) $^
+# %_tb.o: %_tb.vhdl $(PACKAGE_OBJECTS) $(OBJECTS)
+# 	@$(GHDL_CMD) -e $(GHDL_FLAGS) $<
+
+# $(TARGETS): $(TESTBENCHES)
 
 make:
 ifeq ($(strip $(TESTBENCH)),)
@@ -39,7 +44,7 @@ endif
 
 	@mkdir -p $(WORKDIR)
 	@$(GHDL_CMD) -a $(GHDL_FLAGS) $(PACKAGES)
-	@$(GHDL_CMD) -a $(GHDL_FLAGS) $(FILES)
+	@$(GHDL_CMD) -a $(GHDL_FLAGS) $(SOURCES)
 	@$(GHDL_CMD) -a $(GHDL_FLAGS) $(TESTBENCHPATH)
 	@$(GHDL_CMD) -e $(GHDL_FLAGS) $(TESTBENCHFILE)
 

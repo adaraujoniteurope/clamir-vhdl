@@ -12,12 +12,12 @@ use IEEE.std_logic_arith.all;
 use IEEE.std_logic_unsigned.all;
 
 library work;
-use work.clamir_pkg.all;
+use work.all;
 
-entity tb_DAC_analog_output is
-end tb_DAC_analog_output;
+entity dac_analog_output_tb is
+end dac_analog_output_tb;
 
-architecture behavioral of tb_DAC_analog_output is
+architecture behavioral of dac_analog_output_tb is
 
   signal clk  : std_logic := '1';
   signal RESET : std_logic:= '0';
@@ -33,8 +33,35 @@ architecture behavioral of tb_DAC_analog_output is
  signal ap_start :  STD_logic:='0';
  signal ap_done :  STD_logic;  
  signal ap_idle:  STD_logic;
+
+ constant CLK_PERIOD : time := 10 ns;
           
+ component spi_dac_analog_output is
+  GENERIC(
+        CLK_PRESCALER  : INTEGER := 8); 
   
+  Port (
+    --sys
+        CLK  : in std_logic;
+        RESET : in std_logic;
+        
+        CSn : out std_logic;
+        SCLK: out std_logic;
+        DOUT: out std_logic;
+        nCLR: out std_logic;
+         
+        DAC_max_lim : in  std_logic_vector(31 downto 0);
+        DAC_min_lim : in  std_logic_vector(31 downto 0);
+        DAC_value    : in  std_logic_vector(31 downto 0); 
+                    
+        ap_start : in STD_logic;
+        ap_done : out STD_logic;  
+        ap_idle: out STD_logic
+                  
+       );
+       
+  end component;
+
 begin
 
   -- Generate clock
@@ -126,7 +153,7 @@ begin
     wait;
   end process;
 
-  ROI_round_fly_inst : entity work.SPI_DAC_analog_output
+  ROI_round_fly_inst : spi_dac_analog_output
     port map (
       clk => clk,
       RESET => RESET,

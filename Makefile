@@ -24,6 +24,13 @@ WAVEFORM_VIEWER = gtkwave
 
 all: clean make run
 
+# %.o: %.vhdl
+# 	@$(GHDL_CMD) -a $(GHDL_FLAGS) $<
+
+# %_tb.o: %_tb.vhdl
+# 	@$(GHDL_CMD) -a $(GHDL_FLAGS) $@
+# 	@$(GHDL_CMD) -e $(GHDL_FLAGS) $^
+
 make:
 ifeq ($(strip $(TESTBENCH)),)
 	@echo "TESTBENCH not set. Use TESTBENCH=<value> to set it."

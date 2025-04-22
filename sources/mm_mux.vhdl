@@ -4,7 +4,7 @@
 -- 
 -- create date: 04/03/2025 10:22:35 am
 -- design name: 
--- module name: mm_demux - impl
+-- module name: mm_mux - impl
 -- project name: 
 -- target devices: 
 -- tool versions: 
@@ -31,7 +31,7 @@ use ieee.std_logic_1164.all;
 --library unisim;
 --use unisim.vcomponents.all;
 
-entity mm_demux is
+entity mm_mux is
 generic
 (
     ADDR_WIDTH : integer := 32;
@@ -45,18 +45,19 @@ port (
     a_mm_addr : in std_logic_vector(ADDR_WIDTH - 1 downto 0) := ( others => '0');
     a_mm_wren : in std_logic := '0';
     a_mm_data : in std_logic_vector(DATA_WIDTH - 1 downto 0) := ( others => '0');
+
+    b_mm_addr : in std_logic_vector(ADDR_WIDTH - 1 downto 0) := ( others => '0');
+    b_mm_wren : in std_logic := '0';
+    b_mm_data : in std_logic_vector(DATA_WIDTH - 1 downto 0) := ( others => '0');
     
     y0_mm_addr : out std_logic_vector(ADDR_WIDTH - 1 downto 0) := ( others => '0');
     y0_mm_wren : out std_logic := '0';
-    y0_mm_data : out std_logic_vector(DATA_WIDTH - 1 downto 0) := ( others => '0');
-    
-    y1_mm_addr : out std_logic_vector(ADDR_WIDTH - 1 downto 0) := ( others => '0');
-    y1_mm_wren : out std_logic := '0';
-    y1_mm_data : out std_logic_vector(DATA_WIDTH - 1 downto 0) := ( others => '0')
-);
-end mm_demux;
+    y0_mm_data : out std_logic_vector(DATA_WIDTH - 1 downto 0) := ( others => '0')
 
-architecture impl of mm_demux is
+);
+end mm_mux;
+
+architecture impl of mm_mux is
 
 begin
 
@@ -67,10 +68,6 @@ sel_process: process(aclk) begin
             y0_mm_addr <= (others => '0');
             y0_mm_wren <= '0';
             y0_mm_data <= (others => '0');
-
-            y1_mm_addr <= (others => '0');
-            y1_mm_wren <= '0';
-            y1_mm_data <= (others => '0');
         else
             case(sel) is
             when '0' =>
@@ -78,9 +75,9 @@ sel_process: process(aclk) begin
                 y0_mm_wren <= a_mm_wren;
                 y0_mm_data <= a_mm_data;
             when '1' =>
-                y1_mm_addr <= a_mm_addr;
-                y1_mm_wren <= a_mm_wren;
-                y1_mm_data <= a_mm_data;
+                y0_mm_addr <= b_mm_addr;
+                y0_mm_wren <= b_mm_wren;
+                y0_mm_data <= b_mm_data;
             when others =>
                 y0_mm_addr <= a_mm_addr;
                 y0_mm_wren <= a_mm_wren;

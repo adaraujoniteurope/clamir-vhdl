@@ -34,7 +34,7 @@ use IEEE.NUMERIC_STD.ALL;
 --library UNISIM;
 --use UNISIM.VComponents.all;
 
-entity mm_downscale_limited is
+entity mm_rescale_32b_16b is
 Generic
 (
         FRAME_LENGTH : INTEGER := 4096;
@@ -54,9 +54,9 @@ Port (
     y_mm_wren : out std_logic := '0';
     y_mm_data : out std_logic_vector(data_out_width - 1 downto 0) := ( others => '0')
 );
-end mm_downscale_limited;
+end mm_rescale_32b_16b;
 
-architecture impl of mm_downscale_limited is
+architecture impl of mm_rescale_32b_16b is
 
 constant y_mm_data_max : integer := 2**(y_mm_data'length-1)-1;
 constant y_mm_data_min : integer := -1*2**(y_mm_data'length - 1);

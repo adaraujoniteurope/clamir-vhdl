@@ -1,35 +1,35 @@
 ----------------------------------------------------------------------------------
--- company: 
--- engineer: 
+-- Company: 
+-- Engineer: 
 -- 
--- create date: 04/02/2025 05:47:44 pm
--- design name: 
--- module name: mm_split - impl
--- project name: 
--- target devices: 
--- tool versions: 
--- description: 
+-- Create Date: 04/02/2025 05:47:44 PM
+-- Design Name: 
+-- Module Name: mm_split - impl
+-- Project Name: 
+-- Target Devices: 
+-- Tool Versions: 
+-- Description: 
 -- 
--- dependencies: 
+-- Dependencies: 
 -- 
--- revision:
--- revision 0.01 - file created
--- additional comments:
+-- Revision:
+-- Revision 0.01 - File Created
+-- Additional Comments:
 -- 
 ----------------------------------------------------------------------------------
 
 
-library ieee;
-use ieee.std_logic_1164.all;
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
 
--- uncomment the following library declaration if using
--- arithmetic functions with signed or unsigned values
-use ieee.numeric_std.all;
+-- Uncomment the following library declaration if using
+-- arithmetic functions with Signed or Unsigned values
+use IEEE.NUMERIC_STD.ALL;
 
--- uncomment the following library declaration if instantiating
--- any xilinx leaf cells in this code.
---library unisim;
---use unisim.vcomponents.all;
+-- Uncomment the following library declaration if instantiating
+-- any Xilinx leaf cells in this code.
+--library UNISIM;
+--use UNISIM.VComponents.all;
 
 entity mm_split is
 generic (

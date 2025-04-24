@@ -1,38 +1,38 @@
 ----------------------------------------------------------------------------------
--- company: 
--- engineer: 
+-- Company: 
+-- Engineer: 
 -- 
--- create date: 04/16/2025 09:32:55 am
--- design name: 
--- module name: mm_sync - impl
--- project name: 
--- target devices: 
--- tool versions: 
--- description: 
+-- Create Date: 04/16/2025 09:32:55 AM
+-- Design Name: 
+-- Module Name: mm_sync - impl
+-- Project Name: 
+-- Target Devices: 
+-- Tool Versions: 
+-- Description: 
 -- 
--- dependencies: 
+-- Dependencies: 
 -- 
--- revision:
--- revision 0.01 - file created
--- additional comments:
+-- Revision:
+-- Revision 0.01 - File Created
+-- Additional Comments:
 -- 
 ----------------------------------------------------------------------------------
 
 
-library ieee;
-use ieee.std_logic_1164.all;
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
 
--- uncomment the following library declaration if using
--- arithmetic functions with signed or unsigned values
---use ieee.numeric_std.all;
+-- Uncomment the following library declaration if using
+-- arithmetic functions with Signed or Unsigned values
+--use IEEE.NUMERIC_STD.ALL;
 
--- uncomment the following library declaration if instantiating
--- any xilinx leaf cells in this code.
---library unisim;
---use unisim.vcomponents.all;
+-- Uncomment the following library declaration if instantiating
+-- any Xilinx leaf cells in this code.
+--library UNISIM;
+--use UNISIM.VComponents.all;
 
 entity mm_sync is
-generic(
+Generic(
     ADDR_WIDTH : integer := 32;
     DATA_WIDTH : integer := 32;
     
@@ -40,7 +40,7 @@ generic(
     DATA_DELAY_CYCLES : integer := 2
     
 );
-port (
+Port (
     aclk : std_logic := '0';
     arstn : std_logic := '0';
     
@@ -60,15 +60,15 @@ architecture impl of mm_sync is
     type wren_pipeline_type is array(integer range<>) of std_logic;
     type data_pipeline_type is array(integer range<>) of std_logic_vector(DATA_WIDTH+ADDR_WIDTH-1 downto 0);
     
-    signal wren_pipeline : wren_pipeline_type(0 to WREN_DELAY_CYCLES) := ( others => '0');
-    signal data_pipeline : data_pipeline_type(0 to DATA_DELAY_CYCLES) := ( others => ( others => '0' ));
+    signal wren_pipeline : wren_pipeline_type(0 to WREN_DELAY_CYCLES-1) := ( others => '0');
+    signal data_pipeline : data_pipeline_type(0 to DATA_DELAY_CYCLES-1) := ( others => ( others => '0' ));
 
 begin
 
 process(aclk) begin
 
     if (rising_edge(aclk)) then
-        if (aclk = '0') then
+        if (arstn = '0') then
             wren_pipeline <= ( others => '0' );
             data_pipeline <= ( others => ( others => '0' ));
         else
@@ -80,7 +80,7 @@ process(aclk) begin
             wren_pipeline(0) <= a_mm_wren;
             y_mm_wren <= wren_pipeline(WREN_DELAY_CYCLES-1);
             
-            for i in 1 to DATA_DELAY_CYCLES-1 loop
+            for i in 1 to WREN_DELAY_CYCLES-1 loop
                 wren_pipeline(i) <= wren_pipeline(i-1);
             end loop;
             

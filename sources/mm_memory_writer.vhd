@@ -39,7 +39,7 @@ Generic (
     ADDR_WIDTH : integer := 32;
     DATA_WIDTH : integer := 16;
     
-    FIFO_LENGTH : integer := 6;
+    FIFO_LENGTH : integer := 20;
     FIFO_ELEMENT_SIZE : integer := 8192+256;
     
     -- Width of S_AXI data bus
@@ -188,15 +188,27 @@ architecture impl of mm_memory_writer is
 
 	 signal mem_logic  : std_logic_vector(ADDR_LSB + OPT_MEM_ADDR_BITS downto ADDR_LSB);
 	 
-	 signal offsets : register_bank_type(0 to 7) := (
-	   x"00000000",
-	   x"00002100",
-	   x"00004200",
-	   x"00006300",
-	   x"00008400",
-	   x"0000A500",
-	   x"0000C600",
-	   x"0000E700"
+	 signal offsets : register_bank_type(0 to FIFO_LENGTH-1) := (
+        x"00000000",
+        x"00002100",
+        x"00004200",
+        x"00006300",
+        x"00008400",
+        x"0000A500",
+        x"0000C600",
+        x"0000E700",
+        x"00010800",
+        x"00012900",
+        x"00014A00",
+        x"00016B00",
+        x"00018C00",
+        x"0001AD00",
+        x"0001CE00",
+        x"0001EF00",
+        x"00021000",
+        x"00023100",
+        x"00025200",
+        x"00027300"
 	 );
 
 	 --State machine local parameters
@@ -382,6 +394,7 @@ begin
 
             register_bank_rd(0) <= register_bank_wr(0)(register_bank_wr(0)'length-1 downto fifo_head_reg'length) & fifo_head_reg;
             register_bank_rd(1) <= register_bank_wr(1)(register_bank_wr(1)'length-1 downto 1) & intr_reg;
+            register_bank_rd(3) <= std_logic_vector(to_unsigned(FIFO_LENGTH, register_bank_rd(3)'length));
 
             a_mm_wren_d0 <= a_mm_wren;
             

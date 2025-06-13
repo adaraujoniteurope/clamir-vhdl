@@ -1,0 +1,151 @@
+#-----------------------------------------------------------
+# Vivado v2024.2 (64-bit)
+# SW Build 5239630 on Fri Nov 08 22:34:34 MST 2024
+# IP Build 5239520 on Sun Nov 10 16:12:51 MST 2024
+# SharedData Build 5239561 on Fri Nov 08 14:39:27 MST 2024
+# Start of session at: Fri Jun 13 09:23:27 2025
+# Process ID         : 1182811
+# Current directory  : /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl
+# Command line       : vivado
+# Log file           : /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/vivado.log
+# Journal file       : /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/vivado.jou
+# Running On         : arthur-notebook-victus
+# Platform           : Arch
+# Operating System   : Arch Linux
+# Processor Detail   : 13th Gen Intel(R) Core(TM) i7-13620H
+# CPU Frequency      : 1124.785 MHz
+# CPU Physical cores : 10
+# CPU Logical cores  : 16
+# Host memory        : 33322 MB
+# Swap memory        : 4294 MB
+# Total Virtual      : 37617 MB
+# Available Virtual  : 30655 MB
+#-----------------------------------------------------------
+start_gui
+open_project /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.xpr
+Scanning sources...
+Finished scanning sources
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1700] Loaded user IP repository '/home/arthur/Work/Vivado/trenz-ip-repository'.
+INFO: [IP_Flow 19-1700] Loaded user IP repository '/home/arthur/Work/Vivado/clamir-ip-repository-v2024.1'.
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository '/home/arthur/Tools/Xilinx/Vivado/2024.2/data/ip'.
+INFO: [Project 1-5579] Found utility IPs instantiated in one or more block designs which have equivalent inline hdl with improved performance and reduced diskspace. It is recommended to migrate these utility IPs to inline hdl using the command upgrade_project -migrate_to_inline_hdl. The utility IPs may be deprecated in future releases. More information on inline hdl is available in UG994.
+open_bd_design {/home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs/sources_1/bd/system/system.bd}
+Reading block design file </home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs/sources_1/bd/system/system.bd>...
+Adding component instance block -- xilinx.com:ip:mult_gen:12.0 - mult_gen_0
+Adding component instance block -- xilinx.com:module_ref:Trigger_CTRL:1.0 - Trigger_CTRL_0
+Adding component instance block -- xilinx.com:ip:xlconstant:1.1 - Enable
+Adding component instance block -- xilinx.com:ip:blk_mem_gen:8.4 - blk_mem_gen_0
+Adding component instance block -- xilinx.com:ip:blk_mem_gen:8.4 - blk_mem_gen_1
+Adding component instance block -- xilinx.com:module_ref:procc_offset:1.0 - procc_offset_0
+Adding component instance block -- xilinx.com:ip:axi_bram_ctrl:4.1 - axi_bram_img
+Adding component instance block -- xilinx.com:ip:blk_mem_gen:8.4 - mem_img_postBPC
+Adding component instance block -- xilinx.com:ip:xlconstant:1.1 - xlconstant_0
+Adding component instance block -- xilinx.com:module_ref:CLAMIR_16_2_32:1.0 - CLAMIR_16_2_32_0
+Adding component instance block -- xilinx.com:ip:axi_bram_ctrl:4.1 - axi_bram_ctrl_BPC_table
+Adding component instance block -- xilinx.com:ip:blk_mem_gen:8.4 - blk_mem_gen_0
+Adding component instance block -- xilinx.com:ip:blk_mem_gen:8.4 - img_bpc
+Adding component instance block -- xilinx.com:module_ref:procc_BPC:1.0 - procc_BPC_0
+Adding component instance block -- xilinx.com:ip:xlconcat:2.1 - xlconcat_0
+Adding component instance block -- xilinx.com:ip:xlconstant:1.1 - xlconstant_0
+Adding component instance block -- xilinx.com:ip:xlconstant:1.1 - xlconstant_2
+Adding component instance block -- xilinx.com:ip:xlconstant:1.1 - xlconstant_3
+Adding component instance block -- xilinx.com:ip:xlslice:1.0 - xlslice_0
+Adding component instance block -- xilinx.com:ip:blk_mem_gen:8.4 - blk_mem_gen_NIT_img_endpoint
+Adding component instance block -- xilinx.com:ip:xlconcat:2.1 - xlconcat_0
+Adding component instance block -- xilinx.com:ip:xlconstant:1.1 - xlconstant_0
+Adding component instance block -- xilinx.com:ip:blk_mem_gen:8.4 - blk_mem_gen_0
+Adding component instance block -- xilinx.com:ip:blk_mem_gen:8.4 - blk_mem_gen_1
+Adding component instance block -- xilinx.com:module_ref:MEDIAN:1.0 - MEDIAN_0
+Adding component instance block -- xilinx.com:module_ref:MOMENTS:1.0 - MOMENTS_0
+Adding component instance block -- xilinx.com:module_ref:axi4lite_arm:1.0 - axi4lite_arm_0
+Adding component instance block -- xilinx.com:module_ref:i2c_shutter_controller_protocol_converter:1.0 - protocol_converter
+Adding component instance block -- xilinx.com:ip:xlconstant:1.1 - high
+Adding component instance block -- xilinx.com:module_ref:i2c_shutter_controller:1.0 - i2c_shutter_controll_0
+Adding component instance block -- xilinx.com:ip:xlconstant:1.1 - low
+Adding component instance block -- xilinx.com:module_ref:i2c_shutter_initial_tune_trigger:1.0 - i2c_shutter_initial_0
+Adding component instance block -- xilinx.com:module_ref:meta_harden:1.0 - meta_harden_0
+Adding component instance block -- xilinx.com:module_ref:meta_harden:1.0 - meta_harden_1
+Adding component instance block -- xilinx.com:module_ref:meta_harden:1.0 - meta_harden_2
+Adding component instance block -- xilinx.com:module_ref:meta_harden:1.0 - meta_harden_3
+Adding component instance block -- xilinx.com:ip:util_vector_logic:2.0 - util_vector_logic_2
+Adding component instance block -- xilinx.com:ip:util_vector_logic:2.0 - util_vector_logic_1
+Adding component instance block -- xilinx.com:ip:util_vector_logic:2.0 - util_vector_logic_0
+Adding component instance block -- xilinx.com:ip:util_vector_logic:2.0 - util_vector_logic_3
+Adding component instance block -- xilinx.com:module_ref:SPI_DAC_analog_output:1.0 - SPI_DAC_analog_output_0
+Adding component instance block -- xilinx.com:module_ref:SPI_ctrl_VU:1.0 - SPI_ctrl_VU_0
+Adding component instance block -- xilinx.com:ip:util_vector_logic:2.0 - util_vector_logic_0
+Adding component instance block -- xilinx.com:ip:util_vector_logic:2.0 - util_vector_logic_1
+Adding component instance block -- xilinx.com:ip:util_vector_logic:2.0 - util_vector_logic_2
+Adding component instance block -- xilinx.com:ip:util_vector_logic:2.0 - util_vector_logic_3
+Adding component instance block -- xilinx.com:module_ref:axi4lite_mb:1.0 - axi4lite_mb_0
+Adding component instance block -- xilinx.com:module_ref:ROI_round_fly:1.0 - ROI_round_fly_0
+Adding component instance block -- xilinx.com:ip:xlconstant:1.1 - xlconstant_0
+Adding component instance block -- xilinx.com:ip:xlconstant:1.1 - xlconstant_2
+Adding component instance block -- xilinx.com:module_ref:Tachyon16k_IF_v2clamir_VU:1.0 - Tachyon16k_IF_v2clam_0
+Adding component instance block -- xilinx.com:ip:xlconstant:1.1 - xlconstant_0
+Adding component instance block -- xilinx.com:ip:blk_mem_gen:8.4 - blk_mem_gen_0
+Adding component instance block -- xilinx.com:module_ref:procc_drift:1.0 - procc_drift_0
+Adding component instance block -- xilinx.com:module_ref:axi_NIT_ctrl_v0_1:1.0 - axi_NIT_ctrl_v0_1_0
+Adding component instance block -- xilinx.com:module_ref:mm_concat:1.0 - mm_concat_0
+Adding component instance block -- xilinx.com:module_ref:mm_mux:1.0 - mm_mux_0
+Adding component instance block -- xilinx.com:ip:smartconnect:1.0 - smartconnect_0
+Adding component instance block -- xilinx.com:ip:axi_bram_ctrl:4.1 - axi_bram_ctrl_scale
+Adding component instance block -- xilinx.com:ip:blk_mem_gen:8.4 - blk_mem_gen_scale
+Adding component instance block -- xilinx.com:ip:blk_mem_gen:8.4 - blk_mem_gen_offset
+Adding component instance block -- xilinx.com:ip:axi_bram_ctrl:4.1 - axi_bram_ctrl_offset
+Adding component instance block -- xilinx.com:ip:blk_mem_gen:8.4 - blk_mem_gen_result
+Adding component instance block -- xilinx.com:ip:axi_bram_ctrl:4.1 - axi_bram_ctrl_result
+Adding component instance block -- xilinx.com:module_ref:mm_downscale_limited:1.0 - mm_downscale_limited_0
+Adding component instance block -- xilinx.com:module_ref:mm_memory_writer:1.0 - mm_memory_writer_0
+Adding component instance block -- xilinx.com:ip:xlslice:1.0 - xlslice_0
+Adding component instance block -- xilinx.com:module_ref:mm_concat:1.0 - mm_concat_1
+Adding component instance block -- xilinx.com:module_ref:mm_linear_correction_ctrl:1.0 - mm_linear_correction_ctrl_0
+Adding component instance block -- xilinx.com:module_ref:mm_linear_correction_multiply:1.0 - mm_linear_correction_multiply
+Adding component instance block -- xilinx.com:module_ref:mm_linear_correction_add:1.0 - mm_linear_correction_add
+Adding component instance block -- xilinx.com:ip:xlconstant:1.1 - xlconstant_low
+Adding component instance block -- xilinx.com:ip:smartconnect:1.0 - smartconnect_0
+Adding component instance block -- xilinx.com:ip:xlconcat:2.1 - xlconcat_0
+Adding component instance block -- xilinx.com:module_ref:axi4lite_led_controller:1.0 - axi4lite_led_control_0
+Adding component instance block -- xilinx.com:ip:proc_sys_reset:5.0 - proc_sys_reset_0
+Adding component instance block -- xilinx.com:ip:processing_system7:5.5 - ps
+Adding component instance block -- xilinx.com:ip:axi_timer:2.0 - axi_timer_0
+Adding component instance block -- trenz.biz:user:SC0720:1.0 - SC0720_1
+Adding component instance block -- xilinx.com:ip:axi_gpio:2.0 - axi_gpio_leds
+Adding component instance block -- xilinx.com:ip:smartconnect:1.0 - smartconnect_1
+Adding component instance block -- xilinx.com:ip:xlconstant:1.1 - xlconstant_2
+Adding component instance block -- xilinx.com:ip:xlconcat:2.1 - xlconcat_2
+Adding component instance block -- xilinx.com:ip:axi_intc:4.1 - axi_intc_0
+Adding component instance block -- xilinx.com:ip:axi_gpio:2.0 - axi_gpio_0
+Adding component instance block -- xilinx.com:ip:xlconcat:2.1 - xlconcat_1
+Adding component instance block -- xilinx.com:ip:xlconstant:1.1 - xlconstant_1
+Adding component instance block -- xilinx.com:module_ref:iob_register:1.0 - iob_register_0
+Adding component instance block -- xilinx.com:module_ref:iob_register:1.0 - iob_register_1
+Successfully read diagram <system> from block design file </home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs/sources_1/bd/system/system.bd>
+ungroup_bd_cells [get_bd_cells clamir_ip]
+regenerate_bd_layout
+regenerate_bd_layout -routing
+save_bd_design
+Wrote  : </home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs/sources_1/bd/system/system.bd> 
+Wrote  : </home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs/sources_1/bd/system/ui/bd_c954508f.ui> 
+update_compile_order -fileset sources_1
+WARNING: [filemgmt 56-315] Source scanning failed during design analysis. To get more details run synthesis or simulation and check the log.
+WARNING: [filemgmt 56-315] Source scanning failed during design analysis. To get more details run synthesis or simulation and check the log.
+WARNING: [filemgmt 56-315] Source scanning failed during design analysis. To get more details run synthesis or simulation and check the log.
+WARNING: [filemgmt 56-315] Source scanning failed during design analysis. To get more details run synthesis or simulation and check the log.
+WARNING: [filemgmt 56-315] Source scanning failed during design analysis. To get more details run synthesis or simulation and check the log.
+WARNING: [filemgmt 56-315] Source scanning failed during design analysis. To get more details run synthesis or simulation and check the log.
+WARNING: [filemgmt 56-315] Source scanning failed during design analysis. To get more details run synthesis or simulation and check the log.
+WARNING: [filemgmt 56-315] Source scanning failed during design analysis. To get more details run synthesis or simulation and check the log.
+WARNING: [filemgmt 56-315] Source scanning failed during design analysis. To get more details run synthesis or simulation and check the log.
+WARNING: [filemgmt 56-315] Source scanning failed during design analysis. To get more details run synthesis or simulation and check the log.
+WARNING: [filemgmt 56-315] Source scanning failed during design analysis. To get more details run synthesis or simulation and check the log.
+WARNING: [filemgmt 56-315] Source scanning failed during design analysis. To get more details run synthesis or simulation and check the log.
+WARNING: [filemgmt 56-315] Source scanning failed during design analysis. To get more details run synthesis or simulation and check the log.
+WARNING: [filemgmt 56-315] Source scanning failed during design analysis. To get more details run synthesis or simulation and check the log.
+WARNING: [filemgmt 56-315] Source scanning failed during design analysis. To get more details run synthesis or simulation and check the log.
+WARNING: [filemgmt 56-315] Source scanning failed during design analysis. To get more details run synthesis or simulation and check the log.
+WARNING: [filemgmt 56-315] Source scanning failed during design analysis. To get more details run synthesis or simulation and check the log.
+WARNING: [filemgmt 56-315] Source scanning failed during design analysis. To get more details run synthesis or simulation and check the log.
+WARNING: [filemgmt 56-315] Source scanning failed during design analysis. To get more details run synthesis or simulation and check the log.
+WARNING: [filemgmt 56-315] Source scanning failed during design analysis. To get more details run synthesis or simulation and check the log.

@@ -46,12 +46,6 @@ entity mm_linear_correction is
         y_mm_data : out std_logic_vector((2*DATA_WIDTH)-1 downto 0) := (others => '0')
     );
 
-end mm_linear_correction;
-
-architecture rtl of mm_linear_correction is
-    -- attribute x_interface_info of aclk: signal is "xilinx.com:signal:clock:1.0 aclk clk";
-    -- attribute x_interface_info of arstn: signal is "xilinx.com:signal:reset:1.0 arstn rst";
-
     attribute x_interface_info : string;
 
     attribute x_interface_info of scale_bram_clk : signal is "xilinx.com:interface:bram:1.0 scale_bram clk";
@@ -69,6 +63,14 @@ architecture rtl of mm_linear_correction is
     attribute x_interface_info of offset_bram_ena : signal is "xilinx.com:interface:bram:1.0 offset_bram en";
     attribute x_interface_info of offset_bram_din : signal is "xilinx.com:interface:bram:1.0 offset_bram din";
     attribute x_interface_info of offset_bram_dout : signal is "xilinx.com:interface:bram:1.0 offset_bram dout";
+
+end mm_linear_correction;
+
+architecture rtl of mm_linear_correction is
+    -- attribute x_interface_info of aclk: signal is "xilinx.com:signal:clock:1.0 aclk clk";
+    -- attribute x_interface_info of arstn: signal is "xilinx.com:signal:reset:1.0 arstn rst";
+
+
 
     signal result : signed(2*a_mm_data'length-1 downto 0) := ( others => '0' );
     

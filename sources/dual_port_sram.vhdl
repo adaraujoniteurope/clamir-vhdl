@@ -1,73 +1,93 @@
+-- dual-port block ram with two write ports
+-- correct modelization with a shared variable
+-- file: rams_tdp_rf_rf.vhd
+
 library ieee;
-library work;
-
 use ieee.std_logic_1164.all;
--- use ieee.std_logic_arith.all;
--- use ieee.std_logic_unsigned.all;
-
 use ieee.numeric_std.all;
-use work.memory_types.all;
+use ieee.std_logic_textio.all;
+
+library std;
+use std.textio.all;
 
 entity dual_port_sram is
-    generic
-    (
-        memory_length  : integer := 4096;
-        addr_width : integer := 32;
-        data_width : integer := 32;
-        default_value : integer := 0
-    );
 
-    port (
+  generic (
+    addr_width : integer := 32;
+    data_width : integer := 16;
+    ram_length : integer := 1024
+  );
 
-        aclk  : in std_logic := '0';
-        arstn : in std_logic := '0';
+  port (
+    clka  : in std_logic;
+    ena   : in std_logic;
+    wea   : in std_logic_vector(data_width/8 - 1 downto 0);
+    addra : in std_logic_vector(addr_width - 1 downto 0);
+    dia   : in std_logic_vector(data_width - 1 downto 0);
+    doa   : out std_logic_vector(data_width - 1 downto 0);
 
-        port_a_addr : in std_logic_vector(addr_width-1 downto 0) := ( others => '0' );
-        port_a_wren : in std_logic := '0';
-        port_a_data_in  : in std_logic_vector(data_width-1 downto 0) := ( others => '0' );
-        port_a_data_out : out std_logic_vector(data_width-1 downto 0) := ( others => '0' );
+    clkb  : in std_logic;
+    enb   : in std_logic;
+    web   : in std_logic_vector(data_width/8 - 1 downto 0);
+    addrb : in std_logic_vector(addr_width - 1 downto 0);
+    dib   : in std_logic_vector(data_width - 1 downto 0);
+    dob   : out std_logic_vector(data_width - 1 downto 0)
+  );
 
-        port_b_addr : in std_logic_vector(addr_width-1 downto 0) := ( others => '0' );
-        port_b_wren : in std_logic := '0';
-        port_b_data_in  : in std_logic_vector(data_width-1 downto 0) := ( others => '0' );
-        port_b_data_out : out std_logic_vector(data_width-1 downto 0) := ( others => '0' )
+end dual_port_sram;
 
-    );
-  end dual_port_sram;
-  
-  architecture rtl of dual_port_sram is
-    
-    signal memory : memory_32b_type(memory_length - 1 downto 0) := (others => std_logic_vector(to_unsigned(default_value, data_width)));
+architecture syn of dual_port_sram is
+  type ram_type is array (ram_length - 1 downto 0) of std_logic_vector(data_width - 1 downto 0);
+  shared variable ram : ram_type := ( others => std_logic_vector(to_unsigned(0, data_width)));
 
-    signal port_a_data : std_logic_vector(data_width-1 downto 0) := (others => '0');
-    signal port_b_data : std_logic_vector(data_width-1 downto 0) := (others => '0');
-    
+  -- attribute ram_style        : string;
+  -- attribute ram_style of ram : signal is "block";
+
+function print_ram_input(
+  addr : std_logic_vector;
+  di   : std_logic_vector;
+  i     : integer
+) return string is
+begin
+  return
+    "addr: " & integer'image(to_integer(unsigned(addr))) &
+    " (" & integer'image(8 * i + 7) & " downto " & integer'image(8 * i) & ")" &
+    " value: " & integer'image(to_integer(unsigned(di(8 * i + 7 downto 8 * i))));
+end function;
+
+
+begin
+  process (clka)
   begin
-    
-    port_a_process: process(aclk, arstn) begin
-        if (arstn = '0') then
-            port_a_data_out <= (others => '0');
-        else
-            if (rising_edge(aclk)) then
-                port_a_data_out <= memory(to_integer(unsigned(port_a_addr)));
-                if (port_a_wren = '1') then
-                    memory(to_integer(unsigned(port_a_addr))) <= port_a_data_in;
-                end if;
-            end if;
-        end if;
-    end process;
+    if rising_edge(clka) then
+      if ena = '1' then
+        doa <= ram(to_integer(unsigned(addra)));
+        -- Byte-masked write
+        for i in 0 to integer(data_width/8) - 1 loop
+          if wea(i) = '1' then
+              report "port_a: " & print_ram_input(addra, dia, i);
+              ram(to_integer(unsigned(addra)))(8 * i + 7 downto 8 * i) := dia(8 * i + 7 downto 8 * i);
+          end if;
+        end loop;
 
-    port_b_process: process(aclk, arstn) begin
-        if (arstn = '0') then
-            port_b_data_out <= (others => '0');
-        else
-            if (rising_edge(aclk)) then
-                port_b_data_out <= memory(to_integer(unsigned(port_b_addr)));
-                if (port_b_wren = '1') then
-                    memory(to_integer(unsigned(port_b_addr))) <= port_b_data_in;
-                end if;
-            end if;
-        end if;
-    end process;
+      end if;
+    end if;
+  end process;
 
-  end rtl;
+  process (clkb)
+  begin
+    if rising_edge(clkb) then
+      if enb = '1' then
+        dob <= ram(to_integer(unsigned(addrb)));
+        -- Byte-masked write
+        for i in 0 to integer(data_width/8) - 1 loop
+          if web(i) = '1' then
+            report "port_b: " & print_ram_input(addrb, dib, i);
+            ram(to_integer(unsigned(addrb)))(8 * i + 7 downto 8 * i) := dib(8 * i + 7 downto 8 * i);
+          end if;
+        end loop;
+      end if;
+    end if;
+  end process;
+
+end syn;

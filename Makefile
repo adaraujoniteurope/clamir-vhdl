@@ -7,7 +7,7 @@ PACKAGE_OBJECTS = $(patsubst %.vhdl,%.o,$(PACKAGES))
 TARGETS = $(patsubst %_tb.vhdl,%_tb,$(TESTBENCHES))
 
 # testbench
-TESTBENCH = dac_analog_output
+TESTBENCH = mm_memory_reader
 TESTBENCHPATH = testbenches/${TESTBENCHFILE}*
 TESTBENCHFILE = ${TESTBENCH}_tb
 WORKDIR = work
@@ -16,7 +16,7 @@ WORKDIR = work
 GHDL_CMD = ghdl
 GHDL_FLAGS  = -fexplicit --ieee=synopsys --warn-no-vital-generic --workdir=$(WORKDIR) -Wl,-lm
 
-STOP_TIME = 100ns
+STOP_TIME = 100us
 # Simulation break condition
 #GHDL_SIM_OPT = --assert-level=error
 GHDL_SIM_OPT = --stop-time=$(STOP_TIME)

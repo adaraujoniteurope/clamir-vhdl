@@ -29,3 +29,1257 @@ regenerate_bd_layout
 regenerate_bd_layout -routing
 save_bd_design
 update_compile_order -fileset sources_1
+group_bd_cells drift_offset [get_bd_cells offset] [get_bd_cells Procc_drift]
+regenerate_bd_layout -hierarchy [get_bd_cells drift_offset]
+regenerate_bd_layout -hierarchy [get_bd_cells drift_offset]
+regenerate_bd_layout -hierarchy [get_bd_cells drift_offset] -routing
+disconnect_bd_net /drift_offset/dina_1 [get_bd_pins drift_offset/dina]
+delete_bd_objs [get_bd_nets drift_offset/tac_16k_v2clamir_interfaz_DRIFT_ADDR]
+delete_bd_objs [get_bd_nets drift_offset/tac_16k_v2clamir_interfaz_DRIFT_Data_write]
+create_bd_cell -type module -reference mm_linear_correction_multiply drift_offset/mm_linear_correction_0
+create_bd_cell -type module -reference mm_linear_correction_add drift_offset/mm_linear_correction_1
+connect_bd_intf_net [get_bd_intf_pins drift_offset/mm_linear_correction_0/y] [get_bd_intf_pins drift_offset/mm_linear_correction_1/a]
+set_property location {3 568 291} [get_bd_cells drift_offset/mm_linear_correction_1]
+add_files -norecurse -scan_for_includes {/home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/work.memory.vhdl /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/mm_memory_reader.vhdl /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/work.memory_mapped_streaming.vhdl}
+update_compile_order -fileset sources_1
+create_bd_cell -type module -reference mm_memory_reader drift_offset/mm_memory_reader_0
+report_ip_status -name ip_status 
+update_module_reference [get_ips  system_mm_memory_reader_0_0]
+update_compile_order -fileset sources_1
+connect_bd_intf_net [get_bd_intf_pins drift_offset/mm_memory_reader_0/y] [get_bd_intf_pins drift_offset/mm_linear_correction_0/a]
+copy_bd_objs drift_offset  [get_bd_cells {drift_offset/Procc_drift/blk_mem_gen_0}]
+set_property location {2 728 -376} [get_bd_cells drift_offset/blk_mem_gen_0]
+connect_bd_intf_net [get_bd_intf_pins drift_offset/mm_memory_reader_0/a_bram] [get_bd_intf_pins drift_offset/blk_mem_gen_0/BRAM_PORTB]
+set_property location {-42 -393} [get_bd_pins drift_offset/wea1]
+connect_bd_net [get_bd_pins drift_offset/wea1] [get_bd_pins drift_offset/blk_mem_gen_0/wea]
+connect_bd_net [get_bd_pins drift_offset/dina] [get_bd_pins drift_offset/blk_mem_gen_0/dina]
+connect_bd_net [get_bd_pins drift_offset/addra1] [get_bd_pins drift_offset/Procc_drift/addra]
+connect_bd_net [get_bd_pins drift_offset/wea1] [get_bd_pins drift_offset/Procc_drift/wea]
+disconnect_bd_net /drift_offset/wea1_1 [get_bd_pins drift_offset/blk_mem_gen_0/wea]
+set_property location {-34 444} [get_bd_pins drift_offset/update]
+startgroup
+set_property -dict [list \
+  CONFIG.Byte_Size {8} \
+  CONFIG.Memory_Type {True_Dual_Port_RAM} \
+  CONFIG.Use_Byte_Write_Enable {true} \
+  CONFIG.use_bram_block {Stand_Alone} \
+] [get_bd_cells drift_offset/blk_mem_gen_0]
+endgroup
+connect_bd_net [get_bd_pins drift_offset/addra] [get_bd_pins drift_offset/blk_mem_gen_0/addra]
+connect_bd_net [get_bd_pins drift_offset/clk] [get_bd_pins drift_offset/blk_mem_gen_0/clka]
+delete_bd_objs [get_bd_nets drift_offset/Tachyon16k_IF_VU_0_ap_done]
+connect_bd_net [get_bd_pins drift_offset/ap_start] [get_bd_pins drift_offset/mm_memory_reader_0/ap_start]
+startgroup
+connect_bd_net [get_bd_pins drift_offset/mm_memory_reader_0/intr] [get_bd_pins drift_offset/Procc_drift/ap_start]
+endgroup
+delete_bd_objs [get_bd_nets drift_offset/mm_memory_reader_0_intr]
+set_property location {2 873 584} [get_bd_cells drift_offset/mm_linear_correction_1]
+connect_bd_net [get_bd_pins drift_offset/clk] [get_bd_pins drift_offset/mm_memory_reader_0/aclk]
+startgroup
+create_bd_pin -dir I drift_offset/arstn
+connect_bd_net [get_bd_pins drift_offset/arstn] [get_bd_pins drift_offset/mm_memory_reader_0/arstn]
+endgroup
+set_property name RESETN [get_bd_pins drift_offset/arstn]
+save_bd_design
+delete_bd_objs [get_bd_nets drift_offset/arstn_1] [get_bd_pins drift_offset/RESETN]
+startgroup
+create_bd_cell -type ip -vlnv xilinx.com:ip:util_vector_logic:2.0 drift_offset/util_vector_logic_0
+endgroup
+set_property -dict [list \
+  CONFIG.C_OPERATION {not} \
+  CONFIG.C_SIZE {1} \
+] [get_bd_cells drift_offset/util_vector_logic_0]
+connect_bd_net [get_bd_pins drift_offset/util_vector_logic_0/Res] [get_bd_pins drift_offset/mm_memory_reader_0/arstn]
+connect_bd_net [get_bd_pins drift_offset/RESET] [get_bd_pins drift_offset/util_vector_logic_0/Op1]
+connect_bd_net [get_bd_pins drift_offset/mm_linear_correction_1/aclk] [get_bd_pins drift_offset/mm_linear_correction_0/aclk]
+connect_bd_net [get_bd_pins drift_offset/mm_linear_correction_1/arstn] [get_bd_pins drift_offset/mm_linear_correction_0/arstn]
+connect_bd_net [get_bd_pins drift_offset/clk] [get_bd_pins drift_offset/mm_linear_correction_0/aclk]
+connect_bd_net [get_bd_pins drift_offset/mm_linear_correction_0/arstn] [get_bd_pins drift_offset/util_vector_logic_0/Res]
+add_files -norecurse -scan_for_includes /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/mm_drift.vhdl
+update_compile_order -fileset sources_1
+report_ip_status -name ip_status 
+create_bd_cell -type module -reference mm_drift drift_offset/mm_drift_0
+create_bd_cell -type module -reference mm_split drift_offset/mm_split_0
+connect_bd_intf_net [get_bd_intf_pins drift_offset/mm_split_0/y0] [get_bd_intf_pins drift_offset/mm_drift_0/a]
+add_files -norecurse -scan_for_includes /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/mm_linear_correction_add_constant.vhd
+update_compile_order -fileset sources_1
+create_bd_cell -type module -reference mm_linear_correction_add_constant drift_offset/mm_linear_correction_2
+set_property location {3 1639 -212} [get_bd_cells drift_offset/mm_linear_correction_2]
+connect_bd_net [get_bd_pins drift_offset/mm_drift_0/drift_value] [get_bd_pins drift_offset/mm_linear_correction_2/offset]
+set_property location {3.5 1568 -189} [get_bd_cells drift_offset/mm_linear_correction_2]
+set_property location {4 1592 -357} [get_bd_cells drift_offset/mm_linear_correction_2]
+set_property location {4 1578 -483} [get_bd_cells drift_offset/mm_linear_correction_2]
+set_property location {4 1582 -451} [get_bd_cells drift_offset/mm_linear_correction_2]
+set_property location {4 1572 -429} [get_bd_cells drift_offset/mm_linear_correction_2]
+startgroup
+set_property location {3 1263 -287} [get_bd_cells drift_offset/mm_drift_0]
+set_property location {4 1583 -337} [get_bd_cells drift_offset/mm_linear_correction_2]
+endgroup
+startgroup
+set_property location {3 1243 -202} [get_bd_cells drift_offset/mm_drift_0]
+set_property location {4 1563 -252} [get_bd_cells drift_offset/mm_linear_correction_2]
+endgroup
+startgroup
+set_property location {3 1268 -221} [get_bd_cells drift_offset/mm_drift_0]
+set_property location {4 1588 -271} [get_bd_cells drift_offset/mm_linear_correction_2]
+endgroup
+startgroup
+set_property location {4 1571 -269} [get_bd_cells drift_offset/mm_linear_correction_2]
+set_property location {3 1251 -219} [get_bd_cells drift_offset/mm_drift_0]
+endgroup
+startgroup
+set_property location {4 1573 -271} [get_bd_cells drift_offset/mm_linear_correction_2]
+set_property location {3 1253 -221} [get_bd_cells drift_offset/mm_drift_0]
+endgroup
+startgroup
+set_property location {4 1569 -261} [get_bd_cells drift_offset/mm_linear_correction_2]
+set_property location {3 1249 -211} [get_bd_cells drift_offset/mm_drift_0]
+endgroup
+connect_bd_intf_net [get_bd_intf_pins drift_offset/mm_split_0/y1] [get_bd_intf_pins drift_offset/mm_linear_correction_2/a]
+delete_bd_objs [get_bd_intf_nets drift_offset/mm_linear_correction_0_y]
+delete_bd_objs [get_bd_intf_nets drift_offset/mm_memory_reader_0_y]
+delete_bd_objs [get_bd_nets drift_offset/clamir_ip_clk]
+delete_bd_objs [get_bd_nets drift_offset/util_vector_logic_0_Res]
+set_property location {5 1922 -243} [get_bd_cells drift_offset/mm_linear_correction_0]
+connect_bd_intf_net [get_bd_intf_pins drift_offset/mm_linear_correction_2/y] [get_bd_intf_pins drift_offset/mm_linear_correction_0/a]
+connect_bd_net [get_bd_pins drift_offset/mm_linear_correction_0/aclk] [get_bd_pins drift_offset/mm_linear_correction_2/aclk]
+connect_bd_net [get_bd_pins drift_offset/mm_linear_correction_0/arstn] [get_bd_pins drift_offset/mm_linear_correction_2/arstn]
+connect_bd_net [get_bd_pins drift_offset/mm_drift_0/aclk] [get_bd_pins drift_offset/mm_linear_correction_0/aclk]
+connect_bd_net [get_bd_pins drift_offset/mm_drift_0/arstn] [get_bd_pins drift_offset/mm_linear_correction_0/arstn]
+set_property location {2 912 432} [get_bd_cells drift_offset/mm_linear_correction_1]
+set_property location {5.5 2219 -214} [get_bd_cells drift_offset/mm_linear_correction_1]
+delete_bd_objs [get_bd_intf_nets drift_offset/mm_linear_correction_2_y] [get_bd_cells drift_offset/mm_linear_correction_0]
+undo
+delete_bd_objs [get_bd_intf_nets drift_offset/mm_linear_correction_2_y]
+set_property location {2 883 -95} [get_bd_cells drift_offset/mm_linear_correction_0]
+connect_bd_intf_net [get_bd_intf_pins drift_offset/mm_split_0/a] [get_bd_intf_pins drift_offset/mm_linear_correction_0/y]
+connect_bd_intf_net [get_bd_intf_pins drift_offset/mm_linear_correction_1/a] [get_bd_intf_pins drift_offset/mm_linear_correction_2/y]
+set_property location {5 1979 -214} [get_bd_cells drift_offset/mm_linear_correction_1]
+regenerate_bd_layout -hierarchy [get_bd_cells drift_offset]
+save_bd_design
+update_compile_order -fileset sources_1
+connect_bd_net [get_bd_pins drift_offset/mm_split_0/aclk] [get_bd_pins drift_offset/mm_linear_correction_2/aclk]
+connect_bd_net [get_bd_pins drift_offset/mm_split_0/arstn] [get_bd_pins drift_offset/mm_linear_correction_2/arstn]
+regenerate_bd_layout -hierarchy [get_bd_cells drift_offset]
+regenerate_bd_layout -hierarchy [get_bd_cells drift_offset] -routing
+set_property location {4 970 327} [get_bd_cells drift_offset/mm_linear_correction_2]
+set_property location {4.5 1407 357} [get_bd_cells drift_offset/mm_linear_correction_1]
+set_property location {3 611 172} [get_bd_cells drift_offset/mm_drift_0]
+set_property location {3 599 -74} [get_bd_cells drift_offset/mm_drift_0]
+set_property location {4 1006 191} [get_bd_cells drift_offset/mm_linear_correction_2]
+set_property location {4 983 249} [get_bd_cells drift_offset/mm_linear_correction_2]
+set_property location {4 926 -116} [get_bd_cells drift_offset/mm_linear_correction_2]
+set_property location {3 632 108} [get_bd_cells drift_offset/mm_drift_0]
+set_property location {3 635 165} [get_bd_cells drift_offset/mm_drift_0]
+delete_bd_objs [get_bd_intf_nets drift_offset/mm_split_0_y0]
+delete_bd_objs [get_bd_intf_nets drift_offset/mm_split_0_y1]
+connect_bd_intf_net [get_bd_intf_pins drift_offset/mm_split_0/y1] [get_bd_intf_pins drift_offset/mm_drift_0/a]
+set_property location {3 546 79} [get_bd_cells drift_offset/mm_split_0]
+undo
+connect_bd_intf_net [get_bd_intf_pins drift_offset/mm_split_0/y0] [get_bd_intf_pins drift_offset/mm_linear_correction_2/a]
+set_property location {4 988 75} [get_bd_cells drift_offset/mm_linear_correction_2]
+set_property location {4 985 133} [get_bd_cells drift_offset/mm_linear_correction_2]
+set_property location {4 991 154} [get_bd_cells drift_offset/mm_linear_correction_2]
+set_property screensize {174 222} [get_bd_cells drift_offset/mm_linear_correction_2]
+set_property location {4 1003 187} [get_bd_cells drift_offset/mm_linear_correction_2]
+set_property screensize {168 178} [get_bd_cells drift_offset/mm_linear_correction_2]
+set_property location {4 988 174} [get_bd_cells drift_offset/mm_linear_correction_2]
+set_property location {5 1433 355} [get_bd_cells drift_offset/mm_linear_correction_1]
+set_property location {5 1427 159} [get_bd_cells drift_offset/mm_linear_correction_1]
+set_property location {5 1407 185} [get_bd_cells drift_offset/mm_linear_correction_1]
+set_property location {5 1411 190} [get_bd_cells drift_offset/mm_linear_correction_1]
+connect_bd_net [get_bd_pins drift_offset/mm_linear_correction_1/aclk] [get_bd_pins drift_offset/mm_linear_correction_2/aclk]
+connect_bd_net [get_bd_pins drift_offset/mm_linear_correction_1/arstn] [get_bd_pins drift_offset/mm_linear_correction_2/arstn]
+connect_bd_net [get_bd_pins drift_offset/clk] [get_bd_pins drift_offset/mm_linear_correction_2/aclk]
+connect_bd_net [get_bd_pins drift_offset/util_vector_logic_0/Res] [get_bd_pins drift_offset/mm_linear_correction_2/arstn]
+delete_bd_objs [get_bd_intf_nets drift_offset/mm_linear_correction_2_y]
+copy_bd_objs drift_offset  [get_bd_cells {drift_offset/mm_linear_correction_2}]
+set_property location {4 1633 197} [get_bd_cells drift_offset/mm_linear_correction_3]
+connect_bd_intf_net [get_bd_intf_pins drift_offset/mm_linear_correction_2/y] [get_bd_intf_pins drift_offset/mm_linear_correction_3/a]
+connect_bd_intf_net [get_bd_intf_pins drift_offset/mm_linear_correction_3/y] [get_bd_intf_pins drift_offset/mm_linear_correction_1/a]
+set_property location {4.5 1977 195} [get_bd_cells drift_offset/mm_linear_correction_3]
+set_property location {5 1928 29} [get_bd_cells drift_offset/mm_linear_correction_3]
+regenerate_bd_layout -hierarchy [get_bd_cells drift_offset]
+set_property location {3 691 1187} [get_bd_cells drift_offset/mm_drift_0]
+set_property location {3 681 1063} [get_bd_cells drift_offset/mm_drift_0]
+set_property location {3 667 1123} [get_bd_cells drift_offset/mm_drift_0]
+set_property location {3 665 1204} [get_bd_cells drift_offset/mm_drift_0]
+set_property location {3 662 987} [get_bd_cells drift_offset/mm_split_0]
+set_property location {4 1020 1177} [get_bd_cells drift_offset/mm_drift_0]
+set_property location {5 1333 1156} [get_bd_cells drift_offset/mm_linear_correction_2]
+set_property location {6 1653 1257} [get_bd_cells drift_offset/mm_linear_correction_3]
+set_property location {6.5 2690 1373} [get_bd_cells drift_offset/mm_linear_correction_1]
+set_property location {4 959 1197} [get_bd_cells drift_offset/mm_drift_0]
+set_property location {4 939 1428} [get_bd_cells drift_offset/mm_drift_0]
+set_property location {6 1791 1174} [get_bd_cells drift_offset/mm_linear_correction_3]
+set_property location {6 1789 1179} [get_bd_cells drift_offset/mm_linear_correction_3]
+set_property location {6 1782 1193} [get_bd_cells drift_offset/mm_linear_correction_3]
+set_property location {6 1783 1200} [get_bd_cells drift_offset/mm_linear_correction_3]
+set_property location {2 361 938} [get_bd_cells drift_offset/mm_linear_correction_0]
+set_property location {2 374 938} [get_bd_cells drift_offset/mm_linear_correction_0]
+set_property location {2 378 908} [get_bd_cells drift_offset/mm_linear_correction_0]
+set_property location {2 376 965} [get_bd_cells drift_offset/mm_linear_correction_0]
+set_property location {3 647 1047} [get_bd_cells drift_offset/mm_split_0]
+set_property location {3 652 1080} [get_bd_cells drift_offset/mm_split_0]
+set_property location {3 654 1111} [get_bd_cells drift_offset/mm_split_0]
+set_property location {3 651 1124} [get_bd_cells drift_offset/mm_split_0]
+set_property location {1 69 954} [get_bd_cells drift_offset/util_vector_logic_0]
+set_property location {1 94 991} [get_bd_cells drift_offset/util_vector_logic_0]
+set_property location {1 98 972} [get_bd_cells drift_offset/util_vector_logic_0]
+set_property location {1 92 985} [get_bd_cells drift_offset/util_vector_logic_0]
+set_property location {-155 914} [get_bd_pins drift_offset/clk]
+set_property location {-159 1101} [get_bd_pins drift_offset/clk]
+set_property location {6 1769 1217} [get_bd_cells drift_offset/mm_linear_correction_3]
+set_property location {6 1813 1159} [get_bd_cells drift_offset/mm_linear_correction_3]
+set_property location {6 1796 1187} [get_bd_cells drift_offset/mm_linear_correction_3]
+set_property location {6 1788 1194} [get_bd_cells drift_offset/mm_linear_correction_3]
+set_property location {6 1782 1203} [get_bd_cells drift_offset/mm_linear_correction_3]
+set_property name drift [get_bd_cells drift_offset/mm_linear_correction_2]
+set_property name black_level [get_bd_cells drift_offset/mm_linear_correction_3]
+set_property name offset_table [get_bd_cells drift_offset/mm_linear_correction_1]
+connect_bd_net [get_bd_pins drift_offset/clk] [get_bd_pins drift_offset/black_level/aclk]
+connect_bd_net [get_bd_pins drift_offset/black_level/arstn] [get_bd_pins drift_offset/util_vector_logic_0/Res]
+startgroup
+create_bd_cell -type ip -vlnv xilinx.com:ip:c_addsub:12.0 drift_offset/c_addsub_0
+endgroup
+set_property -dict [list \
+  CONFIG.Add_Mode {Subtract} \
+  CONFIG.B_Constant {true} \
+  CONFIG.CE {false} \
+  CONFIG.Implementation {Fabric} \
+  CONFIG.Latency {2} \
+  CONFIG.Latency_Configuration {Automatic} \
+  CONFIG.Out_Width {15} \
+] [get_bd_cells drift_offset/c_addsub_0]
+set_property -dict [list \
+  CONFIG.Bypass {true} \
+  CONFIG.SCLR {false} \
+  CONFIG.SINIT {false} \
+] [get_bd_cells drift_offset/c_addsub_0]
+delete_bd_objs [get_bd_cells drift_offset/c_addsub_0]
+save_bd_design
+add_files -norecurse -scan_for_includes /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/mm_fifo_writer.vhd
+update_compile_order -fileset sources_1
+report_ip_status -name ip_status 
+regenerate_bd_layout -hierarchy [get_bd_cells drift_offset]
+startgroup
+create_bd_cell -type ip -vlnv xilinx.com:ip:mutex:2.1 drift_offset/mutex_0
+endgroup
+undo
+undo
+redo
+redo
+delete_bd_objs [get_bd_cells drift_offset/mutex_0]
+report_ip_status -name ip_status 
+startgroup
+create_bd_cell -type ip -vlnv xilinx.com:ip:blk_mem_gen:8.4 drift_offset/blk_mem_gen_1
+endgroup
+set_property -dict [list \
+  CONFIG.Memory_Type {True_Dual_Port_RAM} \
+  CONFIG.use_bram_block {Stand_Alone} \
+] [get_bd_cells drift_offset/blk_mem_gen_1]
+set_property location {6.5 1899 706} [get_bd_cells drift_offset/blk_mem_gen_1]
+connect_bd_intf_net [get_bd_intf_pins drift_offset/blk_mem_gen_1/BRAM_PORTB] [get_bd_intf_pins drift_offset/offset_table/offset_bram]
+set_property name drift_apply [get_bd_cells drift_offset/drift]
+startgroup
+set_property CONFIG.data_width {32} [get_bd_cells drift_offset/mm_drift_0]
+endgroup
+report_ip_status -name ip_status 
+save_bd_design
+startgroup
+copy_bd_objs drift_offset  [get_bd_cells {drift_offset/offset_table}]
+set_property location {5.5 1441 465} [get_bd_cells drift_offset/offset_table1]
+endgroup
+startgroup
+set_property location {8 2127 927} [get_bd_cells drift_offset/offset_table]
+set_property location {9 2407 697} [get_bd_cells drift_offset/blk_mem_gen_1]
+set_property location {6 1457 907} [get_bd_cells drift_offset/black_level]
+set_property location {5 1127 867} [get_bd_cells drift_offset/drift_apply]
+endgroup
+set_property location {4 748 823} [get_bd_cells drift_offset/mm_drift_0]
+set_property location {4 758 1165} [get_bd_cells drift_offset/mm_drift_0]
+set_property location {4 792 957} [get_bd_cells drift_offset/mm_drift_0]
+set_property location {4 775 920} [get_bd_cells drift_offset/mm_drift_0]
+set_property location {4 766 934} [get_bd_cells drift_offset/mm_drift_0]
+set_property location {7 1827 914} [get_bd_cells drift_offset/offset_table]
+set_property location {7 1741 924} [get_bd_cells drift_offset/offset_table]
+set_property location {7 1743 938} [get_bd_cells drift_offset/offset_table]
+set_property location {7 1755 932} [get_bd_cells drift_offset/offset_table]
+set_property location {7.5 2031 921} [get_bd_cells drift_offset/blk_mem_gen_1]
+set_property location {8 2028 912} [get_bd_cells drift_offset/blk_mem_gen_1]
+save_bd_design
+set_property location {3 506 647} [get_bd_cells drift_offset/mm_split_0]
+set_property location {3 500 687} [get_bd_cells drift_offset/mm_split_0]
+set_property location {2 164 588} [get_bd_cells drift_offset/mm_linear_correction_0]
+set_property location {2 285 553} [get_bd_cells drift_offset/mm_linear_correction_0]
+set_property location {1 -15 725} [get_bd_cells drift_offset/util_vector_logic_0]
+set_property location {1 -26 806} [get_bd_cells drift_offset/util_vector_logic_0]
+set_property location {1 3 708} [get_bd_cells drift_offset/util_vector_logic_0]
+set_property location {2 254 593} [get_bd_cells drift_offset/mm_linear_correction_0]
+set_property location {2 287 575} [get_bd_cells drift_offset/mm_linear_correction_0]
+set_property location {2 267 583} [get_bd_cells drift_offset/mm_linear_correction_0]
+set_property location {6 1410 537} [get_bd_cells drift_offset/offset_table1]
+report_ip_status -name ip_status 
+delete_bd_objs [get_bd_intf_nets mm_linear_correction/smartconnect_0_M04_AXI] [get_bd_nets mm_linear_correction/mm_memory_writer_0_intr] [get_bd_intf_nets mm_linear_correction/mm_memory_writer_0_bram] [get_bd_intf_nets mm_linear_correction/mm_downscale_limited_0_y] [get_bd_cells mm_linear_correction/mm_memory_writer_0]
+update_compile_order -fileset sources_1
+create_bd_cell -type module -reference mm_fifo_writer mm_linear_correction/mm_fifo_writer_0
+set_property location {6 1865 825} [get_bd_cells mm_linear_correction/mm_fifo_writer_0]
+connect_bd_intf_net [get_bd_intf_pins mm_linear_correction/mm_fifo_writer_0/a] [get_bd_intf_pins mm_linear_correction/mm_downscale_limited_0/y]
+connect_bd_intf_net [get_bd_intf_pins mm_linear_correction/mm_fifo_writer_0/bram] [get_bd_intf_pins mm_linear_correction/blk_mem_gen_result/BRAM_PORTB]
+connect_bd_net [get_bd_pins mm_linear_correction/intr] [get_bd_pins mm_linear_correction/mm_fifo_writer_0/intr]
+connect_bd_intf_net [get_bd_intf_pins mm_linear_correction/mm_fifo_writer_0/S_AXI] [get_bd_intf_pins mm_linear_correction/smartconnect_0/M04_AXI]
+connect_bd_net [get_bd_pins mm_linear_correction/s_axi_aclk] [get_bd_pins mm_linear_correction/mm_fifo_writer_0/S_AXI_ACLK]
+connect_bd_net [get_bd_pins mm_linear_correction/s_axi_aresetn] [get_bd_pins mm_linear_correction/mm_fifo_writer_0/S_AXI_ARESETN]
+regenerate_bd_layout -hierarchy [get_bd_cells mm_linear_correction]
+regenerate_bd_layout -hierarchy [get_bd_cells mm_linear_correction] -routing
+save_bd_design
+report_ip_status -name ip_status 
+update_compile_order -fileset sources_1
+regenerate_bd_layout -hierarchy [get_bd_cells mm_linear_correction]
+regenerate_bd_layout -hierarchy [get_bd_cells mm_linear_correction] -routing
+connect_bd_intf_net [get_bd_intf_pins drift_offset/mm_memory_reader_0/y] [get_bd_intf_pins drift_offset/offset_table1/a]
+startgroup
+set_property -dict [list \
+  CONFIG.Operating_Mode_A {READ_FIRST} \
+  CONFIG.Write_Depth_A {16384} \
+  CONFIG.Write_Width_A {32} \
+] [get_bd_cells drift_offset/blk_mem_gen_0]
+endgroup
+startgroup
+set_property CONFIG.Write_Depth_A {4096} [get_bd_cells drift_offset/blk_mem_gen_0]
+endgroup
+startgroup
+set_property CONFIG.Write_Depth_A {16384} [get_bd_cells drift_offset/blk_mem_gen_0]
+endgroup
+connect_bd_net [get_bd_pins drift_offset/blk_mem_gen_0/clka] [get_bd_pins drift_offset/mm_memory_reader_0/aclk]
+startgroup
+create_bd_cell -type ip -vlnv xilinx.com:ip:xlconstant:1.1 drift_offset/xlconstant_0
+endgroup
+set_property -dict [list \
+  CONFIG.CONST_VAL {15} \
+  CONFIG.CONST_WIDTH {4} \
+] [get_bd_cells drift_offset/xlconstant_0]
+connect_bd_net [get_bd_pins drift_offset/xlconstant_0/dout] [get_bd_pins drift_offset/blk_mem_gen_0/wea]
+set_property location {7 1630 497} [get_bd_cells drift_offset/xlconstant_0]
+set_property location {6 1397 623} [get_bd_cells drift_offset/offset_table1]
+delete_bd_objs [get_bd_intf_nets drift_offset/mm_memory_reader_0_y] [get_bd_cells drift_offset/offset_table1]
+set_property name input_memory_reader [get_bd_cells drift_offset/mm_memory_reader_0]
+save_bd_design
+connect_bd_intf_net [get_bd_intf_pins drift_offset/input_memory_reader/y] [get_bd_intf_pins drift_offset/mm_linear_correction_0/a]
+save_bd_design
+update_compile_order -fileset sources_1
+update_compile_order -fileset sources_1
+report_ip_status -name ip_status 
+report_ip_status -name ip_status 
+update_module_reference [get_ips  {system_mm_linear_correction_2_0 system_mm_linear_correction_2_1}]
+report_ip_status -name ip_status 
+startgroup
+set_property CONFIG.subtract_offset {true} [get_bd_cells drift_offset/drift_apply]
+endgroup
+save_bd_design
+startgroup
+create_bd_cell -type ip -vlnv xilinx.com:ip:xlconstant:1.1 drift_offset/xlconstant_1
+endgroup
+connect_bd_net [get_bd_pins drift_offset/xlconstant_1/dout] [get_bd_pins drift_offset/drift_apply/override]
+startgroup
+set_property CONFIG.CONST_VAL {0} [get_bd_cells drift_offset/xlconstant_1]
+endgroup
+set_property location {5 1049 899} [get_bd_cells drift_offset/xlconstant_1]
+set_property location {5 1097 1038} [get_bd_cells drift_offset/xlconstant_1]
+save_bd_design
+report_ip_status -name ip_status 
+set_property location {4 786 1014} [get_bd_cells drift_offset/mm_drift_0]
+set_property location {4 827 838} [get_bd_cells drift_offset/xlconstant_1]
+set_property name low [get_bd_cells drift_offset/xlconstant_1]
+set_property name drift_apply_override_disable [get_bd_cells drift_offset/low]
+save_bd_design
+copy_bd_objs drift_offset  [get_bd_cells {drift_offset/drift_apply_override_disable}]
+set_property location {6 1362 1063} [get_bd_cells drift_offset/drift_apply_override_disable1]
+set_property name black_level_override_disable [get_bd_cells drift_offset/drift_apply_override_disable1]
+connect_bd_net [get_bd_pins drift_offset/black_level_override_disable/dout] [get_bd_pins drift_offset/black_level/override]
+save_bd_design
+create_bd_cell -type module -reference mm_memory_writer drift_offset/mm_memory_writer_0
+create_bd_cell -type module -reference mm_fifo_writer drift_offset/mm_fifo_writer_0
+delete_bd_objs [get_bd_cells drift_offset/mm_memory_writer_0]
+set_property location {8 2360 831} [get_bd_cells drift_offset/mm_fifo_writer_0]
+delete_bd_objs [get_bd_cells drift_offset/mm_fifo_writer_0]
+save_bd_design
+report_ip_status -name ip_status 
+create_bd_cell -type module -reference mm_memory_writer drift_offset/mm_memory_writer_0
+report_ip_status -name ip_status 
+delete_bd_objs [get_bd_cells drift_offset/mm_memory_writer_0]
+update_compile_order -fileset sources_1
+update_compile_order -fileset sources_1
+regenerate_bd_layout -hierarchy [get_bd_cells drift_offset]
+regenerate_bd_layout -hierarchy [get_bd_cells drift_offset] -routing
+regenerate_bd_layout -hierarchy [get_bd_cells drift_offset]
+regenerate_bd_layout -hierarchy [get_bd_cells drift_offset] -routing
+save_bd_design
+regenerate_bd_layout
+regenerate_bd_layout -routing
+report_ip_status -name ip_status 
+update_module_reference [get_ips  system_mm_drift_0_0]
+add_files -scan_for_includes {/home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/mm_rescale_32b_16b.vhdl /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/tachyon16k_if_roic2_clamir.vhdl /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/work.memory.vhdl /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/tempir_median_v3.vhdl /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/axi4lite_mngr_arm.vhdl /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/mm_memory_reader.vhdl /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/i2c_shutter_controller_protocol_converter.vhdl /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/clamir_tachyon16k_if_vu.vhdl /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/mm_linear_correction_add.vhdl /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/axi4lite_mb.vhdl /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/iob_register.vhdl /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/mm_linear_correction_test_pattern.vhdl /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/axi4lite_led_controller.vhdl /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/mm_sync_frame.vhdl /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/work.memory_mapped_streaming.vhdl /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/axis_linear_correction.vhdl /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/axis_mm_bridge.vhdl /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/mm_streaming_fifo.vhdl /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/i2c_shutter_initial_tune_trigger.vhdl /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/binarize.vhdl /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/clamir_16_to_32.vhdl /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/clamir_procc_offset_vu.vhdl /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/led_reg_bank.vhdl /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/mm_average.vhd /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/mm_demux.vhdl /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/i2c_xfer.vhdl /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/mm_downscale_limited.vhdl /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/roi_reg_bank.vhdl /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/axi_nit_ctrl_v0_1_s00_axi.vhdl /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/clamir_moments_vu.vhdl /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/clamir_trigger_ctrl_vu.vhdl /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/mm_slice.vhdl /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/arm_reg_bank.vhdl /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/iobuf.vhdl /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/mm_xilinx_bram_bridge.vhdl /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/mm_concat.vhdl /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/mm_streaming_subtract.vhdl /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/meta_harden.vhdl /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/mm_streaming_shift_left.vhdl /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/pwm_reg_bank.vhdl /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/mom_reg_bank.vhdl /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/mm_linear_correction_multiply.vhdl /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/mm_rescale.vhdl /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/mm_linear_correction_add_constant.vhdl /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/misc.vhdl /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/mm_linear_correction.vhdl /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/clamir_pkg.vhdl /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/I2C_shutter_tri_inst.vhdl /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/mm_split.vhdl /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/moment_track_count.vhdl /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/mm_drift.vhdl /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/mm_pattern_generator.vhdl /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/clamir_procc_bpc_vu.vhdl /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/axi4lite_arm.vhd /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/moment_track_timer.vhdl /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/mm_sync.vhdl /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/mm_streaming_sum.vhdl /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/mm_mux.vhdl /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/gen_reg_bank.vhdl /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/mm_linear_correction_ctrl.vhdl /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/mm_memory_writer.vhdl /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/bram_gen.vhdl /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/mm_streaming_shift_right.vhdl /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/spi_dac_analog_output.vhdl /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/dual_port_sram.vhdl /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/xilinx_block_ram.vhdl /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/mm_fifo_writer.vhdl /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/clamir_procc_drift_vu.vhdl /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/i2c_prescaler.vhdl /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/spi_ctrl_vu.vhdl /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/axi4lite_mngr_mb.vhdl /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/roi_round_fly.vhdl /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/camir_roic_io.vhdl /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/axi_nit_ctrl_v0_1.vhdl /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/mm_memory_snapshot_writer.vhdl /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/i2c_shutter_controller.vhdl /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/mm_streaming_averaging.vhdl}
+update_compile_order -fileset sources_1
+report_ip_status -name ip_status 
+update_module_reference [get_ips  {system_Trigger_CTRL_0_0 system_mm_mux_0_0 system_mm_linear_correction_2_0 system_meta_harden_3_0 system_protocol_converter_0 system_mm_concat_0_1 system_meta_harden_0_0 system_Tachyon16k_IF_v2clam_0_0 system_MEDIAN_0_0 system_SPI_DAC_analog_output_0_0 system_axi_NIT_ctrl_v0_1_0_0 system_mm_linear_correction_0_2 system_mm_concat_0_0 system_iob_register_1_0 system_axi4lite_mb_0_0 system_mm_linear_correction_2_1 system_mm_fifo_writer_0_0 system_procc_offset_0_0 system_meta_harden_2_0 system_mm_linear_correction_0_3 system_i2c_shutter_initial_0_0 system_ROI_round_fly_0_0 system_i2c_shutter_controll_0_0 system_procc_drift_0_0 system_mm_linear_correction_1_1 system_meta_harden_1_0 system_mm_split_0_0 system_mm_linear_correction_1_0 system_procc_BPC_0_0 system_mm_downscale_limited_0_0 system_CLAMIR_16_2_32_0_0 system_mm_linear_correction_0_1 system_SPI_ctrl_VU_0_0 system_MOMENTS_0_0 system_iob_register_0_0 system_axi4lite_led_control_0_0}]
+report_ip_status -name ip_status 
+export_ip_user_files -of_objects  [get_files /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/mm_memory_snapshot_writer.vhdl] -no_script -reset -force -quiet
+remove_files  /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/mm_memory_snapshot_writer.vhdl
+export_ip_user_files -of_objects  [get_files /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/I2C_shutter_tri_inst.vhd] -no_script -reset -force -quiet
+export_ip_user_files -of_objects  [get_files /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/arm_reg_bank.vhd] -no_script -reset -force -quiet
+export_ip_user_files -of_objects  [get_files /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/axi4lite_led_controller.vhd] -no_script -reset -force -quiet
+export_ip_user_files -of_objects  [get_files /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/axi4lite_mb.vhd] -no_script -reset -force -quiet
+export_ip_user_files -of_objects  [get_files /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/axi4lite_mngr_arm.vhd] -no_script -reset -force -quiet
+export_ip_user_files -of_objects  [get_files /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/axi4lite_mngr_mb.vhd] -no_script -reset -force -quiet
+export_ip_user_files -of_objects  [get_files /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/axi_nit_ctrl_v0_1.vhd] -no_script -reset -force -quiet
+export_ip_user_files -of_objects  [get_files /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/axi_nit_ctrl_v0_1_s00_axi.vhd] -no_script -reset -force -quiet
+export_ip_user_files -of_objects  [get_files /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/binarize.vhd] -no_script -reset -force -quiet
+export_ip_user_files -of_objects  [get_files /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/bram_gen.vhd] -no_script -reset -force -quiet
+export_ip_user_files -of_objects  [get_files /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/clamir_16_to_32.vhd] -no_script -reset -force -quiet
+export_ip_user_files -of_objects  [get_files /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/clamir_moments_vu.vhd] -no_script -reset -force -quiet
+export_ip_user_files -of_objects  [get_files /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/clamir_pkg.vhd] -no_script -reset -force -quiet
+export_ip_user_files -of_objects  [get_files /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/clamir_procc_bpc_vu.vhd] -no_script -reset -force -quiet
+export_ip_user_files -of_objects  [get_files /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/clamir_procc_drift_vu.vhd] -no_script -reset -force -quiet
+export_ip_user_files -of_objects  [get_files /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/clamir_procc_offset_vu.vhd] -no_script -reset -force -quiet
+export_ip_user_files -of_objects  [get_files /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/clamir_tachyon16k_if_vu.vhd] -no_script -reset -force -quiet
+export_ip_user_files -of_objects  [get_files /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/clamir_trigger_ctrl_vu.vhd] -no_script -reset -force -quiet
+export_ip_user_files -of_objects  [get_files /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/gen_reg_bank.vhd] -no_script -reset -force -quiet
+export_ip_user_files -of_objects  [get_files /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/i2c_prescaler.vhd] -no_script -reset -force -quiet
+export_ip_user_files -of_objects  [get_files /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/i2c_shutter_controller.vhd] -no_script -reset -force -quiet
+export_ip_user_files -of_objects  [get_files /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/i2c_shutter_controller_protocol_converter.vhd] -no_script -reset -force -quiet
+export_ip_user_files -of_objects  [get_files /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/i2c_shutter_initial_tune_trigger.vhd] -no_script -reset -force -quiet
+export_ip_user_files -of_objects  [get_files /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/i2c_xfer.vhd] -no_script -reset -force -quiet
+export_ip_user_files -of_objects  [get_files /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/iob_register.vhd] -no_script -reset -force -quiet
+export_ip_user_files -of_objects  [get_files /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/iobuf.vhd] -no_script -reset -force -quiet
+export_ip_user_files -of_objects  [get_files /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/led_reg_bank.vhd] -no_script -reset -force -quiet
+export_ip_user_files -of_objects  [get_files /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/meta_harden.vhd] -no_script -reset -force -quiet
+export_ip_user_files -of_objects  [get_files /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/mm_concat.vhd] -no_script -reset -force -quiet
+export_ip_user_files -of_objects  [get_files /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/mm_downscale_limited.vhd] -no_script -reset -force -quiet
+export_ip_user_files -of_objects  [get_files /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/mm_fifo_writer.vhd] -no_script -reset -force -quiet
+export_ip_user_files -of_objects  [get_files /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/mm_linear_correction_add.vhd] -no_script -reset -force -quiet
+export_ip_user_files -of_objects  [get_files /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/mm_linear_correction_add_constant.vhd] -no_script -reset -force -quiet
+export_ip_user_files -of_objects  [get_files /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/mm_linear_correction_ctrl.vhd] -no_script -reset -force -quiet
+export_ip_user_files -of_objects  [get_files /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/mm_linear_correction_multiply.vhd] -no_script -reset -force -quiet
+export_ip_user_files -of_objects  [get_files /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/mm_linear_correction_test_pattern.vhd] -no_script -reset -force -quiet
+export_ip_user_files -of_objects  [get_files /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/mm_memory_writer.vhd] -no_script -reset -force -quiet
+export_ip_user_files -of_objects  [get_files /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/mm_mux.vhd] -no_script -reset -force -quiet
+export_ip_user_files -of_objects  [get_files /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/mm_rescale.vhd] -no_script -reset -force -quiet
+export_ip_user_files -of_objects  [get_files /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/mm_rescale_32b_16b.vhd] -no_script -reset -force -quiet
+export_ip_user_files -of_objects  [get_files /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/mm_split.vhd] -no_script -reset -force -quiet
+export_ip_user_files -of_objects  [get_files /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/mm_sync.vhd] -no_script -reset -force -quiet
+export_ip_user_files -of_objects  [get_files /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/mom_reg_bank.vhd] -no_script -reset -force -quiet
+export_ip_user_files -of_objects  [get_files /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/moment_track_count.vhd] -no_script -reset -force -quiet
+export_ip_user_files -of_objects  [get_files /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/moment_track_timer.vhd] -no_script -reset -force -quiet
+export_ip_user_files -of_objects  [get_files /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/pwm_reg_bank.vhd] -no_script -reset -force -quiet
+export_ip_user_files -of_objects  [get_files /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/roi_reg_bank.vhd] -no_script -reset -force -quiet
+export_ip_user_files -of_objects  [get_files /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/roi_round_fly.vhd] -no_script -reset -force -quiet
+export_ip_user_files -of_objects  [get_files /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/spi_ctrl_vu.vhd] -no_script -reset -force -quiet
+export_ip_user_files -of_objects  [get_files /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/spi_dac_analog_output.vhd] -no_script -reset -force -quiet
+export_ip_user_files -of_objects  [get_files /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/tachyon16k_if_roic2_clamir.vhd] -no_script -reset -force -quiet
+export_ip_user_files -of_objects  [get_files /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/tempir_median_v3.vhd] -no_script -reset -force -quiet
+remove_files  {/home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/I2C_shutter_tri_inst.vhd /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/arm_reg_bank.vhd /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/axi4lite_led_controller.vhd /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/axi4lite_mb.vhd /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/axi4lite_mngr_arm.vhd /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/axi4lite_mngr_mb.vhd /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/axi_nit_ctrl_v0_1.vhd /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/axi_nit_ctrl_v0_1_s00_axi.vhd /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/binarize.vhd /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/bram_gen.vhd /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/clamir_16_to_32.vhd /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/clamir_moments_vu.vhd /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/clamir_pkg.vhd /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/clamir_procc_bpc_vu.vhd /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/clamir_procc_drift_vu.vhd /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/clamir_procc_offset_vu.vhd /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/clamir_tachyon16k_if_vu.vhd /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/clamir_trigger_ctrl_vu.vhd /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/gen_reg_bank.vhd /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/i2c_prescaler.vhd /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/i2c_shutter_controller.vhd /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/i2c_shutter_controller_protocol_converter.vhd /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/i2c_shutter_initial_tune_trigger.vhd /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/i2c_xfer.vhd /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/iob_register.vhd /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/iobuf.vhd /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/led_reg_bank.vhd /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/meta_harden.vhd /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/mm_concat.vhd /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/mm_downscale_limited.vhd /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/mm_fifo_writer.vhd /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/mm_linear_correction_add.vhd /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/mm_linear_correction_add_constant.vhd /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/mm_linear_correction_ctrl.vhd /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/mm_linear_correction_multiply.vhd /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/mm_linear_correction_test_pattern.vhd /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/mm_memory_writer.vhd /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/mm_mux.vhd /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/mm_rescale.vhd /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/mm_rescale_32b_16b.vhd /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/mm_split.vhd /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/mm_sync.vhd /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/mom_reg_bank.vhd /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/moment_track_count.vhd /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/moment_track_timer.vhd /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/pwm_reg_bank.vhd /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/roi_reg_bank.vhd /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/roi_round_fly.vhd /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/spi_ctrl_vu.vhd /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/spi_dac_analog_output.vhd /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/tachyon16k_if_roic2_clamir.vhd /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/tempir_median_v3.vhd}
+report_ip_status -name ip_status 
+create_bd_cell -type module -reference mm_memory_writer drift_offset/mm_memory_writer_0
+report_ip_status -name ip_status 
+update_module_reference [get_ips  system_mm_memory_writer_0_3]
+update_compile_order -fileset sources_1
+set_property location {5 1319 384} [get_bd_cells drift_offset/mm_memory_writer_0]
+report_ip_status -name ip_status 
+set_property location {2 509 465} [get_bd_cells drift_offset/mm_memory_writer_0]
+create_bd_cell -type module -reference mm_streaming_averaging drift_offset/mm_streaming_averagi_0
+create_bd_cell -type module -reference mm_split drift_offset/mm_split_1
+set_property location {3 709 380} [get_bd_cells drift_offset/mm_split_1]
+set_property location {3 700 399} [get_bd_cells drift_offset/mm_split_1]
+set_property location {2 482 -398} [get_bd_cells drift_offset/blk_mem_gen_0]
+set_property location {1 155 -160} [get_bd_cells drift_offset/input_memory_reader]
+set_property location {1 143 -230} [get_bd_cells drift_offset/input_memory_reader]
+set_property location {-125 -398} [get_bd_pins drift_offset/dina]
+set_property location {-74 -389} [get_bd_pins drift_offset/dina]
+set_property location {1 132 -559} [get_bd_cells drift_offset/xlconstant_0]
+set_property location {-94 -430} [get_bd_pins drift_offset/addra]
+set_property location {-65 -324} [get_bd_pins drift_offset/clk]
+set_property location {-78 85} [get_bd_pins drift_offset/clk]
+set_property location {1 139 -269} [get_bd_cells drift_offset/input_memory_reader]
+set_property location {2 476 -23} [get_bd_cells drift_offset/mm_linear_correction_0]
+set_property location {2 485 -158} [get_bd_cells drift_offset/mm_linear_correction_0]
+set_property location {2 479 -190} [get_bd_cells drift_offset/mm_linear_correction_0]
+set_property location {2 475 -200} [get_bd_cells drift_offset/mm_linear_correction_0]
+set_property location {2 478 -213} [get_bd_cells drift_offset/mm_linear_correction_0]
+set_property location {2 476 -224} [get_bd_cells drift_offset/mm_linear_correction_0]
+set_property location {1 136 -225} [get_bd_cells drift_offset/input_memory_reader]
+set_property location {1 146 -246} [get_bd_cells drift_offset/input_memory_reader]
+set_property location {1 144 -233} [get_bd_cells drift_offset/input_memory_reader]
+set_property location {1 144 -235} [get_bd_cells drift_offset/input_memory_reader]
+set_property location {1 150 -245} [get_bd_cells drift_offset/input_memory_reader]
+set_property location {4 892 -165} [get_bd_cells drift_offset/mm_split_0]
+set_property location {4 924 -215} [get_bd_cells drift_offset/mm_split_0]
+set_property location {4 919 -197} [get_bd_cells drift_offset/mm_split_0]
+set_property location {4 916 -193} [get_bd_cells drift_offset/mm_split_0]
+set_property location {5 1232 -122} [get_bd_cells drift_offset/drift_apply]
+set_property location {5 1223 -146} [get_bd_cells drift_offset/drift_apply]
+set_property location {5 1212 156} [get_bd_cells drift_offset/mm_drift_0]
+set_property location {6 1521 -171} [get_bd_cells drift_offset/black_level]
+set_property location {6 1516 -123} [get_bd_cells drift_offset/black_level]
+set_property location {6 1516 -86} [get_bd_cells drift_offset/black_level]
+set_property location {6 1516 -105} [get_bd_cells drift_offset/black_level]
+set_property location {6 1523 -124} [get_bd_cells drift_offset/black_level]
+set_property location {6 1517 -113} [get_bd_cells drift_offset/black_level]
+set_property location {7 1777 -15} [get_bd_cells drift_offset/offset_table]
+set_property location {7 1805 -83} [get_bd_cells drift_offset/offset_table]
+set_property location {7 1799 -95} [get_bd_cells drift_offset/offset_table]
+set_property location {4 892 108} [get_bd_cells drift_offset/mm_drift_0]
+set_property location {4 955 -362} [get_bd_cells drift_offset/drift_apply_override_disable]
+set_property location {5 1224 -367} [get_bd_cells drift_offset/black_level_override_disable]
+set_property location {5 1209 -347} [get_bd_cells drift_offset/black_level_override_disable]
+set_property location {5 1221 -366} [get_bd_cells drift_offset/black_level_override_disable]
+set_property location {5 1213 -362} [get_bd_cells drift_offset/black_level_override_disable]
+set_property location {8 2167 951} [get_bd_cells drift_offset/offset]
+set_property location {7 1758 746} [get_bd_cells drift_offset/Procc_drift]
+set_property location {7 1789 681} [get_bd_cells drift_offset/Procc_drift]
+set_property location {7 1807 632} [get_bd_cells drift_offset/Procc_drift]
+set_property location {7 1798 686} [get_bd_cells drift_offset/Procc_drift]
+set_property location {7 1804 716} [get_bd_cells drift_offset/Procc_drift]
+set_property location {7 1802 669} [get_bd_cells drift_offset/Procc_drift]
+set_property location {7 1805 647} [get_bd_cells drift_offset/Procc_drift]
+set_property location {7 1796 660} [get_bd_cells drift_offset/Procc_drift]
+set_property location {4 942 272} [get_bd_cells drift_offset/mm_streaming_averagi_0]
+set_property location {2 448 177} [get_bd_cells drift_offset/mm_streaming_averagi_0]
+set_property location {4 901 -666} [get_bd_cells drift_offset/mm_streaming_averagi_0]
+set_property location {4 987 -878} [get_bd_cells drift_offset/mm_split_1]
+set_property location {3 961 -1123} [get_bd_cells drift_offset/mm_memory_writer_0]
+set_property location {4 1165 93} [get_bd_cells drift_offset/mm_drift_0]
+set_property location {7.5 2678 -26} [get_bd_cells drift_offset/blk_mem_gen_1]
+set_property location {7 2214 -114} [get_bd_cells drift_offset/offset_table]
+set_property location {6 1776 -137} [get_bd_cells drift_offset/black_level]
+set_property location {4.5 1490 -165} [get_bd_cells drift_offset/drift_apply]
+set_property location {4 1150 235} [get_bd_cells drift_offset/mm_streaming_averagi_0]
+set_property location {5 1531 132} [get_bd_cells drift_offset/mm_streaming_averagi_0]
+set_property location {5 1479 238} [get_bd_cells drift_offset/mm_streaming_averagi_0]
+set_property location {6 1833 156} [get_bd_cells drift_offset/mm_memory_writer_0]
+set_property location {6 1808 265} [get_bd_cells drift_offset/mm_memory_writer_0]
+set_property location {3 919 -888} [get_bd_cells drift_offset/mm_split_1]
+set_property location {7 2212 227} [get_bd_cells drift_offset/mm_split_1]
+set_property location {5 1482 79} [get_bd_cells drift_offset/mm_split_1]
+connect_bd_intf_net [get_bd_intf_pins drift_offset/mm_memory_writer_0/bram] [get_bd_intf_pins drift_offset/blk_mem_gen_1/BRAM_PORTA]
+set_property location {4 1241 194} [get_bd_cells drift_offset/mm_split_1]
+delete_bd_objs [get_bd_intf_nets drift_offset/mm_split_0_y1]
+connect_bd_intf_net [get_bd_intf_pins drift_offset/mm_split_1/a] [get_bd_intf_pins drift_offset/mm_split_0/y1]
+connect_bd_intf_net [get_bd_intf_pins drift_offset/mm_split_1/y0] [get_bd_intf_pins drift_offset/mm_drift_0/a]
+connect_bd_intf_net [get_bd_intf_pins drift_offset/mm_split_1/y1] [get_bd_intf_pins drift_offset/mm_streaming_averagi_0/a]
+connect_bd_intf_net [get_bd_intf_pins drift_offset/mm_streaming_averagi_0/y] [get_bd_intf_pins drift_offset/mm_memory_writer_0/a]
+delete_bd_objs [get_bd_nets drift_offset/Net]
+delete_bd_objs [get_bd_nets drift_offset/Net1]
+set_property location {5 1574 -376} [get_bd_cells drift_offset/black_level_override_disable]
+set_property location {5 1497 -347} [get_bd_cells drift_offset/black_level_override_disable]
+set_property location {6 1813 107} [get_bd_cells drift_offset/mm_memory_writer_0]
+set_property location {8 2703 -66} [get_bd_cells drift_offset/blk_mem_gen_1]
+report_ip_status -name ip_status 
+add_files -norecurse -scan_for_includes /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/mm_linear_correction_subtract.vhdl
+update_compile_order -fileset sources_1
+create_bd_cell -type module -reference mm_linear_correction_subtract drift_offset/mm_linear_correction_1
+delete_bd_objs [get_bd_intf_nets drift_offset/offset_table_offset_bram] [get_bd_intf_nets drift_offset/mm_linear_correction_3_y] [get_bd_cells drift_offset/offset_table]
+connect_bd_intf_net [get_bd_intf_pins drift_offset/black_level/y] [get_bd_intf_pins drift_offset/mm_linear_correction_1/a]
+connect_bd_intf_net [get_bd_intf_pins drift_offset/mm_linear_correction_1/offset_bram] [get_bd_intf_pins drift_offset/blk_mem_gen_1/BRAM_PORTB]
+set_property location {7 2220 -124} [get_bd_cells drift_offset/mm_linear_correction_1]
+set_property location {8 2691 -82} [get_bd_cells drift_offset/blk_mem_gen_1]
+set_property location {8 2675 -118} [get_bd_cells drift_offset/blk_mem_gen_1]
+set_property location {8 2675 -137} [get_bd_cells drift_offset/blk_mem_gen_1]
+delete_bd_objs [get_bd_intf_nets drift_offset/mm_memory_writer_0_bram]
+delete_bd_objs [get_bd_intf_nets drift_offset/mm_linear_correction_1_offset_bram]
+connect_bd_intf_net [get_bd_intf_pins drift_offset/mm_linear_correction_1/offset_bram] [get_bd_intf_pins drift_offset/blk_mem_gen_1/BRAM_PORTA]
+connect_bd_intf_net [get_bd_intf_pins drift_offset/mm_memory_writer_0/bram] [get_bd_intf_pins drift_offset/blk_mem_gen_1/BRAM_PORTB]
+regenerate_bd_layout -hierarchy [get_bd_cells drift_offset]
+set_property location {7 1779 344} [get_bd_cells drift_offset/blk_mem_gen_1]
+set_property location {7 1786 281} [get_bd_cells drift_offset/blk_mem_gen_1]
+set_property location {7 1798 251} [get_bd_cells drift_offset/blk_mem_gen_1]
+set_property location {7 1795 270} [get_bd_cells drift_offset/blk_mem_gen_1]
+set_property location {7 1791 257} [get_bd_cells drift_offset/blk_mem_gen_1]
+set_property location {3 625 60} [get_bd_cells drift_offset/drift_apply_override_disable]
+set_property location {3 616 47} [get_bd_cells drift_offset/drift_apply_override_disable]
+startgroup
+copy_bd_objs drift_offset  [get_bd_cells {drift_offset/black_level}]
+set_property location {5 1144 234} [get_bd_cells drift_offset/black_level1]
+endgroup
+undo
+set_property location {5 1149 168} [get_bd_cells drift_offset/black_level]
+set_property location {5 1144 128} [get_bd_cells drift_offset/black_level]
+set_property location {4 835 -113} [get_bd_cells drift_offset/black_level_override_disable]
+set_property location {4 834 -12} [get_bd_cells drift_offset/drift_apply]
+set_property location {3 584 -98} [get_bd_cells drift_offset/drift_apply_override_disable]
+set_property location {3 582 186} [get_bd_cells drift_offset/mm_split_0]
+set_property location {4 842 334} [get_bd_cells drift_offset/mm_split_1]
+set_property location {5 1139 438} [get_bd_cells drift_offset/mm_drift_0]
+set_property location {5 1159 364} [get_bd_cells drift_offset/mm_drift_0]
+set_property location {5 1145 326} [get_bd_cells drift_offset/mm_drift_0]
+set_property location {5 1143 341} [get_bd_cells drift_offset/mm_drift_0]
+set_property location {5 1138 350} [get_bd_cells drift_offset/mm_drift_0]
+set_property location {5 1155 565} [get_bd_cells drift_offset/mm_streaming_averagi_0]
+set_property location {5 1144 504} [get_bd_cells drift_offset/mm_streaming_averagi_0]
+set_property location {6 1492 503} [get_bd_cells drift_offset/mm_memory_writer_0]
+set_property location {6 1486 533} [get_bd_cells drift_offset/mm_memory_writer_0]
+set_property location {2 371 181} [get_bd_cells drift_offset/mm_linear_correction_0]
+set_property location {2 369 148} [get_bd_cells drift_offset/mm_linear_correction_0]
+set_property location {2 367 158} [get_bd_cells drift_offset/mm_linear_correction_0]
+set_property location {4 836 -49} [get_bd_cells drift_offset/drift_apply]
+set_property location {4 843 -85} [get_bd_cells drift_offset/drift_apply]
+set_property location {3 584 -48} [get_bd_cells drift_offset/drift_apply_override_disable]
+set_property location {6 1516 892} [get_bd_cells drift_offset/Procc_drift]
+set_property location {1 68 168} [get_bd_cells drift_offset/input_memory_reader]
+set_property location {1 104 142} [get_bd_cells drift_offset/input_memory_reader]
+connect_bd_net [get_bd_pins drift_offset/mm_linear_correction_1/aclk] [get_bd_pins drift_offset/black_level/aclk]
+connect_bd_net [get_bd_pins drift_offset/mm_linear_correction_1/arstn] [get_bd_pins drift_offset/black_level/arstn]
+connect_bd_net [get_bd_pins drift_offset/drift_apply/aclk] [get_bd_pins drift_offset/black_level/aclk]
+connect_bd_net [get_bd_pins drift_offset/drift_apply/arstn] [get_bd_pins drift_offset/black_level/arstn]
+connect_bd_net [get_bd_pins drift_offset/mm_split_0/aclk] [get_bd_pins drift_offset/mm_linear_correction_1/aclk]
+connect_bd_net [get_bd_pins drift_offset/mm_split_0/arstn] [get_bd_pins drift_offset/mm_linear_correction_1/arstn]
+connect_bd_net [get_bd_pins drift_offset/mm_linear_correction_0/aclk] [get_bd_pins drift_offset/mm_linear_correction_1/aclk]
+connect_bd_net [get_bd_pins drift_offset/mm_linear_correction_0/arstn] [get_bd_pins drift_offset/mm_linear_correction_1/arstn]
+connect_bd_net [get_bd_pins drift_offset/input_memory_reader/arstn] [get_bd_pins drift_offset/mm_linear_correction_1/arstn]
+connect_bd_net [get_bd_pins drift_offset/input_memory_reader/aclk] [get_bd_pins drift_offset/mm_linear_correction_1/aclk]
+connect_bd_net [get_bd_pins drift_offset/mm_split_1/aclk] [get_bd_pins drift_offset/blk_mem_gen_0/clka]
+connect_bd_net [get_bd_pins drift_offset/mm_split_1/arstn] [get_bd_pins drift_offset/mm_linear_correction_1/arstn]
+connect_bd_net [get_bd_pins drift_offset/mm_drift_0/aclk] [get_bd_pins drift_offset/blk_mem_gen_0/clka]
+connect_bd_net [get_bd_pins drift_offset/mm_drift_0/arstn] [get_bd_pins drift_offset/mm_linear_correction_1/arstn]
+connect_bd_net [get_bd_pins drift_offset/clk] [get_bd_pins drift_offset/blk_mem_gen_0/clka]
+connect_bd_net [get_bd_pins drift_offset/update] [get_bd_pins drift_offset/mm_memory_writer_0/enable]
+delete_bd_objs [get_bd_nets drift_offset/xlconstant_1_dout] [get_bd_cells drift_offset/drift_apply_override_disable]
+connect_bd_net [get_bd_pins drift_offset/drift_correction_enable] [get_bd_pins drift_offset/drift_apply/override]
+report_ip_status -name ip_status 
+update_module_reference [get_ips  {system_mm_linear_correction_1_2 system_mm_split_1_0 system_mm_streaming_averagi_0_0}]
+report_ip_status -name ip_status 
+update_compile_order -fileset sources_1
+startgroup
+create_bd_intf_pin -mode Master -vlnv niteurope.com:user:mm_rtl:1.0 drift_offset/y
+connect_bd_intf_net [get_bd_intf_pins drift_offset/y] [get_bd_intf_pins drift_offset/mm_linear_correction_1/y]
+endgroup
+set_property location {7 1858 161} [get_bd_cells drift_offset/blk_mem_gen_1]
+set_property location {7 1861 176} [get_bd_cells drift_offset/blk_mem_gen_1]
+set_property location {2061 274} [get_bd_intf_pins drift_offset/y]
+set_property location {2 370 -311} [get_bd_cells drift_offset/blk_mem_gen_0]
+delete_bd_objs [get_bd_cells drift_offset/util_vector_logic_0]
+delete_bd_objs [get_bd_nets drift_offset/ap_start_2] [get_bd_nets drift_offset/wea1_1] [get_bd_nets drift_offset/dina_1] [get_bd_nets drift_offset/addra1_1] [get_bd_nets drift_offset/axi_NIT_ctrl_v0_1_0_Drift_position] [get_bd_cells drift_offset/Procc_drift]
+delete_bd_objs [get_bd_nets drift_offset/offset_IMG_mem_web] [get_bd_nets drift_offset/Procc_drift_DRIFT_Out] [get_bd_nets drift_offset/arm_arst] [get_bd_nets drift_offset/offset_ap_done] [get_bd_nets drift_offset/wea_1] [get_bd_nets drift_offset/substract_1] [get_bd_nets drift_offset/offset_Address_out] [get_bd_nets drift_offset/CONTROL_V0_0_ENA_sys] [get_bd_nets drift_offset/offset_IMG_Data_Out] [get_bd_nets drift_offset/black_level_1] [get_bd_cells drift_offset/offset]
+update_compile_order -fileset sources_1
+set_property location {1 111 -499} [get_bd_cells drift_offset/xlconstant_0]
+report_ip_status -name ip_status 
+set_property location {-141 -201} [get_bd_pins drift_offset/drift_correction_enable]
+set_property location {-167 -69} [get_bd_pins drift_offset/drift_correction_enable]
+set_property location {-171 -54} [get_bd_pins drift_offset/drift_correction_enable]
+set_property location {-148 737} [get_bd_pins drift_offset/addra]
+set_property location {-105 -337} [get_bd_pins drift_offset/addra]
+set_property location {-130 561} [get_bd_pins drift_offset/update]
+set_property location {6 1490 562} [get_bd_cells drift_offset/mm_memory_writer_0]
+set_property location {-139 576} [get_bd_pins drift_offset/update]
+set_property location {-141 594} [get_bd_pins drift_offset/update]
+delete_bd_objs [get_bd_nets tac_16k_v2clamir_interfaz_DRIFT_ADDR] [get_bd_pins drift_offset/addra1]
+set_property location {-130 -202} [get_bd_pins drift_offset/Selected_position]
+set_property location {-107 -406} [get_bd_pins drift_offset/Selected_position]
+connect_bd_net [get_bd_pins drift_offset/Selected_position] [get_bd_pins drift_offset/mm_drift_0/drift_level]
+set_property location {-114 -578} [get_bd_pins drift_offset/black_level]
+set_property location {559 -603} [get_bd_pins drift_offset/black_level]
+undo
+set_property location {-106 -556} [get_bd_pins drift_offset/black_level]
+connect_bd_net [get_bd_pins drift_offset/black_level] [get_bd_pins drift_offset/black_level/offset]
+delete_bd_objs [get_bd_nets tac_16k_v2clamir_interfaz_DRIFT_Data_write] [get_bd_pins drift_offset/wea1]
+delete_bd_objs [get_bd_nets wea_1] [get_bd_pins drift_offset/wea]
+set_property location {-114 551} [get_bd_pins drift_offset/ENA]
+set_property location {-146 499} [get_bd_pins drift_offset/RESET]
+set_property location {-154 456} [get_bd_pins drift_offset/substract]
+delete_bd_objs [get_bd_pins drift_offset/ENA]
+delete_bd_objs [get_bd_pins drift_offset/RESET]
+create_bd_pin -dir I drift_offset/arstn
+set_property location {-94 224} [get_bd_pins drift_offset/arstn]
+connect_bd_net [get_bd_pins drift_offset/arstn] [get_bd_pins drift_offset/black_level/arstn]
+connect_bd_net [get_bd_pins drift_offset/arstn] [get_bd_pins drift_offset/mm_memory_writer_0/arstn]
+connect_bd_net [get_bd_pins drift_offset/clk] [get_bd_pins drift_offset/mm_memory_writer_0/aclk]
+set_property location {-126 629} [get_bd_pins drift_offset/substract]
+save_bd_design
+set_property location {6 1498 156} [get_bd_cells drift_offset/mm_linear_correction_1]
+set_property location {6 1512 114} [get_bd_cells drift_offset/mm_linear_correction_1]
+set_property location {6 1503 55} [get_bd_cells drift_offset/mm_linear_correction_1]
+set_property location {7 1865 430} [get_bd_cells drift_offset/blk_mem_gen_1]
+set_property location {7 1859 506} [get_bd_cells drift_offset/blk_mem_gen_1]
+set_property location {7 1878 564} [get_bd_cells drift_offset/blk_mem_gen_1]
+set_property location {7 1851 562} [get_bd_cells drift_offset/blk_mem_gen_1]
+set_property location {7 1856 550} [get_bd_cells drift_offset/blk_mem_gen_1]
+set_property location {7 1861 551} [get_bd_cells drift_offset/blk_mem_gen_1]
+set_property location {7 1859 547} [get_bd_cells drift_offset/blk_mem_gen_1]
+set_property location {7 1867 541} [get_bd_cells drift_offset/blk_mem_gen_1]
+set_property location {5 1157 528} [get_bd_cells drift_offset/mm_streaming_averagi_0]
+set_property location {5 1154 522} [get_bd_cells drift_offset/mm_streaming_averagi_0]
+set_property location {5 1148 536} [get_bd_cells drift_offset/mm_streaming_averagi_0]
+set_property location {5 1161 531} [get_bd_cells drift_offset/mm_streaming_averagi_0]
+set_property location {-127 -425} [get_bd_pins drift_offset/Selected_position]
+set_property location {6 1504 612} [get_bd_cells drift_offset/mm_memory_writer_0]
+set_property location {6 1504 653} [get_bd_cells drift_offset/mm_memory_writer_0]
+set_property location {-121 629} [get_bd_pins drift_offset/substract]
+set_property location {-124 717} [get_bd_pins drift_offset/substract]
+set_property location {-134 650} [get_bd_pins drift_offset/update]
+set_property location {-140 672} [get_bd_pins drift_offset/update]
+set_property location {-137 675} [get_bd_pins drift_offset/update]
+set_property location {-139 685} [get_bd_pins drift_offset/update]
+set_property name linear_correction [get_bd_cells drift_offset/mm_linear_correction_0]
+set_property name split_0 [get_bd_cells drift_offset/mm_split_0]
+set_property name split_1 [get_bd_cells drift_offset/mm_split_1]
+connect_bd_net [get_bd_pins drift_offset/clk] [get_bd_pins drift_offset/mm_streaming_averagi_0/aclk]
+connect_bd_net [get_bd_pins drift_offset/arstn] [get_bd_pins drift_offset/mm_streaming_averagi_0/arstn]
+set_property location {7.5 1608 363} [get_bd_cells drift_offset/blk_mem_gen_1]
+set_property location {6.5 1426 173} [get_bd_cells drift_offset/mm_linear_correction_1]
+set_property location {6 1145 186} [get_bd_cells drift_offset/black_level]
+set_property location {5 935 123} [get_bd_cells drift_offset/drift_apply]
+set_property location {8.5 1824 361} [get_bd_cells drift_offset/blk_mem_gen_1]
+set_property location {7.5 1622 189} [get_bd_cells drift_offset/mm_linear_correction_1]
+set_property location {6.5 1386 177} [get_bd_cells drift_offset/black_level]
+set_property location {6 1149 110} [get_bd_cells drift_offset/drift_apply]
+set_property location {6 1167 170} [get_bd_cells drift_offset/drift_apply]
+set_property location {6 1177 190} [get_bd_cells drift_offset/drift_apply]
+set_property location {6 1184 184} [get_bd_cells drift_offset/drift_apply]
+set_property screensize {152 60} [get_bd_cells drift_offset/drift_apply]
+set_property screensize {150 18} [get_bd_cells drift_offset/drift_apply]
+set_property screensize {138 82} [get_bd_cells drift_offset/black_level]
+set_property location {8 1622 176} [get_bd_cells drift_offset/mm_linear_correction_1]
+set_property location {9 1849 388} [get_bd_cells drift_offset/blk_mem_gen_1]
+set_property location {9 1865 364} [get_bd_cells drift_offset/blk_mem_gen_1]
+set_property location {9 1861 373} [get_bd_cells drift_offset/blk_mem_gen_1]
+startgroup
+set_property CONFIG.divider {128} [get_bd_cells drift_offset/mm_streaming_averagi_0]
+endgroup
+save_bd_design
+set_property screensize {227 1016} [get_bd_cells drift_offset]
+set_property screensize {185 1132} [get_bd_cells drift_offset]
+regenerate_bd_layout
+regenerate_bd_layout -routing
+startgroup
+set_property location {9.5 1983 368} [get_bd_cells drift_offset/mm_linear_correction_1]
+set_property location {9 1983 368} [get_bd_cells drift_offset/blk_mem_gen_1]
+endgroup
+set_property location {8 1988 257} [get_bd_cells drift_offset/mm_linear_correction_1]
+set_property location {7.5 1828 205} [get_bd_cells drift_offset/mm_linear_correction_1]
+set_property location {7.5 1728 203} [get_bd_cells drift_offset/mm_linear_correction_1]
+set_property location {8 1736 181} [get_bd_cells drift_offset/mm_linear_correction_1]
+set_property location {9 2059 359} [get_bd_cells drift_offset/blk_mem_gen_1]
+set_property location {9 2059 377} [get_bd_cells drift_offset/blk_mem_gen_1]
+set_property location {9 2060 372} [get_bd_cells drift_offset/blk_mem_gen_1]
+set_property location {2192 190} [get_bd_intf_pins drift_offset/y]
+delete_bd_objs [get_bd_intf_nets drift_offset/black_level_y]
+delete_bd_objs [get_bd_intf_nets drift_offset/mm_linear_correction_2_y]
+delete_bd_objs [get_bd_intf_nets drift_offset/mm_linear_correction_1_y]
+set_property location {7 1378 180} [get_bd_cells drift_offset/black_level]
+set_property location {8.5 1991 194} [get_bd_cells drift_offset/black_level]
+connect_bd_intf_net [get_bd_intf_pins drift_offset/black_level/a] [get_bd_intf_pins drift_offset/mm_linear_correction_1/y]
+connect_bd_intf_net [get_bd_intf_pins drift_offset/y] [get_bd_intf_pins drift_offset/black_level/y]
+connect_bd_intf_net [get_bd_intf_pins drift_offset/drift_apply/y] [get_bd_intf_pins drift_offset/mm_linear_correction_1/a]
+delete_bd_objs [get_bd_intf_nets drift_offset/mm_linear_correction_0_y]
+delete_bd_objs [get_bd_intf_nets drift_offset/input_memory_reader_y]
+set_property location {6.5 1444 94} [get_bd_cells drift_offset/linear_correction]
+delete_bd_objs [get_bd_intf_nets drift_offset/mm_linear_correction_1_y]
+connect_bd_intf_net [get_bd_intf_pins drift_offset/split_0/a] [get_bd_intf_pins drift_offset/input_memory_reader/y]
+set_property location {7 1486 195} [get_bd_cells drift_offset/mm_linear_correction_1]
+set_property location {7.5 1757 194} [get_bd_cells drift_offset/linear_correction]
+connect_bd_intf_net [get_bd_intf_pins drift_offset/mm_linear_correction_1/y] [get_bd_intf_pins drift_offset/linear_correction/a]
+connect_bd_intf_net [get_bd_intf_pins drift_offset/linear_correction/y] [get_bd_intf_pins drift_offset/black_level/a]
+regenerate_bd_layout -hierarchy [get_bd_cells drift_offset]
+save_bd_design
+write_bd_layout -format pdf -orientation portrait -hierarchy [get_bd_cell drift_offset] /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/drift_offset.pdf
+copy_bd_objs drift_offset  [get_bd_cells {drift_offset/blk_mem_gen_1}]
+copy_bd_objs drift_offset  [get_bd_cells {drift_offset/blk_mem_gen_1}]
+regenerate_bd_layout -hierarchy [get_bd_cells drift_offset] -routing
+copy_bd_objs drift_offset  [get_bd_cells {drift_offset/blk_mem_gen_1}]
+startgroup
+create_bd_cell -type ip -vlnv xilinx.com:ip:blk_mem_gen:8.4 drift_offset/blk_mem_gen_5
+endgroup
+delete_bd_objs [get_bd_cells drift_offset/blk_mem_gen_5]
+delete_bd_objs [get_bd_cells drift_offset/blk_mem_gen_4]
+delete_bd_objs [get_bd_cells drift_offset/blk_mem_gen_3]
+set_property location {7 1806 281} [get_bd_cells drift_offset/blk_mem_gen_2]
+connect_bd_intf_net [get_bd_intf_pins drift_offset/blk_mem_gen_2/BRAM_PORTB] [get_bd_intf_pins drift_offset/linear_correction/scale_bram]
+startgroup
+create_bd_cell -type ip -vlnv xilinx.com:ip:smartconnect:1.0 drift_offset/smartconnect_0
+endgroup
+set_property -dict [list \
+  CONFIG.NUM_MI {3} \
+  CONFIG.NUM_SI {1} \
+] [get_bd_cells drift_offset/smartconnect_0]
+startgroup
+create_bd_cell -type ip -vlnv xilinx.com:ip:axi_bram_ctrl:4.1 drift_offset/axi_bram_ctrl_0
+endgroup
+set_property CONFIG.SINGLE_PORT_BRAM {1} [get_bd_cells drift_offset/axi_bram_ctrl_0]
+connect_bd_intf_net [get_bd_intf_pins drift_offset/axi_bram_ctrl_0/BRAM_PORTA] [get_bd_intf_pins drift_offset/blk_mem_gen_2/BRAM_PORTA]
+startgroup
+set_property CONFIG.use_bram_block {BRAM_Controller} [get_bd_cells drift_offset/blk_mem_gen_2]
+endgroup
+connect_bd_intf_net [get_bd_intf_pins drift_offset/smartconnect_0/M00_AXI] [get_bd_intf_pins drift_offset/axi_bram_ctrl_0/S_AXI]
+connect_bd_net [get_bd_pins drift_offset/axi_bram_ctrl_0/s_axi_aclk] [get_bd_pins drift_offset/smartconnect_0/aclk]
+connect_bd_net [get_bd_pins drift_offset/axi_bram_ctrl_0/s_axi_aresetn] [get_bd_pins drift_offset/smartconnect_0/aresetn]
+connect_bd_net [get_bd_pins drift_offset/clk] [get_bd_pins drift_offset/smartconnect_0/aclk]
+connect_bd_net [get_bd_pins drift_offset/arstn] [get_bd_pins drift_offset/smartconnect_0/aresetn]
+delete_bd_objs [get_bd_intf_nets drift_offset/smartconnect_0_M00_AXI] [get_bd_cells drift_offset/smartconnect_0]
+regenerate_bd_layout -hierarchy [get_bd_cells drift_offset]
+regenerate_bd_layout -hierarchy [get_bd_cells drift_offset] -routing
+create_bd_cell -type module -reference mm_downscale_limited drift_offset/mm_downscale_limited_0
+set_property location {6 1604 92} [get_bd_cells drift_offset/mm_downscale_limited_0]
+delete_bd_objs [get_bd_intf_nets drift_offset/black_level_y]
+connect_bd_intf_net [get_bd_intf_pins drift_offset/mm_downscale_limited_0/a] [get_bd_intf_pins drift_offset/black_level/y]
+connect_bd_intf_net [get_bd_intf_pins drift_offset/y] [get_bd_intf_pins drift_offset/mm_downscale_limited_0/y]
+set_property location {6.5 1708 337} [get_bd_cells drift_offset/mm_downscale_limited_0]
+set_property location {7 1733 353} [get_bd_cells drift_offset/mm_downscale_limited_0]
+set_property location {7 1708 359} [get_bd_cells drift_offset/mm_downscale_limited_0]
+set_property location {7 1701 382} [get_bd_cells drift_offset/mm_downscale_limited_0]
+set_property location {7 1712 364} [get_bd_cells drift_offset/mm_downscale_limited_0]
+set_property location {7 1710 370} [get_bd_cells drift_offset/mm_downscale_limited_0]
+regenerate_bd_layout -hierarchy [get_bd_cells drift_offset] -routing
+regenerate_bd_layout -hierarchy [get_bd_cells drift_offset] -routing
+regenerate_bd_layout -hierarchy [get_bd_cells drift_offset]
+delete_bd_objs [get_bd_intf_nets drift_offset/mm_downscale_limited_0_y]
+delete_bd_objs [get_bd_intf_pins drift_offset/y]
+connect_bd_net [get_bd_pins drift_offset/Address_out] [get_bd_pins drift_offset/mm_downscale_limited_0/y_mm_addr]
+delete_bd_objs [get_bd_nets drift_offset/mm_downscale_limited_0_y_mm_addr]
+create_bd_cell -type module -reference mm_memory_writer drift_offset/mm_memory_writer_1
+connect_bd_net [get_bd_pins drift_offset/ap_done] [get_bd_pins drift_offset/mm_memory_writer_1/intr]
+connect_bd_intf_net [get_bd_intf_pins drift_offset/mm_memory_writer_1/a] [get_bd_intf_pins drift_offset/mm_downscale_limited_0/y]
+connect_bd_net [get_bd_pins drift_offset/Address_out] [get_bd_pins drift_offset/mm_memory_writer_1/bram_addr]
+connect_bd_net [get_bd_pins drift_offset/IMG_Data_Out] [get_bd_pins drift_offset/mm_memory_writer_1/bram_din]
+set_property location {7 1932 303} [get_bd_cells drift_offset/mm_memory_writer_1]
+connect_bd_net [get_bd_pins drift_offset/DRIFT_Out] [get_bd_pins drift_offset/mm_drift_0/drift_value]
+set_property location {-26 744} [get_bd_pins drift_offset/substract]
+connect_bd_net [get_bd_pins drift_offset/clk] [get_bd_pins drift_offset/mm_memory_writer_1/aclk]
+connect_bd_net [get_bd_pins drift_offset/arstn] [get_bd_pins drift_offset/mm_memory_writer_1/arstn]
+connect_bd_net [get_bd_pins drift_offset/arstn] [get_bd_pins drift_offset/mm_downscale_limited_0/aclk]
+connect_bd_net [get_bd_pins drift_offset/clk] [get_bd_pins drift_offset/mm_downscale_limited_0/arstn]
+regenerate_bd_layout -hierarchy [get_bd_cells drift_offset] -routing
+save_bd_design
+regenerate_bd_layout -hierarchy [get_bd_cells drift_offset]
+regenerate_bd_layout -hierarchy [get_bd_cells drift_offset] -routing
+startgroup
+create_bd_intf_pin -mode Slave -vlnv xilinx.com:interface:aximm_rtl:1.0 drift_offset/S_AXI
+connect_bd_intf_net [get_bd_intf_pins drift_offset/S_AXI] [get_bd_intf_pins drift_offset/axi_bram_ctrl_0/S_AXI]
+endgroup
+regenerate_bd_layout -hierarchy [get_bd_cells drift_offset]
+startgroup
+create_bd_cell -type ip -vlnv xilinx.com:ip:xlslice:1.0 drift_offset/xlslice_0
+endgroup
+connect_bd_net [get_bd_pins drift_offset/mm_memory_writer_1/bram_wea] [get_bd_pins drift_offset/xlslice_0/Din]
+startgroup
+set_property CONFIG.DIN_WIDTH {4} [get_bd_cells drift_offset/xlslice_0]
+endgroup
+set_property location {2539 82} [get_bd_pins drift_offset/IMG_mem_web]
+connect_bd_net [get_bd_pins drift_offset/IMG_mem_web] [get_bd_pins drift_offset/xlslice_0/Dout]
+regenerate_bd_layout -hierarchy [get_bd_cells drift_offset]
+regenerate_bd_layout -hierarchy [get_bd_cells drift_offset] -routing
+regenerate_bd_layout -hierarchy [get_bd_cells drift_offset] -routing
+regenerate_bd_layout -hierarchy [get_bd_cells drift_offset]
+save_bd_design
+delete_bd_objs [get_bd_nets drift_offset/mm_memory_writer_1_bram_din]
+save_bd_design
+add_files -norecurse -scan_for_includes /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/signed_rescale.vhdl
+update_compile_order -fileset sources_1
+create_bd_cell -type module -reference signed_rescale drift_offset/signed_rescale_0
+connect_bd_net [get_bd_pins drift_offset/clk] [get_bd_pins drift_offset/signed_rescale_0/aclk]
+connect_bd_net [get_bd_pins drift_offset/arstn] [get_bd_pins drift_offset/signed_rescale_0/arstn]
+set_property location {3234 297} [get_bd_pins drift_offset/IMG_Data_Out]
+connect_bd_net [get_bd_pins drift_offset/mm_memory_writer_1/bram_din] [get_bd_pins drift_offset/signed_rescale_0/a_data]
+connect_bd_net [get_bd_pins drift_offset/IMG_Data_Out] [get_bd_pins drift_offset/signed_rescale_0/y_data]
+regenerate_bd_layout -hierarchy [get_bd_cells drift_offset]
+save_bd_design
+update_compile_order -fileset sources_1
+report_ip_status -name ip_status 
+update_module_reference [get_ips  {system_mm_memory_writer_1_0 system_mm_downscale_limited_0_1}]
+report_ip_status -name ip_status 
+update_compile_order -fileset sources_1
+delete_bd_objs [get_bd_nets drift_offset/mm_memory_writer_1_bram_din]
+delete_bd_objs [get_bd_nets drift_offset/mm_memory_writer_1_bram_wea]
+regenerate_bd_layout -hierarchy [get_bd_cells drift_offset]
+regenerate_bd_layout -hierarchy [get_bd_cells drift_offset] -routing
+save_bd_design
+report_ip_status -name ip_status 
+update_module_reference [get_ips  system_signed_rescale_0_0]
+update_compile_order -fileset sources_1
+report_ip_status -name ip_status 
+connect_bd_net [get_bd_pins drift_offset/signed_rescale_0/a_data] [get_bd_pins drift_offset/mm_memory_writer_1/bram_din]
+connect_bd_net [get_bd_pins drift_offset/xlslice_0/Din] [get_bd_pins drift_offset/mm_memory_writer_1/bram_wea]
+regenerate_bd_layout -hierarchy [get_bd_cells drift_offset]
+regenerate_bd_layout -hierarchy [get_bd_cells drift_offset] -routing
+save_bd_design
+set_property screensize {151 168} [get_bd_cells drift_offset/drift_apply]
+regenerate_bd_layout -hierarchy [get_bd_cells drift_offset]
+regenerate_bd_layout -hierarchy [get_bd_cells drift_offset] -routing
+regenerate_bd_layout -hierarchy [get_bd_cells drift_offset]
+regenerate_bd_layout -hierarchy [get_bd_cells drift_offset]
+regenerate_bd_layout -hierarchy [get_bd_cells drift_offset] -routing
+regenerate_bd_layout -hierarchy [get_bd_cells drift_offset] -routing
+regenerate_bd_layout -hierarchy [get_bd_cells drift_offset]
+regenerate_bd_layout -hierarchy [get_bd_cells drift_offset]
+regenerate_bd_layout -hierarchy [get_bd_cells drift_offset] -routing
+set_property location {2 345 -134} [get_bd_cells drift_offset/blk_mem_gen_0]
+set_property location {1 150 -4} [get_bd_cells drift_offset/input_memory_reader]
+set_property location {2 367 1} [get_bd_cells drift_offset/split_0]
+set_property location {2 341 16} [get_bd_cells drift_offset/split_0]
+set_property location {2 338 9} [get_bd_cells drift_offset/split_0]
+set_property location {3 538 172} [get_bd_cells drift_offset/split_1]
+set_property location {3 564 0} [get_bd_cells drift_offset/drift_apply]
+set_property location {4 779 387} [get_bd_cells drift_offset/mm_drift_0]
+set_property location {4 789 51} [get_bd_cells drift_offset/mm_streaming_averagi_0]
+set_property location {4 785 59} [get_bd_cells drift_offset/mm_streaming_averagi_0]
+set_property location {4 770 183} [get_bd_cells drift_offset/mm_streaming_averagi_0]
+set_property location {4 794 170} [get_bd_cells drift_offset/mm_streaming_averagi_0]
+set_property location {4 795 169} [get_bd_cells drift_offset/mm_streaming_averagi_0]
+set_property location {4 790 158} [get_bd_cells drift_offset/mm_streaming_averagi_0]
+set_property location {4 814 3} [get_bd_cells drift_offset/mm_linear_correction_1]
+set_property location {6 1297 -23} [get_bd_cells drift_offset/blk_mem_gen_1]
+set_property location {5 1031 184} [get_bd_cells drift_offset/mm_memory_writer_0]
+set_property location {5 1047 66} [get_bd_cells drift_offset/linear_correction]
+set_property location {5 1120 -80} [get_bd_cells drift_offset/axi_bram_ctrl_0]
+set_property location {6.5 1357 62} [get_bd_cells drift_offset/blk_mem_gen_2]
+delete_bd_objs [get_bd_intf_nets drift_offset/mm_memory_writer_0_bram]
+delete_bd_objs [get_bd_intf_nets drift_offset/mm_linear_correction_1_offset_bram]
+undo
+undo
+set_property location {6 1209 -3} [get_bd_cells drift_offset/blk_mem_gen_1]
+set_property location {6 1189 306} [get_bd_cells drift_offset/black_level]
+set_property location {6 1190 214} [get_bd_cells drift_offset/black_level]
+set_property location {8 1578 292} [get_bd_cells drift_offset/mm_downscale_limited_0]
+set_property location {8 1591 199} [get_bd_cells drift_offset/mm_downscale_limited_0]
+set_property location {8 1584 212} [get_bd_cells drift_offset/mm_downscale_limited_0]
+set_property location {4 685 169} [get_bd_cells drift_offset/mm_streaming_averagi_0]
+set_property location {4 687 187} [get_bd_cells drift_offset/mm_streaming_averagi_0]
+set_property location {4 690 180} [get_bd_cells drift_offset/mm_streaming_averagi_0]
+set_property location {3 454 187} [get_bd_cells drift_offset/split_1]
+set_property location {5 937 80} [get_bd_cells drift_offset/linear_correction]
+set_property location {5 930 209} [get_bd_cells drift_offset/mm_memory_writer_0]
+set_property location {4 689 218} [get_bd_cells drift_offset/mm_streaming_averagi_0]
+set_property location {4 692 210} [get_bd_cells drift_offset/mm_streaming_averagi_0]
+set_property location {3 451 219} [get_bd_cells drift_offset/split_1]
+set_property location {9 1807 204} [get_bd_cells drift_offset/mm_memory_writer_1]
+set_property location {9 1797 215} [get_bd_cells drift_offset/mm_memory_writer_1]
+set_property location {6 1158 -117} [get_bd_cells drift_offset/blk_mem_gen_1]
+undo
+set_property location {6 1184 3} [get_bd_cells drift_offset/blk_mem_gen_1]
+set_property location {7 1396 -26} [get_bd_cells drift_offset/blk_mem_gen_2]
+set_property location {7 1382 -62} [get_bd_cells drift_offset/blk_mem_gen_2]
+set_property location {7 1386 -73} [get_bd_cells drift_offset/blk_mem_gen_2]
+set_property location {-218 -232} [get_bd_intf_pins drift_offset/S_AXI]
+set_property location {1 52 -284} [get_bd_cells drift_offset/axi_bram_ctrl_0]
+set_property location {6 1165 -214} [get_bd_cells drift_offset/blk_mem_gen_2]
+set_property location {-138 -276} [get_bd_intf_pins drift_offset/S_AXI]
+set_property location {6 1178 -251} [get_bd_cells drift_offset/blk_mem_gen_2]
+set_property location {6 1179 -270} [get_bd_cells drift_offset/blk_mem_gen_2]
+set_property location {4 693 350} [get_bd_cells drift_offset/mm_drift_0]
+set_property location {4 690 331} [get_bd_cells drift_offset/mm_drift_0]
+set_property location {7 1575 240} [get_bd_cells drift_offset/mm_downscale_limited_0]
+set_property location {8 1811 227} [get_bd_cells drift_offset/mm_memory_writer_1]
+set_property location {8 1813 240} [get_bd_cells drift_offset/mm_memory_writer_1]
+set_property location {5 925 232} [get_bd_cells drift_offset/mm_memory_writer_0]
+set_property location {5 929 241} [get_bd_cells drift_offset/mm_memory_writer_0]
+set_property location {4 674 373} [get_bd_cells drift_offset/mm_drift_0]
+set_property location {4 684 250} [get_bd_cells drift_offset/mm_streaming_averagi_0]
+set_property location {4 686 239} [get_bd_cells drift_offset/mm_streaming_averagi_0]
+set_property location {3 453 241} [get_bd_cells drift_offset/split_1]
+set_property location {3 457 246} [get_bd_cells drift_offset/split_1]
+save_bd_design
+regenerate_bd_layout
+regenerate_bd_layout -routing
+apply_bd_automation -rule xilinx.com:bd_rule:axi4 -config { Clk_master {/ps/FCLK_CLK0 (100 MHz)} Clk_slave {/ps/FCLK_CLK0 (100 MHz)} Clk_xbar {/ps/FCLK_CLK0 (100 MHz)} Master {/ps/M_AXI_GP0} Slave {/drift_offset/axi_bram_ctrl_0/S_AXI} ddr_seg {Auto} intc_ip {/smartconnect_1} master_apm {0}}  [get_bd_intf_pins drift_offset/axi_bram_ctrl_0/S_AXI]
+save_bd_design
+reset_target all [get_files  /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs/sources_1/bd/system/system.bd]
+export_ip_user_files -of_objects  [get_files  /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs/sources_1/bd/system/system.bd] -sync -no_script -force -quiet
+reset_target all [get_files  /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs/sources_1/bd/system/system.bd]
+export_ip_user_files -of_objects  [get_files  /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs/sources_1/bd/system/system.bd] -sync -no_script -force -quiet
+set_property synth_checkpoint_mode None [get_files  /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs/sources_1/bd/system/system.bd]
+generate_target all [get_files  /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs/sources_1/bd/system/system.bd]
+generate_target all [get_files  /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs/sources_1/bd/system/system.bd]
+disconnect_bd_net /drift_offset/arstn_1 [get_bd_pins drift_offset/mm_downscale_limited_0/aclk]
+disconnect_bd_net /drift_offset/Net [get_bd_pins drift_offset/mm_downscale_limited_0/arstn]
+connect_bd_net [get_bd_pins drift_offset/arstn] [get_bd_pins drift_offset/mm_downscale_limited_0/arstn]
+connect_bd_net [get_bd_pins drift_offset/clk] [get_bd_pins drift_offset/mm_downscale_limited_0/aclk]
+save_bd_design
+launch_runs impl_1 -to_step write_bitstream -jobs 8
+wait_on_run impl_1
+report_ip_status -name ip_status 
+report_ip_status -name ip_status 
+update_module_reference [get_ips  {system_mm_linear_correction_2_0 system_mm_linear_correction_2_1}]
+generate_target all [get_files  /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs/sources_1/bd/system/system.bd]
+export_ip_user_files -of_objects [get_files /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs/sources_1/bd/system/system.bd] -no_script -sync -force -quiet
+export_simulation -lib_map_path [list {modelsim=/home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.cache/compile_simlib/modelsim} {questa=/home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.cache/compile_simlib/questa} {xcelium=/home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.cache/compile_simlib/xcelium} {vcs=/home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.cache/compile_simlib/vcs} {riviera=/home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.cache/compile_simlib/riviera}] -of_objects [get_files /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs/sources_1/bd/system/system.bd] -directory /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.ip_user_files/sim_scripts -ip_user_files_dir /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.ip_user_files -ipstatic_source_dir /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.ip_user_files/ipstatic -use_ip_compiled_libs -force -quiet
+report_ip_status -name ip_status 
+reset_run synth_1
+launch_runs impl_1 -to_step write_bitstream -jobs 8
+wait_on_run impl_1
+report_ip_status -name ip_status 
+update_module_reference [get_ips  {system_mm_memory_writer_1_0 system_mm_memory_writer_0_3}]
+generate_target all [get_files  /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs/sources_1/bd/system/system.bd]
+export_ip_user_files -of_objects [get_files /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs/sources_1/bd/system/system.bd] -no_script -sync -force -quiet
+export_simulation -lib_map_path [list {modelsim=/home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.cache/compile_simlib/modelsim} {questa=/home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.cache/compile_simlib/questa} {xcelium=/home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.cache/compile_simlib/xcelium} {vcs=/home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.cache/compile_simlib/vcs} {riviera=/home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.cache/compile_simlib/riviera}] -of_objects [get_files /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs/sources_1/bd/system/system.bd] -directory /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.ip_user_files/sim_scripts -ip_user_files_dir /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.ip_user_files -ipstatic_source_dir /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.ip_user_files/ipstatic -use_ip_compiled_libs -force -quiet
+report_ip_status -name ip_status 
+reset_run synth_1
+launch_runs impl_1 -to_step write_bitstream -jobs 8
+wait_on_run impl_1
+report_ip_status -name ip_status 
+update_module_reference [get_ips  {system_mm_fifo_writer_0_0 system_mm_memory_writer_1_0 system_mm_memory_writer_0_3}]
+report_ip_status -name ip_status 
+generate_target all [get_files  /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs/sources_1/bd/system/system.bd]
+export_ip_user_files -of_objects [get_files /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs/sources_1/bd/system/system.bd] -no_script -sync -force -quiet
+export_simulation -lib_map_path [list {modelsim=/home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.cache/compile_simlib/modelsim} {questa=/home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.cache/compile_simlib/questa} {xcelium=/home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.cache/compile_simlib/xcelium} {vcs=/home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.cache/compile_simlib/vcs} {riviera=/home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.cache/compile_simlib/riviera}] -of_objects [get_files /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs/sources_1/bd/system/system.bd] -directory /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.ip_user_files/sim_scripts -ip_user_files_dir /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.ip_user_files -ipstatic_source_dir /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.ip_user_files/ipstatic -use_ip_compiled_libs -force -quiet
+reset_run synth_1
+launch_runs impl_1 -to_step write_bitstream -jobs 8
+wait_on_run impl_1
+report_ip_status -name ip_status 
+reset_run synth_1
+report_ip_status -name ip_status 
+close_bd_design [get_bd_designs system]
+open_bd_design {/home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs/sources_1/bd/system/system.bd}
+report_ip_status -name ip_status 
+close_bd_design [get_bd_designs system]
+close_project
+open_project /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.xpr
+launch_runs impl_1 -to_step write_bitstream -jobs 8
+wait_on_run impl_1
+update_compile_order -fileset sources_1
+report_ip_status -name ip_status 
+update_module_reference [get_ips  system_mm_fifo_writer_0_0]
+reset_run synth_1
+launch_runs impl_1 -to_step write_bitstream -jobs 8
+wait_on_run impl_1
+report_ip_status -name ip_status 
+report_ip_status -name ip_status 
+update_module_reference [get_ips  system_axi4lite_led_control_0_0]
+reset_run synth_1
+launch_runs impl_1 -to_step write_bitstream -jobs 8
+wait_on_run impl_1
+report_ip_status -name ip_status 
+report_ip_status -name ip_status 
+report_ip_status -name ip_status 
+update_compile_order -fileset sources_1
+update_module_reference [get_ips  system_axi4lite_mb_0_0]
+report_ip_status -name ip_status 
+generate_target all [get_files  /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs/sources_1/bd/system/system.bd]
+export_ip_user_files -of_objects [get_files /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs/sources_1/bd/system/system.bd] -no_script -sync -force -quiet
+export_simulation -lib_map_path [list {modelsim=/home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.cache/compile_simlib/modelsim} {questa=/home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.cache/compile_simlib/questa} {xcelium=/home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.cache/compile_simlib/xcelium} {vcs=/home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.cache/compile_simlib/vcs} {riviera=/home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.cache/compile_simlib/riviera}] -of_objects [get_files /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs/sources_1/bd/system/system.bd] -directory /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.ip_user_files/sim_scripts -ip_user_files_dir /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.ip_user_files -ipstatic_source_dir /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.ip_user_files/ipstatic -use_ip_compiled_libs -force -quiet
+report_ip_status -name ip_status 
+report_ip_status -name ip_status 
+update_module_reference [get_ips  system_axi4lite_mb_0_0]
+update_compile_order -fileset sources_1
+report_ip_status -name ip_status 
+assign_bd_address -target_address_space /ps/Data [get_bd_addr_segs mm_linear_correction/mm_fifo_writer_0/S_AXI/reg0] -force
+generate_target all [get_files  /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs/sources_1/bd/system/system.bd]
+export_ip_user_files -of_objects [get_files /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs/sources_1/bd/system/system.bd] -no_script -sync -force -quiet
+export_simulation -lib_map_path [list {modelsim=/home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.cache/compile_simlib/modelsim} {questa=/home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.cache/compile_simlib/questa} {xcelium=/home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.cache/compile_simlib/xcelium} {vcs=/home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.cache/compile_simlib/vcs} {riviera=/home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.cache/compile_simlib/riviera}] -of_objects [get_files /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs/sources_1/bd/system/system.bd] -directory /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.ip_user_files/sim_scripts -ip_user_files_dir /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.ip_user_files -ipstatic_source_dir /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.ip_user_files/ipstatic -use_ip_compiled_libs -force -quiet
+report_ip_status -name ip_status 
+report_ip_status -name ip_status 
+update_module_reference [get_ips  system_axi4lite_mb_0_0]
+update_compile_order -fileset sources_1
+report_ip_status -name ip_status 
+generate_target all [get_files  /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs/sources_1/bd/system/system.bd]
+export_ip_user_files -of_objects [get_files /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs/sources_1/bd/system/system.bd] -no_script -sync -force -quiet
+export_simulation -lib_map_path [list {modelsim=/home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.cache/compile_simlib/modelsim} {questa=/home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.cache/compile_simlib/questa} {xcelium=/home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.cache/compile_simlib/xcelium} {vcs=/home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.cache/compile_simlib/vcs} {riviera=/home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.cache/compile_simlib/riviera}] -of_objects [get_files /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs/sources_1/bd/system/system.bd] -directory /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.ip_user_files/sim_scripts -ip_user_files_dir /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.ip_user_files -ipstatic_source_dir /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.ip_user_files/ipstatic -use_ip_compiled_libs -force -quiet
+report_ip_status -name ip_status 
+reset_run synth_1
+launch_runs impl_1 -to_step write_bitstream -jobs 8
+wait_on_run impl_1
+report_ip_status -name ip_status 
+update_module_reference [get_ips  system_axi4lite_mb_0_0]
+generate_target all [get_files  /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs/sources_1/bd/system/system.bd]
+export_ip_user_files -of_objects [get_files /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs/sources_1/bd/system/system.bd] -no_script -sync -force -quiet
+export_simulation -lib_map_path [list {modelsim=/home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.cache/compile_simlib/modelsim} {questa=/home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.cache/compile_simlib/questa} {xcelium=/home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.cache/compile_simlib/xcelium} {vcs=/home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.cache/compile_simlib/vcs} {riviera=/home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.cache/compile_simlib/riviera}] -of_objects [get_files /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs/sources_1/bd/system/system.bd] -directory /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.ip_user_files/sim_scripts -ip_user_files_dir /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.ip_user_files -ipstatic_source_dir /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.ip_user_files/ipstatic -use_ip_compiled_libs -force -quiet
+report_ip_status -name ip_status 
+reset_run synth_1
+launch_runs impl_1 -to_step write_bitstream -jobs 8
+wait_on_run impl_1
+add_files -norecurse -scan_for_includes /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs-vhdl/sources/work.base.vhdl
+report_ip_status -name ip_status 
+update_module_reference [get_ips  system_axi4lite_mb_0_0]
+report_ip_status -name ip_status 
+update_compile_order -fileset sources_1
+generate_target all [get_files  /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs/sources_1/bd/system/system.bd]
+export_ip_user_files -of_objects [get_files /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs/sources_1/bd/system/system.bd] -no_script -sync -force -quiet
+export_simulation -lib_map_path [list {modelsim=/home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.cache/compile_simlib/modelsim} {questa=/home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.cache/compile_simlib/questa} {xcelium=/home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.cache/compile_simlib/xcelium} {vcs=/home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.cache/compile_simlib/vcs} {riviera=/home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.cache/compile_simlib/riviera}] -of_objects [get_files /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs/sources_1/bd/system/system.bd] -directory /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.ip_user_files/sim_scripts -ip_user_files_dir /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.ip_user_files -ipstatic_source_dir /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.ip_user_files/ipstatic -use_ip_compiled_libs -force -quiet
+report_ip_status -name ip_status 
+reset_run synth_1
+launch_runs impl_1 -to_step write_bitstream -jobs 8
+wait_on_run impl_1
+update_compile_order -fileset sources_1
+update_compile_order -fileset sources_1
+update_compile_order -fileset sources_1
+report_ip_status -name ip_status 
+update_module_reference [get_ips  system_axi4lite_mb_0_0]
+generate_target all [get_files  /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs/sources_1/bd/system/system.bd]
+export_ip_user_files -of_objects [get_files /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs/sources_1/bd/system/system.bd] -no_script -sync -force -quiet
+export_simulation -lib_map_path [list {modelsim=/home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.cache/compile_simlib/modelsim} {questa=/home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.cache/compile_simlib/questa} {xcelium=/home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.cache/compile_simlib/xcelium} {vcs=/home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.cache/compile_simlib/vcs} {riviera=/home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.cache/compile_simlib/riviera}] -of_objects [get_files /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs/sources_1/bd/system/system.bd] -directory /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.ip_user_files/sim_scripts -ip_user_files_dir /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.ip_user_files -ipstatic_source_dir /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.ip_user_files/ipstatic -use_ip_compiled_libs -force -quiet
+report_ip_status -name ip_status 
+reset_run synth_1
+launch_runs impl_1 -to_step write_bitstream -jobs 8
+wait_on_run impl_1
+update_compile_order -fileset sources_1
+report_ip_status -name ip_status 
+update_module_reference [get_ips  system_axi4lite_mb_0_0]
+generate_target all [get_files  /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs/sources_1/bd/system/system.bd]
+export_ip_user_files -of_objects [get_files /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs/sources_1/bd/system/system.bd] -no_script -sync -force -quiet
+export_simulation -lib_map_path [list {modelsim=/home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.cache/compile_simlib/modelsim} {questa=/home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.cache/compile_simlib/questa} {xcelium=/home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.cache/compile_simlib/xcelium} {vcs=/home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.cache/compile_simlib/vcs} {riviera=/home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.cache/compile_simlib/riviera}] -of_objects [get_files /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs/sources_1/bd/system/system.bd] -directory /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.ip_user_files/sim_scripts -ip_user_files_dir /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.ip_user_files -ipstatic_source_dir /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.ip_user_files/ipstatic -use_ip_compiled_libs -force -quiet
+report_ip_status -name ip_status 
+reset_run synth_1
+launch_runs impl_1 -to_step write_bitstream -jobs 8
+wait_on_run impl_1
+open_bd_design {/home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs/sources_1/bd/system/system.bd}
+delete_bd_objs [get_bd_intf_nets drift_offset/drift_apply_y]
+create_bd_cell -type module -reference mm_downscale_limited drift_offset/mm_downscale_limited_1
+connect_bd_intf_net [get_bd_intf_pins drift_offset/mm_downscale_limited_1/y] [get_bd_intf_pins drift_offset/mm_linear_correction_1/a]
+set_property location {3.5 843 713} [get_bd_cells drift_offset/mm_downscale_limited_1]
+connect_bd_intf_net [get_bd_intf_pins drift_offset/mm_downscale_limited_1/a] [get_bd_intf_pins drift_offset/drift_apply/y]
+connect_bd_net [get_bd_pins drift_offset/clk] [get_bd_pins drift_offset/mm_downscale_limited_1/aclk]
+connect_bd_net [get_bd_pins drift_offset/arstn] [get_bd_pins drift_offset/mm_downscale_limited_1/arstn]
+startgroup
+set_property -dict [list \
+  CONFIG.data_in_width {64} \
+  CONFIG.data_out_width {32} \
+] [get_bd_cells drift_offset/mm_downscale_limited_1]
+endgroup
+save_bd_design
+reset_run synth_1
+launch_runs impl_1 -to_step write_bitstream -jobs 8
+wait_on_run impl_1
+reset_run synth_1
+launch_runs impl_1 -to_step write_bitstream -jobs 8
+wait_on_run impl_1
+reset_run synth_1
+open_bd_design {/home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs/sources_1/bd/system/system.bd}
+synth_design -top system_wrapper -part xc7z020clg484-1 -lint 
+open_bd_design {/home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs/sources_1/bd/system/system.bd}
+report_ip_status -name ip_status 
+update_module_reference [get_ips  system_mm_linear_correction_1_0]
+report_ip_status -name ip_status 
+regenerate_bd_layout -hierarchy [get_bd_cells drift_offset]
+regenerate_bd_layout -hierarchy [get_bd_cells drift_offset] -routing
+report_ip_status -name ip_status 
+update_module_reference [get_ips  {system_mm_linear_correction_2_0 system_mm_linear_correction_2_1}]
+report_ip_status -name ip_status 
+open_bd_design {/home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs/sources_1/bd/system/system.bd}
+startgroup
+set_property CONFIG.data_in_width {33} [get_bd_cells drift_offset/mm_downscale_limited_1]
+endgroup
+save_bd_design
+generate_target all [get_files  /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs/sources_1/bd/system/system.bd]
+export_ip_user_files -of_objects [get_files /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs/sources_1/bd/system/system.bd] -no_script -sync -force -quiet
+export_simulation -lib_map_path [list {modelsim=/home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.cache/compile_simlib/modelsim} {questa=/home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.cache/compile_simlib/questa} {xcelium=/home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.cache/compile_simlib/xcelium} {vcs=/home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.cache/compile_simlib/vcs} {riviera=/home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.cache/compile_simlib/riviera}] -of_objects [get_files /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs/sources_1/bd/system/system.bd] -directory /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.ip_user_files/sim_scripts -ip_user_files_dir /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.ip_user_files -ipstatic_source_dir /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.ip_user_files/ipstatic -use_ip_compiled_libs -force -quiet
+launch_runs impl_1 -to_step write_bitstream -jobs 8
+wait_on_run impl_1
+report_ip_status -name ip_status 
+regenerate_bd_layout -hierarchy [get_bd_cells drift_offset]
+regenerate_bd_layout -hierarchy [get_bd_cells drift_offset] -routing
+report_ip_status -name ip_status 
+report_ip_status -name ip_status 
+update_module_reference [get_ips  {system_mm_downscale_limited_1_0 system_mm_downscale_limited_0_1 system_mm_downscale_limited_0_0}]
+regenerate_bd_layout -hierarchy [get_bd_cells drift_offset]
+regenerate_bd_layout -hierarchy [get_bd_cells drift_offset] -routing
+set_property location {1 154 -34} [get_bd_cells drift_offset/xlconstant_0]
+set_property location {-39 119} [get_bd_pins drift_offset/dina]
+set_property location {-46 116} [get_bd_pins drift_offset/dina]
+set_property location {-45 106} [get_bd_pins drift_offset/dina]
+set_property location {2 416 42} [get_bd_cells drift_offset/blk_mem_gen_0]
+set_property location {2 415 71} [get_bd_cells drift_offset/blk_mem_gen_0]
+report_ip_status -name ip_status 
+set_property location {2 399 -18} [get_bd_cells drift_offset/blk_mem_gen_0]
+set_property location {1 128 -215} [get_bd_cells drift_offset/xlconstant_0]
+set_property location {-52 -358} [get_bd_pins drift_offset/substract]
+regenerate_bd_layout -hierarchy [get_bd_cells drift_offset]
+set_property location {-40 -87} [get_bd_pins drift_offset/substract]
+set_property location {1 159 -85} [get_bd_cells drift_offset/xlconstant_0]
+set_property location {-68 110} [get_bd_pins drift_offset/dina]
+set_property location {2 415 69} [get_bd_cells drift_offset/blk_mem_gen_0]
+set_property location {2 416 46} [get_bd_cells drift_offset/blk_mem_gen_0]
+set_property location {-57 158} [get_bd_pins drift_offset/Selected_position]
+set_property location {-95 502} [get_bd_pins drift_offset/black_level]
+set_property location {8 1906 254} [get_bd_cells drift_offset/black_level_override_disable]
+set_property screensize {137 162} [get_bd_cells drift_offset/black_level]
+set_property screensize {138 200} [get_bd_cells drift_offset/black_level]
+set_property location {9 2172 337} [get_bd_cells drift_offset/black_level]
+set_property location {9 2174 343} [get_bd_cells drift_offset/black_level]
+set_property location {9 2171 348} [get_bd_cells drift_offset/black_level]
+set_property location {-73 494} [get_bd_pins drift_offset/black_level]
+set_property location {3387 -21} [get_bd_pins drift_offset/ap_done]
+set_property location {3392 15} [get_bd_pins drift_offset/Address_out]
+set_property location {13 3195 318} [get_bd_cells drift_offset/xlslice_0]
+set_property location {13 3205 205} [get_bd_cells drift_offset/signed_rescale_0]
+set_property location {13 3214 215} [get_bd_cells drift_offset/signed_rescale_0]
+set_property location {13 3205 228} [get_bd_cells drift_offset/signed_rescale_0]
+set_property location {13 3212 229} [get_bd_cells drift_offset/signed_rescale_0]
+set_property location {13 3213 228} [get_bd_cells drift_offset/signed_rescale_0]
+set_property location {13 3210 228} [get_bd_cells drift_offset/signed_rescale_0]
+set_property location {13 3214 200} [get_bd_cells drift_offset/signed_rescale_0]
+set_property location {13 3214 215} [get_bd_cells drift_offset/signed_rescale_0]
+set_property location {13 3212 220} [get_bd_cells drift_offset/signed_rescale_0]
+set_property location {3383 326} [get_bd_pins drift_offset/IMG_mem_web]
+set_property location {7 1699 735} [get_bd_cells drift_offset/blk_mem_gen_2]
+set_property location {7 1687 789} [get_bd_cells drift_offset/blk_mem_gen_2]
+set_property location {8 1923 319} [get_bd_cells drift_offset/black_level_override_disable]
+set_property location {8 1906 344} [get_bd_cells drift_offset/black_level_override_disable]
+set_property location {8 1900 369} [get_bd_cells drift_offset/black_level_override_disable]
+set_property location {8 1910 401} [get_bd_cells drift_offset/black_level_override_disable]
+set_property location {8 1936 32} [get_bd_cells drift_offset/black_level_override_disable]
+set_property screensize {138 190} [get_bd_cells drift_offset/black_level]
+set_property screensize {137 176} [get_bd_cells drift_offset/black_level]
+set_property screensize {137 162} [get_bd_cells drift_offset/black_level]
+set_property location {2 394 32} [get_bd_cells drift_offset/blk_mem_gen_0]
+set_property location {-28 146} [get_bd_pins drift_offset/Selected_position]
+set_property location {-28 209} [get_bd_intf_pins drift_offset/S_AXI]
+reset_run synth_1
+generate_target all [get_files /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs/sources_1/bd/system/system.bd]
+synth_design -top system_wrapper -part xc7z020clg484-1 -lint 
+report_ip_status -name ip_status 
+launch_runs synth_1 -jobs 8
+wait_on_run synth_1
+report_ip_status -name ip_status 
+update_module_reference [get_ips  {system_mm_downscale_limited_1_0 system_mm_downscale_limited_0_1 system_mm_downscale_limited_0_0}]
+generate_target all [get_files  /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs/sources_1/bd/system/system.bd]
+export_ip_user_files -of_objects [get_files /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs/sources_1/bd/system/system.bd] -no_script -sync -force -quiet
+export_simulation -lib_map_path [list {modelsim=/home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.cache/compile_simlib/modelsim} {questa=/home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.cache/compile_simlib/questa} {xcelium=/home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.cache/compile_simlib/xcelium} {vcs=/home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.cache/compile_simlib/vcs} {riviera=/home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.cache/compile_simlib/riviera}] -of_objects [get_files /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs/sources_1/bd/system/system.bd] -directory /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.ip_user_files/sim_scripts -ip_user_files_dir /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.ip_user_files -ipstatic_source_dir /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.ip_user_files/ipstatic -use_ip_compiled_libs -force -quiet
+synth_design -top system_wrapper -part xc7z020clg484-1 -lint 
+report_ip_status -name ip_status 
+synth_design -top system_wrapper -part xc7z020clg484-1 -lint 
+report_ip_status -name ip_status 
+update_module_reference [get_ips  {system_mm_downscale_limited_1_0 system_mm_downscale_limited_0_1 system_mm_downscale_limited_0_0}]
+report_ip_status -name ip_status 
+generate_target all [get_files  /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs/sources_1/bd/system/system.bd]
+export_ip_user_files -of_objects [get_files /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs/sources_1/bd/system/system.bd] -no_script -sync -force -quiet
+export_simulation -lib_map_path [list {modelsim=/home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.cache/compile_simlib/modelsim} {questa=/home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.cache/compile_simlib/questa} {xcelium=/home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.cache/compile_simlib/xcelium} {vcs=/home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.cache/compile_simlib/vcs} {riviera=/home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.cache/compile_simlib/riviera}] -of_objects [get_files /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs/sources_1/bd/system/system.bd] -directory /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.ip_user_files/sim_scripts -ip_user_files_dir /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.ip_user_files -ipstatic_source_dir /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.ip_user_files/ipstatic -use_ip_compiled_libs -force -quiet
+report_ip_status -name ip_status 
+synth_design -top system_wrapper -part xc7z020clg484-1 -lint 
+update_compile_order -fileset sources_1
+update_compile_order -fileset sources_1
+update_compile_order -fileset sources_1
+update_compile_order -fileset sources_1
+report_ip_status -name ip_status 
+update_module_reference [get_ips  {system_mm_downscale_limited_1_0 system_mm_downscale_limited_0_1 system_mm_downscale_limited_0_0}]
+generate_target all [get_files  /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs/sources_1/bd/system/system.bd]
+export_ip_user_files -of_objects [get_files /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs/sources_1/bd/system/system.bd] -no_script -sync -force -quiet
+export_simulation -lib_map_path [list {modelsim=/home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.cache/compile_simlib/modelsim} {questa=/home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.cache/compile_simlib/questa} {xcelium=/home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.cache/compile_simlib/xcelium} {vcs=/home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.cache/compile_simlib/vcs} {riviera=/home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.cache/compile_simlib/riviera}] -of_objects [get_files /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs/sources_1/bd/system/system.bd] -directory /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.ip_user_files/sim_scripts -ip_user_files_dir /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.ip_user_files -ipstatic_source_dir /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.ip_user_files/ipstatic -use_ip_compiled_libs -force -quiet
+report_ip_status -name ip_status 
+reset_run synth_1
+launch_runs impl_1 -to_step write_bitstream -jobs 8
+wait_on_run impl_1
+reset_run synth_1
+report_ip_status -name ip_status 
+update_module_reference [get_ips  {system_mm_downscale_limited_1_0 system_mm_downscale_limited_0_1 system_mm_downscale_limited_0_0}]
+generate_target all [get_files  /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs/sources_1/bd/system/system.bd]
+export_ip_user_files -of_objects [get_files /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs/sources_1/bd/system/system.bd] -no_script -sync -force -quiet
+export_simulation -lib_map_path [list {modelsim=/home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.cache/compile_simlib/modelsim} {questa=/home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.cache/compile_simlib/questa} {xcelium=/home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.cache/compile_simlib/xcelium} {vcs=/home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.cache/compile_simlib/vcs} {riviera=/home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.cache/compile_simlib/riviera}] -of_objects [get_files /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs/sources_1/bd/system/system.bd] -directory /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.ip_user_files/sim_scripts -ip_user_files_dir /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.ip_user_files -ipstatic_source_dir /home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.ip_user_files/ipstatic -use_ip_compiled_libs -force -quiet
+report_ip_status -name ip_status 
+launch_runs impl_1 -to_step write_bitstream -jobs 8
+wait_on_run impl_1
+open_bd_design {/home/arthur/Work/Vivado/clamir-hardware-description/clamir-hardware-description.srcs/sources_1/bd/system/system.bd}
+delete_bd_objs [get_bd_intf_nets drift_offset/mm_linear_correction_1_y]
+copy_bd_objs drift_offset  [get_bd_cells {drift_offset/mm_downscale_limited_1}]
+connect_bd_intf_net [get_bd_intf_pins drift_offset/mm_downscale_limited_2/y] [get_bd_intf_pins drift_offset/linear_correction/a]
+set_property location {5 1235 416} [get_bd_cells drift_offset/mm_downscale_limited_2]
+connect_bd_intf_net [get_bd_intf_pins drift_offset/mm_downscale_limited_2/a] [get_bd_intf_pins drift_offset/mm_linear_correction_1/y]
+startgroup
+endgroup
+apply_bd_automation -rule xilinx.com:bd_rule:clkrst -config { Clk {/ps/FCLK_CLK0 (100 MHz)} Freq {100} Ref_Clk0 {} Ref_Clk1 {} Ref_Clk2 {}}  [get_bd_pins drift_offset/mm_downscale_limited_2/aclk]
+report_ip_status -name ip_status 
+update_module_reference [get_ips  system_mm_linear_correction_1_2]
+report_ip_status -name ip_status 
+reset_run synth_1
+launch_runs impl_1 -to_step write_bitstream -jobs 8
+wait_on_run impl_1
+report_ip_status -name ip_status 
+close_bd_design [get_bd_designs system]
+close_project

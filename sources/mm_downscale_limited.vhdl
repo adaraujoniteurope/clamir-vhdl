@@ -37,7 +37,7 @@ use IEEE.NUMERIC_STD.ALL;
 entity mm_downscale_limited is
 Generic
 (
-        FRAME_LENGTH : INTEGER := 4096;
+    frame_length : INTEGER := 4096;
     addr_width : integer := 32;
     data_in_width : integer := 32;
     data_out_width : integer := 16
@@ -58,8 +58,9 @@ end mm_downscale_limited;
 
 architecture impl of mm_downscale_limited is
 
-constant y_mm_data_max : integer := 2**(y_mm_data'length-1)-1;
-constant y_mm_data_min : integer := -1*2**(y_mm_data'length - 1);
+constant y_mm_data_min : signed(y_mm_data'range) := '1' & to_signed(0, y_mm_data'length-1);
+constant y_mm_data_max : signed(y_mm_data'range) := not y_mm_data_min;
+
 
 begin
 
@@ -75,10 +76,10 @@ sel_process: process(aclk) begin
             y_mm_wren <= a_mm_wren;
             
             if (a_mm_addr < FRAME_LENGTH) then
-                if (to_integer(signed(a_mm_data)) > y_mm_data_max) then
-                    y_mm_data <= std_logic_vector(to_signed(y_mm_data_max, y_mm_data'length));
-                elsif (to_integer(signed(a_mm_data)) < y_mm_data_min) then
-                    y_mm_data <= std_logic_vector(to_signed(y_mm_data_min, y_mm_data'length));
+                if (signed(a_mm_data) > y_mm_data_max) then
+                    y_mm_data <= std_logic_vector(y_mm_data_max);
+                elsif (signed(a_mm_data) < y_mm_data_min) then
+                    y_mm_data <= std_logic_vector(y_mm_data_min);
                 else
                     y_mm_data <= std_logic_vector(resize(signed(a_mm_data), y_mm_data'length));
                 end if;

@@ -57,6 +57,10 @@ entity mm_memory_reader is
     intr : out std_logic := '0'
   );
 
+end mm_memory_reader;
+
+architecture impl of mm_memory_reader is
+
   attribute x_interface_info                : string;
   attribute x_interface_info of a_bram_clk  : signal is "xilinx.com:interface:bram:1.0 a_bram clk";
   attribute x_interface_info of a_bram_addr : signal is "xilinx.com:interface:bram:1.0 a_bram addr";
@@ -65,10 +69,6 @@ entity mm_memory_reader is
   attribute x_interface_info of a_bram_en   : signal is "xilinx.com:interface:bram:1.0 a_bram en";
   attribute x_interface_info of a_bram_din  : signal is "xilinx.com:interface:bram:1.0 a_bram din";
   attribute x_interface_info of a_bram_dout : signal is "xilinx.com:interface:bram:1.0 a_bram dout";
-
-end mm_memory_reader;
-
-architecture impl of mm_memory_reader is
 
   type state_type is (
     idle,
@@ -97,7 +97,7 @@ begin
     -- variable addr_increment_shift : integer := integer(floor(integer(real(data_width)/8.0)/2));
   begin
 
-    if (aclk'event and aclk = '1') then
+    if (rising_edge(aclk)) then
       if (arstn = '0') then
         y_mm_wren   <= '0';
         ap_start_d0 <= '0';

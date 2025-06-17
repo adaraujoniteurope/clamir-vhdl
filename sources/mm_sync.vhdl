@@ -15,21 +15,18 @@
 -- Revision:
 -- Revision 0.01 - File Created
 -- Additional Comments:
--- 
+-- this is intented to be used when wren is not in sync with data, you can adjust
+-- adding a delay line using registers. Still, it can be used to add a FIFO
+-- just add DELAY CYCLES of complete frame counts. I will simplify this block
+-- later to make it available to delay lines...
+
+-- This is getting really cool! =) the thing is I will implement this using AXIS4
+-- for me.
 ----------------------------------------------------------------------------------
 
 
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
-
--- Uncomment the following library declaration if using
--- arithmetic functions with Signed or Unsigned values
---use IEEE.NUMERIC_STD.ALL;
-
--- Uncomment the following library declaration if instantiating
--- any Xilinx leaf cells in this code.
---library UNISIM;
---use UNISIM.VComponents.all;
 
 entity mm_sync is
 Generic(
@@ -37,7 +34,7 @@ Generic(
     DATA_WIDTH : integer := 32;
     
     WREN_DELAY_CYCLES : integer := 1;
-    DATA_DELAY_CYCLES : integer := 2
+    DATA_DELAY_CYCLES : integer := 1
     
 );
 Port (

@@ -10,6 +10,9 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
+library work;
+use work.misc.all;
+
 entity moment_track_count is
   generic (
     -- sensor image resolution (bits per pixel)
@@ -55,7 +58,7 @@ architecture behavioral of moment_track_count is
 
 begin
 
-  timer_inst : entity work.moment_track_timer
+  timer_inst : moment_track_timer
     port map(
       clk       => clk,
       rstn      => rstn,

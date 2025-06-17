@@ -7,14 +7,14 @@ PACKAGE_OBJECTS = $(patsubst %.vhdl,%.o,$(PACKAGES))
 TARGETS = $(patsubst %_tb.vhdl,%_tb,$(TESTBENCHES))
 
 # testbench
-TESTBENCH = mm_memory_reader
+TESTBENCH = mm_drift
 TESTBENCHPATH = testbenches/${TESTBENCHFILE}*
 TESTBENCHFILE = ${TESTBENCH}_tb
 WORKDIR = work
 
 #GHDL CONFIG
 GHDL_CMD = ghdl
-GHDL_FLAGS  = -fexplicit --ieee=synopsys --warn-no-vital-generic --workdir=$(WORKDIR) -Wl,-lm
+GHDL_FLAGS  = --std=08 -frelaxed -fexplicit --ieee=synopsys --warn-no-vital-generic --workdir=$(WORKDIR) -Wl,-lm
 
 STOP_TIME = 100us
 # Simulation break condition

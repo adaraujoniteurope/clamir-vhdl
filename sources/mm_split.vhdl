@@ -39,20 +39,20 @@ generic (
 );
 port (
 
-    aclk : in std_logic := '0';
-    arstn : in std_logic := '0';
+    aclk : in std_logic;
+    arstn : in std_logic;
 
-    y0_mm_addr : out std_logic_vector(ADDR_WIDTH-1 downto 0) := ( others => '0');
-    y0_mm_data : out std_logic_vector(DATA_WIDTH-1 downto 0) := ( others => '0');
-    y0_mm_wren : out std_logic := '0';
+    y0_mm_addr : out std_logic_vector(ADDR_WIDTH-1 downto 0);
+    y0_mm_data : out std_logic_vector(DATA_WIDTH-1 downto 0);
+    y0_mm_wren : out std_logic;
     
-    y1_mm_addr : out std_logic_vector(ADDR_WIDTH-1 downto 0) := ( others => '0');
-    y1_mm_data : out std_logic_vector(DATA_WIDTH-1 downto 0) := ( others => '0');
-    y1_mm_wren : out std_logic := '0';
+    y1_mm_addr : out std_logic_vector(ADDR_WIDTH-1 downto 0);
+    y1_mm_data : out std_logic_vector(DATA_WIDTH-1 downto 0);
+    y1_mm_wren : out std_logic;
 
-    a_mm_addr : in std_logic_vector(ADDR_WIDTH-1 downto 0) := ( others => '0');
-    a_mm_data : in std_logic_vector(DATA_WIDTH-1 downto 0) := ( others => '0');
-    a_mm_wren : in std_logic := '0'
+    a_mm_addr : in std_logic_vector(ADDR_WIDTH-1 downto 0);
+    a_mm_data : in std_logic_vector(DATA_WIDTH-1 downto 0);
+    a_mm_wren : in std_logic
 );
 end mm_split;
 
@@ -62,7 +62,6 @@ begin
 process(aclk) begin
     if (rising_edge(aclk)) then
         if (arstn = '0') then
-        y0_mm_addr <= a_mm_addr;
             y0_mm_addr <= (others => '0');
             y0_mm_data <= (others => '0');
             y0_mm_wren <= '0';

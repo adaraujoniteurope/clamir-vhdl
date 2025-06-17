@@ -23,7 +23,7 @@ end package memory_types;
 package body memory_types is
 
   impure function init_ram_from_file(filename : in string; line_count : in integer) return memory_8b_type is
-    file read_file : text is in filename;
+    file read_file : text is filename;
     variable read_line : line;
     variable init_ram : memory_8b_type(0 to line_count-1);
     variable value : integer := 0;
@@ -39,7 +39,7 @@ package body memory_types is
   end function;
 
   impure function init_ram_from_file_32b(filename : in string; line_count : in integer) return memory_32b_type is
-    file read_file : text is in filename;
+    file read_file : text is filename;
     variable read_line : line;
     variable init_ram : memory_32b_type(0 to line_count-1);
     variable value : integer := 0;
@@ -55,7 +55,7 @@ package body memory_types is
   end function;
 
   impure function save_ram_to_file(filename : in string; memory : in memory_8b_type) return integer is
-    file write_file : text is in filename;
+    file write_file : text is filename;
     variable write_line : line;
     variable value : integer := 0;
   begin

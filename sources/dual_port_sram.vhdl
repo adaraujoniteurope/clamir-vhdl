@@ -37,8 +37,8 @@ entity dual_port_sram is
 end dual_port_sram;
 
 architecture syn of dual_port_sram is
-  type ram_type is array (ram_length - 1 downto 0) of std_logic_vector(data_width - 1 downto 0);
-  shared variable ram : ram_type := ( others => std_logic_vector(to_unsigned(0, data_width)));
+  type memory_type is array (ram_length - 1 downto 0) of std_logic_vector(data_width - 1 downto 0);
+  shared variable memory : memory_type := ( others => std_logic_vector(to_unsigned(0, data_width)));
 
   -- attribute ram_style        : string;
   -- attribute ram_style of ram : signal is "block";
@@ -61,12 +61,12 @@ begin
   begin
     if rising_edge(clka) then
       if ena = '1' then
-        doa <= ram(to_integer(unsigned(addra)));
+        doa <= memory(to_integer(unsigned(addra)));
         -- Byte-masked write
         for i in 0 to integer(data_width/8) - 1 loop
           if wea(i) = '1' then
               report "port_a: " & print_ram_input(addra, dia, i);
-              ram(to_integer(unsigned(addra)))(8 * i + 7 downto 8 * i) := dia(8 * i + 7 downto 8 * i);
+              memory(to_integer(unsigned(addra)))(8 * i + 7 downto 8 * i) := dia(8 * i + 7 downto 8 * i);
           end if;
         end loop;
 
@@ -78,12 +78,12 @@ begin
   begin
     if rising_edge(clkb) then
       if enb = '1' then
-        dob <= ram(to_integer(unsigned(addrb)));
+        dob <= memory(to_integer(unsigned(addrb)));
         -- Byte-masked write
         for i in 0 to integer(data_width/8) - 1 loop
           if web(i) = '1' then
             report "port_b: " & print_ram_input(addrb, dib, i);
-            ram(to_integer(unsigned(addrb)))(8 * i + 7 downto 8 * i) := dib(8 * i + 7 downto 8 * i);
+            memory(to_integer(unsigned(addrb)))(8 * i + 7 downto 8 * i) := dib(8 * i + 7 downto 8 * i);
           end if;
         end loop;
       end if;

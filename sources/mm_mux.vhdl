@@ -77,6 +77,10 @@ sel_process: process(aclk) begin
                 y_mm_addr <= b_mm_addr;
                 y_mm_wren <= b_mm_wren;
                 y_mm_data <= b_mm_data;
+            when others =>
+                y_mm_addr <= ( others => 'Z' );
+                y_mm_wren <= 'Z';
+                y_mm_data <= ( others => 'Z' );
             end case;
             
         end if;

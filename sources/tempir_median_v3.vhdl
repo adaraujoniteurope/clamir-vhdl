@@ -78,7 +78,7 @@ architecture behavioral of median is
 
 constant ts_span : natural := 1e8/1e4;
 
-type tipo_global_state is (idle, median,last_pixel,median_center_calc, median_value, metadata, ready);
+type tipo_global_state is (STATE_IDLE, STATE_COMPUTE_MEDIAN,STATE_LAST_PIXEL,STATE_COMPUTE_MEDIAN_CENTER, STATE_COMPUTE_MEDIAN_VALUE, STATE_METADATA, STATE_READY);
   signal global_state: tipo_global_state;
  attribute dont_touch of global_state : signal is "true";  
 
@@ -118,7 +118,7 @@ begin
  
 process (hist_data_in, global_state)
 begin
-if((global_state = median) or (global_state = last_pixel)) then
+if((global_state = STATE_COMPUTE_MEDIAN) or (global_state = STATE_LAST_PIXEL)) then
     hist_data_out <= hist_data_in +1;
  else
     hist_data_out <= (others =>'0');
@@ -137,7 +137,7 @@ if (clk'event and clk = '1') then
     if(reset ='1') then
     
      ap_ready <= '0';
-     global_state <= idle;     
+     global_state <= STATE_IDLE;     
      img_address_in<= (others => '0');
      img_data_out <= (others => '0');
           
@@ -160,7 +160,7 @@ if (clk'event and clk = '1') then
 
         case global_state is
             
-         when idle =>
+         when STATE_IDLE =>
 
               ap_done <=  '0';  
               ap_ready <= '1';
@@ -177,7 +177,7 @@ if (clk'event and clk = '1') then
               if (ap_start ='1') 
                 then
                    ap_ready <=  '0';
-                   global_state<= median;
+                   global_state<= STATE_COMPUTE_MEDIAN;
                    --img_address_in <= conv_std_logic_vector (0, 12);
                    --address_counter <= conv_std_logic_vector (0, 12);
                    --img_web_out<= '1';
@@ -187,14 +187,14 @@ if (clk'event and clk = '1') then
                    frame_max_reg <= (others => '0');
                    
                  else
-                      global_state <= idle;     
+                      global_state <= STATE_IDLE;     
                             
               end if;
         
        
          
         
-        when median =>
+        when STATE_COMPUTE_MEDIAN =>
                     tick <= tick +1;
                     -- copiado de la imagen a siguiente bloque
                     --hist_data_out <= hist_data_in +1;
@@ -232,12 +232,12 @@ if (clk'event and clk = '1') then
                     
                     if (address_counter = 4095)
                     then
-                         global_state<= last_pixel;
+                         global_state<= STATE_LAST_PIXEL;
                     else
-                       global_state<= median;
+                       global_state<= STATE_COMPUTE_MEDIAN;
                     end if;
                 
-                when last_pixel =>
+                when STATE_LAST_PIXEL =>
                 tick <= tick +1;
                 case tick is
                  when "00" =>
@@ -258,7 +258,7 @@ if (clk'event and clk = '1') then
                         
                         hist_address_counter  <= conv_std_logic_vector(1,14);
                         when "11" =>
-                         global_state<= median_center_calc;
+                         global_state<= STATE_COMPUTE_MEDIAN_CENTER;
                          tick <= "00";
                          median_center<=(others => '0');
                          signal_skip_sum <= '1';
@@ -268,12 +268,12 @@ if (clk'event and clk = '1') then
                         when others =>
                         end case;
                  
-                 when median_center_calc =>
+                 when STATE_COMPUTE_MEDIAN_CENTER =>
                      --tick <= tick +1;
                      case tick is
                      when "00" =>
                       img_web_out<= '0';
-                       global_state<= median_center_calc;
+                       global_state<= STATE_COMPUTE_MEDIAN_CENTER;
                        hist_address_counter <= hist_address_counter+1;
                        hist_web_out <='1';
                        hist_address_out <= hist_address_counter;
@@ -305,15 +305,15 @@ if (clk'event and clk = '1') then
                             median_result <= hist_address_counter;
                           
                           when "11" =>
-                           global_state<= median_value;
+                           global_state<= STATE_COMPUTE_MEDIAN_VALUE;
                           tick <= "00";
                           
                            when others =>
                             end case;       
                       
-                 when median_value =>
+                 when STATE_COMPUTE_MEDIAN_VALUE =>
                        img_web_out<= '0';
-                       global_state<= median_value;
+                       global_state<= STATE_COMPUTE_MEDIAN_VALUE;
                        hist_address_counter <= hist_address_counter+1;
                        hist_web_out <='1';
                        hist_address_out <= hist_address_counter;
@@ -332,13 +332,13 @@ if (clk'event and clk = '1') then
                          end if;      
                          end if; 
                        if (hist_address_counter >= 16383) then
-                        global_state<= ready;
+                        global_state<= STATE_READY;
                         end if;
                 
             
                         
 
-                when ready =>
+                when STATE_READY =>
                 
                 ap_done <= '0';
                 img_address_out_reg<=(others => '0');
@@ -346,12 +346,12 @@ if (clk'event and clk = '1') then
                 address_counter<=(others => '0');
                 img_data_out<=img_data_in;
                 img_web_out<= '0';
-                global_state<= idle;
+                global_state<= STATE_IDLE;
                  
                       
                  when others =>
                       
-                      global_state <= idle;        
+                      global_state <= STATE_IDLE;        
                 end case;            
         
     end if;

@@ -4,7 +4,7 @@
 -- 
 -- Create Date: 04/16/2025 12:21:10 PM
 -- Design Name: 
--- Module Name: mm_memory_writer - impl
+-- Module Name: mm_fifo_writer - impl
 -- Project Name: 
 -- Target Devices: 
 -- Tool Versions: 
@@ -24,6 +24,7 @@ use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.STD_LOGIC_UNSIGNED.ALL;
 use IEEE.STD_LOGIC_MISC.ALL;
 use IEEE.NUMERIC_STD.ALL;
+use IEEE.MATH_REAL.ALL;
 
 -- Uncomment the following library declaration if using
 -- arithmetic functions with Signed or Unsigned values
@@ -34,7 +35,7 @@ use IEEE.NUMERIC_STD.ALL;
 --library UNISIM;
 --use UNISIM.VComponents.all;
 
-entity mm_memory_writer is
+entity mm_fifo_writer is
 Generic (
     ADDR_WIDTH : integer := 32;
     DATA_WIDTH : integer := 16;
@@ -134,9 +135,9 @@ Port (
 		S_AXI_RREADY	: in std_logic
     
 );
-end mm_memory_writer;
+end mm_fifo_writer;
 
-architecture impl of mm_memory_writer is
+architecture impl of mm_fifo_writer is
 
     ATTRIBUTE X_INTERFACE_INFO : STRING;
 
@@ -321,8 +322,7 @@ begin
                     -- slave registor 0
                     register_bank_wr(to_integer(unsigned(mem_logic)))(byte_index*8+7 downto byte_index*8) <= S_AXI_WDATA(byte_index*8+7 downto byte_index*8);
                 else
-                    -- not necessary
-                    -- register_bank_wr(to_integer(unsigned(mem_logic)))(byte_index*8+7 downto byte_index*8) <= register_bank_wr(to_integer(unsigned(mem_logic)))(byte_index*8+7 downto byte_index*8);
+                    register_bank_wr(to_integer(unsigned(mem_logic)))(byte_index*8+7 downto byte_index*8) <= register_bank_wr(to_integer(unsigned(mem_logic)))(byte_index*8+7 downto byte_index*8);
                 end if;
             end loop;
 	      end if;
@@ -416,7 +416,7 @@ begin
                 bram_din <= a_mm_data & a_mm_data_d0;
                 
                 if (a_mm_addr(0) = '0') then
-                    bram_addr <= std_logic_vector(shift_left(unsigned(a_mm_addr), 1) + unsigned(offsets(to_integer(unsigned(fifo_head_reg)))));
+                    bram_addr <= std_logic_vector(shift_left(unsigned(a_mm_addr), integer(log2(real(DATA_WIDTH/8)))) + unsigned(offsets(to_integer(unsigned(fifo_head_reg)))));
                     bram_wea <= ( others => '0');
                 else
                     bram_wea <= ( others => '1');

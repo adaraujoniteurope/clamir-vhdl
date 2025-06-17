@@ -1,7 +1,7 @@
 library ieee;
     use ieee.std_logic_1164.all;
-library unisim;
-   use unisim.vcomponents.all;
+-- library unisim;
+--    use unisim.vcomponents.all;
 
 entity iobuf is
   port (
@@ -15,20 +15,20 @@ architecture rtl of iobuf is
 
 begin
 
-  --io <= i when t = '0' else 'z';
-  --o <= io;
-obuft_inst : obuft
+  io <= i when t = '0' else 'Z';
+  o <= io;
+-- obuft_inst : obuft
 
-    port map (
-                o => io, -- buffer output (connect directly to top-level port)
-                i => i, -- buffer input
-                t => t -- 3-state enable input
-            );
-ibuf_inst : ibuf
-    port map (
-                o => o, -- buffer output
-                i => io -- buffer input (connect directly to top-level port)
-            );
+--     port map (
+--                 o => io, -- buffer output (connect directly to top-level port)
+--                 i => i, -- buffer input
+--                 t => t -- 3-state enable input
+--             );
+-- ibuf_inst : ibuf
+--     port map (
+--                 o => o, -- buffer output
+--                 i => io -- buffer input (connect directly to top-level port)
+--             );
 
 
 end rtl;

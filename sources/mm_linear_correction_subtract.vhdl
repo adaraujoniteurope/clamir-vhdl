@@ -9,7 +9,7 @@ USE ieee.std_logic_unsigned.ALL;
 USE ieee.numeric_std.ALL;
 USE work.memory_types.ALL;
 
-ENTITY mm_linear_correction_add IS
+ENTITY mm_linear_correction_subtract IS
     GENERIC (
         FRAME_LENGTH : INTEGER := 4096;
         addr_width : INTEGER := 32;
@@ -35,12 +35,12 @@ ENTITY mm_linear_correction_add IS
 
         y_mm_addr : OUT STD_LOGIC_VECTOR(addr_width - 1 DOWNTO 0) := (OTHERS => '0');
         y_mm_wren : OUT STD_LOGIC := '0';
-        y_mm_data : OUT STD_LOGIC_VECTOR((2*data_width)-1 DOWNTO 0) := (OTHERS => '0')
+        y_mm_data : OUT STD_LOGIC_VECTOR(data_width DOWNTO 0) := (OTHERS => '0')
     );
 
-END mm_linear_correction_add;
+END mm_linear_correction_subtract;
 
-ARCHITECTURE rtl OF mm_linear_correction_add IS
+ARCHITECTURE rtl OF mm_linear_correction_subtract IS
     -- ATTRIBUTE X_INTERFACE_INFO of aclk: SIGNAL is "xilinx.com:signal:clock:1.0 aclk clk";
     -- ATTRIBUTE X_INTERFACE_INFO of arstn: SIGNAL is "xilinx.com:signal:reset:1.0 arstn rst";
 
@@ -53,8 +53,6 @@ ARCHITECTURE rtl OF mm_linear_correction_add IS
     ATTRIBUTE X_INTERFACE_INFO OF offset_bram_ena : SIGNAL IS "xilinx.com:interface:bram:1.0 offset_bram EN";
     ATTRIBUTE X_INTERFACE_INFO OF offset_bram_din : SIGNAL IS "xilinx.com:interface:bram:1.0 offset_bram DIN";
     ATTRIBUTE X_INTERFACE_INFO OF offset_bram_dout : SIGNAL IS "xilinx.com:interface:bram:1.0 offset_bram DOUT";
-
-    signal result : signed(2*a_mm_data'length-1 downto 0) := ( others => '0' );
     
     signal a_mm_wren_d0 : std_logic := '0';
     signal a_mm_wren_d1 : std_logic := '0';
@@ -125,7 +123,7 @@ BEGIN
             y_mm_wren <= a_mm_wren_d2;
             
             if (unsigned(a_mm_addr_d2) < FRAME_LENGTH) then
-                y_mm_data <= std_logic_vector(resize(signed(offset_bram_dout_d0) + signed(a_mm_data_d2), y_mm_data'length));
+                y_mm_data <= std_logic_vector(signed(a_mm_data_d2) - resize(signed(offset_bram_dout_d0), y_mm_data'length));
             else
                 y_mm_data <= std_logic_vector(resize(signed(a_mm_data_d2), y_mm_data'length));
             end if;
